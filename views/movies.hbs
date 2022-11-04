@@ -1,0 +1,50 @@
+<main>
+
+<h2>Movies</h2>
+<p>&nbsp;</p>
+
+{{!-- The Data from our Database --}}
+{{!-- Create a table --}}
+<div id = "browse" class = "data-table">
+    <table id= "movie-table" border="1" cellpadding="5">
+
+        {{!-- Header section --}}
+        <thead>
+
+            {{!-- For just the first row, we print each key of the row object as a header cell so we
+            know what each column means when the page renders --}}
+            <tr>
+                {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+
+        {{!-- Body section --}}
+        <tbody>
+
+            {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
+            {{#each data}}
+            <tr>
+                <td>{{this.movie_id}}</td>
+                <td>{{this.movie_title}}</td>
+                <td>{{this.release_date}}</td>
+                <td>{{this.genre}}</td>
+                <td><a href="#" onClick="updateMovie{{this.movie_id}}"><button>Edit</button></a></td>
+                <td><a href="#" onclick="deleteMovie{{this.movie_id}}"><button>Delete</button></a></td>                                                   
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+</main>

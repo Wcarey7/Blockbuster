@@ -1,0 +1,127 @@
+{{!-- Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) --}}
+{{!-- Customers Page --}}
+
+
+
+<main>
+<h2>Customers</h2>
+<p>&nbsp;</p>
+
+{{!-- The Data from our Database --}}
+{{!-- Create a table --}}
+<div id = "browse" class = "data-table">
+    <table id= "customer-table" border="1" cellpadding="5">
+
+        {{!-- Header section --}}
+        <thead>
+
+            {{!-- For just the first row, we print each key of the row object as a header cell so we
+            know what each column means when the page renders --}}
+            <tr>
+                {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Delete</th>
+            </tr>
+        </thead>
+
+        {{!-- Body section --}}
+        <tbody>
+
+            {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
+            {{#each data}}
+            <tr data-value={{this.customer_id}}>>
+                <td>{{this.customer_id}}</td>
+                <td>{{this.first_name}}</td>
+                <td>{{this.last_name}}</td>
+                <td>{{this.customer_street}}</td>
+                <td>{{this.customer_city}}</td>
+                <td>{{this.customer_state}}</td>
+                <td>{{this.customer_zip}}</td>
+                <td>{{this.customer_phone_number}}</td>
+                <td>{{this.customer_active_rentals}}</td>
+                <td>{{this.customer_total_rentals}}</td>
+                <td><button onclick="deleteCustomer({{this.customer_id}})">Delete</button></td>                                                  
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <script src="./js/delete_customer.js"></script>
+</div>
+
+
+<!-- Add new customer form -->
+<div class = "row">
+    <div class = "column">
+        <form id="add-customer-form-ajax">
+            <h3>Add New Customer</h3>
+            <div class = "form-inputs">
+                <div>
+                    <label for="input-fname">First Name: </label>
+                    <input type="text" name="input-fname" id="input-fname">
+                </div>
+
+                <div>
+                    <label for="input-lname">Last Name: </label>
+                    <input type="text" name="input-lname" id="input-lname">
+                </div>
+
+                <div>
+                    <label for="input-street">Street: </label>
+                    <input type="text" name="input-street" id="input-street">                    
+                </div>  
+
+                <div>
+                    <label for="input-city">City: </label>
+                    <input type="text" name="input-city" id="input-city">
+                </div>
+
+                <div>
+                    <label for="input-state">State: </label>
+                    <input type="text" name="input-state" id="input-state">
+                </div>
+
+                <div>
+                    <label for="input-zip">Zip: </label>
+                    <input type="number" name="input-zip" id="input-zip">
+                </div>
+
+                <div>
+                    <label for="input-phone">Phone Number: </label>
+                    <input type="number" name="input-phone" id="input-phone">
+                </div>
+
+                <div>
+                    <label for="input-active-rentals">Active Rentals: </label>
+                    <input type="number" name="input-active-rentals" id="input-active-rentals">
+                </div>
+
+                <div>
+                    <label for="input-total-rentals">Total Rentals: </label>
+                    <input type="number" name="input-total-rentals" id="input-total-rentals">
+                </div>
+
+                <input type="submit" value="Add Customer">
+            </div>
+        </form>
+        {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+        <script src="./js/add_customer.js"></script>
+    </div> <!-- End of Add Customer Column -->
+
+
+<div class = "column">
+    <form id="placeholder">
+    <h3>Placeholder</h3>
+    <div class = "form-inputs">
+        <div>
+            <label for="input-placeholder">Placeholder: </label>
+            <input type="text" name="placeholder" id="placeholder">
+        </div>
+    </form>
+</div>
+
+</div> <!-- End of Row -->
+
+</main>

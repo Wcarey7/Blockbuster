@@ -1,0 +1,152 @@
+/* CSS Document */
+/* Group 77, Wade Carey, Andrew Sabin */
+
+
+:root {
+    --primary-color: #e0e1e2;
+    --blockbuster-orange-color: #ffa903;
+    --blockbuster-blue-color: #0e3fa9;
+}
+
+header {
+    color: var(--blockbuster-orange-color);
+
+}
+
+
+header > h1 {
+    padding-left: 1vw;
+    font-size: 3em;
+    font-weight: bold;
+    border: solid var(--blockbuster-orange-color) 1px;
+}
+
+
+body {
+    margin: 0;
+    background-color: var(--blockbuster-blue-color);
+}
+
+
+main {
+    display: flex;
+    flex-direction: column;  
+    gap: 1vh;
+    padding-left: 20%;
+    padding-right: 20%;
+    padding-bottom: 100px;
+}
+
+
+main > h2 {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    border: solid black 1px;
+    background-color: var(--primary-color);
+    align-self: center;
+    padding: 5px;
+}
+
+nav {
+    background-color: var(--primary-color);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+nav > a {
+    font-size: x-large;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+
+nav > a:hover {
+    color: var( --blockbuster-orange-color);
+    background-color: var( --blockbuster-blue-color);
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--primary-color);
+    gap: 1vh;
+    border: solid black 2px;
+    width: min-content;
+    min-width: 400px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+}
+
+.data-table {
+    align-self: center;
+}
+
+.form-inputs {
+    border-bottom: solid black 1px;
+    
+}
+
+form > h3 {
+    border-bottom: solid black 1px;
+}
+  
+.form-inputs > div {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 3px;
+}
+
+.update-form {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 3px;
+    align-self: flex-end;
+}
+
+table {
+    background-color: var(--primary-color);
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid black;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  text-align: center;
+}
+
+tbody > tr:nth-child(odd) {
+    background-color: rgb(255, 255, 255);
+}
+
+button {
+    max-width: 100px;
+}
+  
+label {
+    min-width: 110px;
+}
+  
+input {
+    min-width: 100px;
+}
+  
+.row {
+    display: flex;
+}
+  
+  /* Create two equal columns that sits next to each other */
+.column {
+    display: flex;
+    justify-content: center;
+    flex: 50%;
+    padding: 10px;
+}
