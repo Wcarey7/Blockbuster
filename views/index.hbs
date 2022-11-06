@@ -112,16 +112,70 @@
 
 
 <div class = "column">
+    <div>
+        <form id="update-customer-form-ajax">
+        <h3>Update Customer</h3>
+            <div class = "form-inputs">
+                <div>
+                    <div>
+                        <label for="input-fullname">Full name: </label>
+                    </div>
+                    <select name="input-fullname" id="mySelect" onChange="formFill()">
+                        <option value="input-update-street">Select a Person</option>
+                        {{#each data}}
+                        <option value="{{this.customer_id}}">{{this.first_name}} {{this.last_name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div>
+                    <label for="input-update-street">Street: </label>
+                    <input type="text" name="input-update-street" id="input-update-street">                    
+                </div>
+                <div>
+                    <label for="input-update-city">City: </label>
+                    <input type="text" name="input-update-city" id="input-update-city">                    
+                </div>   
+                </div>
+
+                <input type="submit" value= "Update Customer">
+            </div>
+        </form>
+    <script src="./js/update_customer.js"></script>
+    </div>
+</div> <!-- End of update Customer Column -->
+</div> <!-- End of Row -->
+
+
+
+<div class = "row">
+    <div class = "column">
+    <form id="search-customer-html" method='GET' action='/'>
+        <h3>Search Customers</h3>
+        <div class = "form-inputs">
+            <div>
+                <label for="input-lname">Last Name: </label>
+                <input type="text" name="lname" id="input-lname-html-search">
+            </div>
+            <input type="submit" value= "Search customer">
+            <a href='/'><button>Reset Results</button></a>
+        </div>
+    </form>
+</div> <!-- End of Search column -->
+
+
+<div class = "column">
     <form id="placeholder">
     <h3>Placeholder</h3>
     <div class = "form-inputs">
         <div>
-            <label for="input-placeholder">Placeholder: </label>
-            <input type="text" name="placeholder" id="placeholder">
+            <label for="input-fullname">Full name: </label>
         </div>
+            <input type="submit">
+    </div>
     </form>
 </div>
 
-</div> <!-- End of Row -->
+</div><!-- End of Row -->
+
 
 </main>
