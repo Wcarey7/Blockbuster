@@ -35,8 +35,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `Available_Rentals` (
   `avail_id` int(10) UNSIGNED NOT NULL,
-  `movie_id` int(11) NOT NULL,
-  `location_id` int(11) NOT NULL,
+  `movie_id` int(11),
+  `location_id` int(11),
   `avail_copies` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -171,22 +171,23 @@ CREATE TABLE `Orders` (
   `order_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `location_id` int(11) NOT NULL,
+  `order_date` date NOT NULL,
   `return_date` date DEFAULT NULL,
-  `over_due` tinyint(1) DEFAULT 0,
-  `order_date` date NOT NULL
+  `over_due` tinyint(1) DEFAULT 0
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `Orders`
 --
 
-INSERT INTO `Orders` (`order_id`, `customer_id`, `location_id`, `return_date`, `over_due`, `order_date`) VALUES
-(1, 4, 2, '2022-10-17', 1, '2022-10-10'),
-(2, 1, 2, '2022-10-18', 0, '2022-10-11'),
-(3, 1, 1, '2022-10-20', 0, '2022-10-13'),
-(4, 2, 4, '2022-10-25', 0, '2022-10-18'),
-(5, 3, 3, '2022-10-26', 0, '2022-10-19'),
-(6, 4, 2, '2022-10-27', 0, '2022-10-20');
+INSERT INTO `Orders` (`order_id`, `customer_id`, `location_id`, `order_date`,`return_date`, `over_due`) VALUES
+(1, 4, 2, '2022-10-10', '2022-10-17', 1),
+(2, 1, 2, '2022-10-11', '2022-10-18', 0),
+(3, 1, 1, '2022-10-13', '2022-10-20', 0),
+(4, 2, 4, '2022-10-18', '2022-10-25', 0),
+(5, 3, 3, '2022-10-19', '2022-10-26', 0),
+(6, 4, 2, '2022-10-20', '2022-10-27', 0);
 
 --
 -- Indexes for dumped tables
