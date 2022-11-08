@@ -254,7 +254,7 @@ app.post('/add-movie-ajax', function(req, res)
     }
 
     // Create the query and run it on the database
-    query1 = `INSERT INTO Movies (movie_title, release_date, genre) VALUES ('${data.movie_title}', '${data.release_date}', '${data.genre}')`;
+    query1 = `INSERT INTO Movies (movie_title, release_date, genre) VALUES ('${data.title}', '${data.release_date}', '${data.genre}')`;
     db.pool.query(query1, function(error, rows, fields){
 
         // Check to see if there was an error
