@@ -3,7 +3,8 @@
 
 <main>
 
-<h2>Orders</h2>
+<h2>Ordered Movies</h2>
+
 <p>&nbsp;</p>
 
 {{!-- The Data from our Database --}}
@@ -65,12 +66,10 @@
                         <select name="input-movie-id" id="input-movie-id">
                             <option value="input-movie-id">Select a Movie</option>
                             {{#each movies}}
-                                <option value="{{this.movie_id}}">{{this.movie_title}}</option>
+                                <option value="{{this.movie_id}}">{{this.movie_id}}</option>
                             {{/each}}
                     </select>
                 </div>
-
-
                 <input type="submit" value="Add Ordered Movie">
             </div>
         </form>
