@@ -19,7 +19,6 @@
                     {{@key}}
                 </th>
                 {{/each}}
-                <th>Edit</th>
                 <th>Delete</th>
             </tr>
         </thead>
@@ -34,7 +33,6 @@
                 <td>{{this.movie_title}}</td>
                 <td>{{this.release_date}}</td>
                 <td>{{this.genre}}</td>
-                <td><a href="#" onClick="updateMovie{{this.movie_id}}"><button>Edit</button></a></td>
                 <td><a href="#" onclick="deleteMovie{{this.movie_id}}"><button>Delete</button></a></td>                                                   
             </tr>
             {{/each}}
@@ -43,6 +41,23 @@
 </div>
 
 
+{{!-- Form to add a record to the table  --}}
+<p>To add a new movie, please enter their information below and click 'Submit'!</p>
+<form id="add-movie-form-ajax">
+    <label for="input-movie_title">Movie Title: </label>
+    <input type="text" name="input-title" id="input-title">
+    
+    <label for="input-release_date">Year of Release: </label>
+    <input type="number" name="input-release_date" id="input-release_date">
+
+    <label for="input-genre">Genre: </label>
+    <input type="text" name="input-genre" id="input-genre">
+
+    <input type="submit">
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_movie.js"></script>
 
 
 
