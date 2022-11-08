@@ -107,6 +107,16 @@ app.get('/orders', function(req, res)
 
 
 
+app.get('/Ordered_Movies', function(req, res)
+{  
+    let query1 = "SELECT * FROM Ordered_Movies;";               
+
+    db.pool.query(query1, function(error, rows, fields){    // Execute the query
+
+        res.render('ordered_movies', {data: rows});                  // Render the ordered_Movies.hbs file, and also send the renderer
+    })                                                      // an object where 'data' is equal to the 'rows' 
+});
+
 
 
 app.post('/add-customer-ajax', function(req, res){
