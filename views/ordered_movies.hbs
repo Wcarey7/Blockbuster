@@ -1,0 +1,81 @@
+{{!-- Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) --}}
+{{!-- Orders Page --}}
+
+<main>
+
+<h2>Orders</h2>
+<p>&nbsp;</p>
+
+{{!-- The Data from our Database --}}
+{{!-- Create a table --}}
+<div id = "browse" class = "data-table">
+    <table id= "ordered-movies-table" border="1" cellpadding="5">
+
+        {{!-- Header section --}}
+        <thead>
+
+            {{!-- For just the first row, we print each key of the row object as a header cell so we
+            know what each column means when the page renders --}}
+            <tr>
+                {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Delete</th>
+            </tr>
+        </thead>
+
+        {{!-- Body section --}}
+        <tbody>
+
+            {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
+            {{#each data}}
+            <tr data-value={{this.order_id}}>
+                <td>{{this.order_id}}</td>
+                <td>{{this.movie_id}}</td>
+                <td>{{this.quantity}}</td>
+                <td><button onclick="deleteOrderedMovie({{this.order_id}})">Delete</button></td>                                                    
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <script src="./js/delete_orderedMovie.js"></script>
+</div>
+
+
+<!-- Add new ordered Movie form -->
+<div class = "row">
+    <div class = "column">
+        <form id="add-orderedMovie-form-ajax">
+            <h3>Add New Ordered Movie</h3>
+            <div class = "form-inputs">
+                <div>
+                    <label for="update-orderedMovie-order-id">Order: </label>
+                    <select name="update-orderedMovie-order-id" id="orderedMovieSelect">
+                        <option value="update-orderedMovie-order-id">Select an Order</option>
+                        {{#each data}}
+                        <option value="{{this.order_id}}">{{this.order_id}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="input-movie-id">Movie: </label>
+                        <select name="input-movie-id" id="input-movie-id">
+                            <option value="input-movie-id">Select a Movie</option>
+                            {{#each movies}}
+                                <option value="{{this.movie_id}}">{{this.movie_title}}</option>
+                            {{/each}}
+                    </select>
+                </div>
+
+
+                <input type="submit" value="Add Ordered Movie">
+            </div>
+        </form>
+        {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+        <script src="./js/add_orderedMovie.js"></script>
+    </div> <!-- End of Add Ordered Movie Column -->
+
+</main>
