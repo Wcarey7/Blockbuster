@@ -57,7 +57,27 @@ app.get('/', function(req, res)
 
 app.get('/movies', function(req, res)
 {  
-    let query1 = "SELECT * FROM Movies;";               
+    let query1; 
+    let query2= "SELECT * FROM Movies;";
+    
+        // If there is no query string, we just perform a basic SELECT
+        if (req.query.movie_title === undefined)
+        {
+            query1 = "SELECT * FROM Movies;";
+        }
+    
+        // If there is a query string, we assume this is a search, and return desired results
+        else
+        {
+            query1 = `SELECT * FROM Movies WHERE movie_title LIKE "${req.query.movie_title}%"`
+        }
+
+        // db.pool.query(query1, function(error, rows, fields){
+        
+        //     // Save the people
+        //     let movies = rows;
+        //     return res.render('index', {data: movies});
+        // })
 
     db.pool.query(query1, function(error, rows, fields){    // Execute the query
 
@@ -254,7 +274,7 @@ app.post('/add-movie-ajax', function(req, res)
     }
 
     // Create the query and run it on the database
-    query1 = `INSERT INTO Movies (movie_title, release_date, genre) VALUES ('${data.movie_title}', '${data.release_date}', '${data.genre}')`;
+    query1 = `INSERT INTO Movies (movie_title, release_date, genre) VALUES ('${data.title}', '${data.release_date}', '${data.genre}')`;
     db.pool.query(query1, function(error, rows, fields){
 
         // Check to see if there was an error
@@ -338,6 +358,28 @@ app.delete('/delete-order-ajax/', function(req,res,next){
     }
 );
 
+app.delete('/delete-movie-ajax/', function(req,res,next){
+    let data = req.body;
+    let movieID = parseInt(data.movie_id);
+    let deleteMovies = `DELETE FROM Movies WHERE movie_id = ?`;
+    // let deleteBsg_Cert_People = `DELETE FROM bsg_cert_people WHERE pid = ?`;
+    // let deleteBsg_People= `DELETE FROM bsg_people WHERE id = ?`;
+  
+  
+          // Run the 1st query
+          db.pool.query(deleteMovies, [movieID], function(error, rows, fields){
+              if (error) {
+  
+              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+              console.log(error);
+              res.sendStatus(400);
+              }
+  
+              else
+              {
+                res.sendStatus(204);
+              }
+  })});
 
 
 app.put('/put-customer-ajax', function(req,res,next){
