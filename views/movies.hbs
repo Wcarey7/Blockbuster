@@ -33,7 +33,7 @@
                 <td>{{this.movie_title}}</td>
                 <td>{{this.release_date}}</td>
                 <td>{{this.genre}}</td>
-                <td><a href="#" onclick="deleteMovie{{this.movie_id}}"><button>Delete</button></a></td>                                                   
+                <td><onclick="deleteMovie{{this.movie_id}}"><button>Delete</button></a></td>                                                   
             </tr>
             {{/each}}
         </tbody>
@@ -41,10 +41,10 @@
 </div>
 
     <h2>Search Using an HTML Form</h2>
-<p>Search by last name using the field below. Partial last names are OK too!</p>
-<form id="search-person-html" method='GET' action='/'>
-    <label for="input-lname">Search by Last Name: </label>
-    <input type="text" name="lname" id="input-lname-html-search">
+<p>Search by title below. Partial last names are OK too!</p>
+<form id="search-movie-html" method='GET' action='/'>
+    <label for="input-title">Search by Movie Title: </label>
+    <input type="text" name="movie_title" id="input-title-html-search">
     
     <input type="submit">
     <a href='/'><button>Reset</button></a>

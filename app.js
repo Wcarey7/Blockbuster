@@ -360,7 +360,7 @@ app.delete('/delete-order-ajax/', function(req,res,next){
 
 app.delete('/delete-movie-ajax/', function(req,res,next){
     let data = req.body;
-    let movieID = parseInt(data.movie_id);
+    let movieID = parseInt(data.id);
     let deleteMovies = `DELETE FROM Movies WHERE movie_id = ?`;
     // let deleteBsg_Cert_People = `DELETE FROM bsg_cert_people WHERE pid = ?`;
     // let deleteBsg_People= `DELETE FROM bsg_people WHERE id = ?`;
