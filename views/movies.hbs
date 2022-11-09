@@ -40,6 +40,16 @@
     </table>
 </div>
 
+    <h2>Search Using an HTML Form</h2>
+<p>Search by last name using the field below. Partial last names are OK too!</p>
+<form id="search-person-html" method='GET' action='/'>
+    <label for="input-lname">Search by Last Name: </label>
+    <input type="text" name="lname" id="input-lname-html-search">
+    
+    <input type="submit">
+    <a href='/'><button>Reset</button></a>
+</form>
+
 
 {{!-- Form to add a record to the table  --}}
 <p>To add a new movie, please enter their information below and click 'Submit'!</p>
@@ -59,7 +69,7 @@
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_movie.js"></script>
 
-
+<script src="./js/delete_movie.js"></script>    
 
 
 </main>
