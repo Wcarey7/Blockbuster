@@ -99,11 +99,13 @@ addRowToTable = (data) => {
     overDueCell.innerText = newRow.over_due;
 
 
-    deleteCell = document.createElement("button");
-    deleteCell.innerHTML = "Delete";
-    deleteCell.onclick = function(){
-        deleteCustomer(newRow.order_id);
+    deleteButton = document.createElement("button");
+    deleteButton.innerHTML = "Delete";
+    deleteButton.onclick = function(){
+        deleteOrder(newRow.order_id);
     };
+
+    deleteCell.appendChild(deleteButton);
 
 
     // Add the cells to the row 

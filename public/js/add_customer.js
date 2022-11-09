@@ -119,12 +119,13 @@ addRowToTable = (data) => {
     activeRentalsCell.innerText = newRow.customer_active_rentals;
     totalRentalsCell.innerText = newRow.customer_total_rentals;
 
-    deleteCell = document.createElement("button");
-    deleteCell.innerHTML = "Delete";
-    deleteCell.onclick = function(){
+    deleteButton = document.createElement("button");
+    deleteButton.innerHTML = "Delete";
+    deleteButton.onclick = function(){
         deleteCustomer(newRow.customer_id);
     };
 
+    deleteCell.appendChild(deleteButton);
 
     // Add the cells to the row 
     row.appendChild(idCell);
