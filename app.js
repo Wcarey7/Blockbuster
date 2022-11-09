@@ -453,6 +453,41 @@ app.put('/put-customer-ajax', function(req,res,next){
               }
   })});
 
+  app.put('/put-movie-ajax', function(req,res,next){
+    let data = req.body;
+  
+    let title = parseInt(data.movie_title);
+    let releaseDate = parseInt(data.release_date);
+    let genre = parseInt(data.genre);
+  
+    let queryUpdateMovie = `UPDATE Movies set movie_title = ? WHERE movie_id = ?`;
+    let selectMovie = `SELECT * FROM Movies WHERE movie_id = ?`
+  
+          // Run the 1st query
+          db.pool.query(queryUpdateMovie, [title, releaseDate, genre], function(error, rows, fields){
+              if (error) {
+  
+              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+              console.log(error);
+              res.sendStatus(400);
+              }
+  
+              // If there was no error, we run our second query and return that data so we can use it to update the people's
+              // table on the front-end
+              else
+              {
+                  // Run the second query
+                  db.pool.query(selectMovie, [title], function(error, rows, fields) {
+  
+                      if (error) {
+                          console.log(error);
+                          res.sendStatus(400);
+                      } else {
+                          res.send(rows);
+                      }
+                  })
+              }
+  })});
 
 
 /*

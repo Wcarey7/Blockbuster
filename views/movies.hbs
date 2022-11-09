@@ -66,10 +66,32 @@
     <input type="submit">
 </form>
 
+<h2>Updating Movie Form</h2>
+<form id="update-movie-form-ajax">
+
+    <label for="input-fullname">Full name: </label>
+
+    <label for="input-movie_title">Movie Title: </label>
+    <input type="text" name="input-title" id="input-title-update">
+
+    <label for="input-release_date">Year of Release: </label>
+    <input type="number" name="input-release_date" id="input-release_date-update">
+
+    <label for="input-genre">Genre: </label>
+    <input type="text" name="input-genre" id="input-genre-update">
+    
+    <input type="submit">
+
+</form>
+
+
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_movie.js"></script>
 
-<script src="./js/delete_movie.js"></script>    
+<script src="./js/delete_movie.js"></script>
+
+<script src="./js/update_movie.js"></script>
+
 
 
 </main>
