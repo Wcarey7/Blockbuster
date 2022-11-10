@@ -75,13 +75,14 @@ app.get('/movies', function(req, res)
         // db.pool.query(query1, function(error, rows, fields){
         
         //     // Save the people
-        //     let movies = rows;
+        
         //     return res.render('index', {data: movies});
         // })
 
     db.pool.query(query1, function(error, rows, fields){    // Execute the query
+        let movies = rows;
 
-        res.render('movies', {data: rows});                  // Render the movies.hbs file, and also send the renderer
+        res.render('movies', {data: movies});                  // Render the movies.hbs file, and also send the renderer
     })                                                      // an object where 'data' is equal to the 'rows' 
 });
 
@@ -362,8 +363,6 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
     let data = req.body;
     let movieID = parseInt(data.id);
     let deleteMovies = `DELETE FROM Movies WHERE movie_id = ?`;
-    // let deleteBsg_Cert_People = `DELETE FROM bsg_cert_people WHERE pid = ?`;
-    // let deleteBsg_People= `DELETE FROM bsg_people WHERE id = ?`;
   
   
           // Run the 1st query
@@ -492,7 +491,8 @@ app.put('/put-customer-ajax', function(req,res,next){
 
 /*
     LISTENER
+    Replace # with the number of the server you have placed the files on to run
 */
 app.listen(PORT, function(){
-    console.log('Express started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
+    console.log('Express started on flip#.engr.oregonstate.edu:' + PORT + '; press Ctrl-C to terminate.')
 });

@@ -8,10 +8,11 @@ updateMovieForm.addEventListener("submit", function (e) {
     // Prevent the form from submitting
     e.preventDefault();
 
+    let inputTitle = document.getElementById("mySelect");
+
     // Get form fields we need to get data from
-    let inputTitle = document.getElementById("input-title-update");
-    let inputReleaseDate = document.getElementById("input-homeworld-update");
-    let inputGenre = document.getElementById("input-release_date-update");
+    let inputReleaseDate = document.getElementById("input-release_date-update");
+    let inputGenre = document.getElementById("input-genre-update");
 
     // Get the values from the form fields
     let movieTitleValue = inputTitle.value;
@@ -29,14 +30,14 @@ updateMovieForm.addEventListener("submit", function (e) {
 
     // Put our data we want to send in a javascript object
     let data = {
-        movie_title: inputTitle,
-        release_date: inputReleaseDate,
-        genre: inputGenre,
+        movie_title: movieTitleValue,
+        release_date: releaseDateValue,
+        genre: movieGenreValue,
     }
     
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
-    xhttp.open("PUT", "/put-person-ajax", true);
+    xhttp.open("PUT", "/put-movie-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
     // Tell our AJAX request how to resolve
@@ -44,7 +45,8 @@ updateMovieForm.addEventListener("submit", function (e) {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
 
             // Add the new data to the table
-            updateRow(xhttp.response, fullNameValue);
+            updateRow(xhttp.response, releaseDateValue);
+            updateRow(xhttp.response, movieGenreValue);
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
@@ -58,15 +60,15 @@ updateMovieForm.addEventListener("submit", function (e) {
 })
 
 
-function updateRow(data, personID){
+function updateRow(data, movieID){
     let parsedData = JSON.parse(data);
     
-    let table = document.getElementById("people-table");
+    let table = document.getElementById("movie-table");
 
     for (let i = 0, row; row = table.rows[i]; i++) {
        //iterate through rows
        //rows would be accessed using the "row" variable assigned in the for loop
-       if (table.rows[i].getAttribute("data-value") == personID) {
+       if (table.rows[i].getAttribute("data-value") == movieID) {
 
             // Get the location of the row where we found the matching person ID
             let updateRowIndex = table.getElementsByTagName("tr")[i];
@@ -75,7 +77,7 @@ function updateRow(data, personID){
             let td = updateRowIndex.getElementsByTagName("td")[3];
 
             // Reassign homeworld to our value we updated to
-            td.innerHTML = parsedData[0].name; 
+            td.innerHTML = parsedData[0].movie_id; 
        }
     }
 }

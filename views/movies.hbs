@@ -28,7 +28,7 @@
 
             {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
             {{#each data}}
-            <tr>
+            <tr data-value = {{this.movie_id}}>
                 <td>{{this.movie_id}}</td>
                 <td>{{this.movie_title}}</td>
                 <td>{{this.release_date}}</td>
@@ -42,7 +42,7 @@
 
     <h2>Search Using an HTML Form</h2>
 <p>Search by title below. Partial last names are OK too!</p>
-<form id="search-movie-html" method='GET' action='/'>
+<form id="search-movie-html" method='GET' action='/movies'>
     <label for="input-title">Search by Movie Title: </label>
     <input type="text" name="movie_title" id="input-title-html-search">
     
@@ -67,22 +67,36 @@
 </form>
 
 <h2>Updating Movie Form</h2>
-<form id="update-movie-form-ajax">
+<!-- Update movie form -->
+<div class= "column">
+    <form id="update-movie-form-ajax">
+        <h3>Update Movie</h3>
+        <div class = "form-inputs">
+            <div>
+                <label for="update-movie-id">Movie Title: </label>
+                <select name="update-movie-id" id="movieSelect">
+                    <option value="update-movie-id">Select A Movie To Edit</option>
+                    {{#each data}}
+                    <option value="{{this.movie_title}}">{{this.movie_title}}</option>
+                    {{/each}}
+                </select>
+            </div>
 
-    <label for="input-fullname">Full name: </label>
+            <div>
+                <label for="input-release_date">Year of Release: </label>
+                <input type="number" name="input-release_date" id="input-release_date-update">
+            </div>
 
-    <label for="input-movie_title">Movie Title: </label>
-    <input type="text" name="input-title" id="input-title-update">
+            <div>
+                <label for="input-genre">Genre: </label>
+                <input type="text" name="input-genre" id="input-genre-update">
+            </div>
 
-    <label for="input-release_date">Year of Release: </label>
-    <input type="number" name="input-release_date" id="input-release_date-update">
-
-    <label for="input-genre">Genre: </label>
-    <input type="text" name="input-genre" id="input-genre-update">
-    
-    <input type="submit">
-
-</form>
+            <input type="submit" value="Update Movie">
+        </div>
+    </form>
+</div><!-- End of update Order Column -->
+</div> <!-- End of Row -->
 
 
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
