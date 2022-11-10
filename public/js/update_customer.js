@@ -11,75 +11,66 @@ updateCustomerForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let inputFullName = document.getElementById("mySelect");
-    //let inputFirstName = document.getElementById("input-fname");
-    //let inputLastName = document.getElementById("input-lname");
+    let inputCustomerId = document.getElementById("update-customer");
+    let inputFirstName = document.getElementById("input-update-fname");
+    let inputLastName = document.getElementById("input-update-lname");
     let inputStreet = document.getElementById("input-update-street");
     let inputCity = document.getElementById("input-update-city");
-    /*let inputState = document.getElementById("input-state");
-    let inputZip = document.getElementById("input-zip");
-    let inputPhone = document.getElementById("input-phone");
-    let inputActiveRentals = document.getElementById("input-active-rentals");
-    let inputTotalRentals = document.getElementById("input-total-rentals"); */
+    let inputState = document.getElementById("input-update-state");
+    let inputZip = document.getElementById("input-update-zip");
+    let inputPhone = document.getElementById("input-update-phone");
+    let inputActiveRentals = document.getElementById("input-update-active-rentals");
+    let inputTotalRentals = document.getElementById("input-update-total-rentals");
 
     // Get the values from the form fields
-    let fullNameValue = inputFullName.value;
-    //let firstNameValue = inputFirstName.value;
-    //let lastNameValue = inputLastName.value;
+    let customerIdValue = inputCustomerId.value;
+    let firstNameValue = inputFirstName.value;
+    let lastNameValue = inputLastName.value;
     let streetValue = inputStreet.value;
     let cityValue = inputCity.value;
-    /*let stateValue = inputState.value;
+    let stateValue = inputState.value;
     let zipValue = inputZip.value;
     let phoneValue = inputPhone.value;
     let activeRentalsValue = inputActiveRentals.value;
-    let totalRentalsValue = inputTotalRentals.value; */
-
-
-    // currently the database table for Customers does not allow updating values to NULL
-    // so we must abort if being bassed NULL for Customer name
-
-    //if (isNaN(fullNameValue)) 
-    //{
-       // return;
-    //}
+    let totalRentalsValue = inputTotalRentals.value;
 
 
     // Put our data we want to send in a javascript object
     let data = {
-        fullname: fullNameValue,
-        //fname: firstNameValue,
-        //lname: lastNameValue,
+        customerId: customerIdValue,
+        fname: firstNameValue,
+        lname: lastNameValue,
         street: streetValue,
         city: cityValue,
-        /*state: stateValue,
+        state: stateValue,
         zip: zipValue,
         phone: phoneValue,
         activeRentals: activeRentalsValue,
-        totalRentals: totalRentalsValue */
+        totalRentals: totalRentalsValue
     }
     
-    // Setup our AJAX request
+    // Setup AJAX request
     var xhttp = new XMLHttpRequest();
     xhttp.open("PUT", "/put-customer-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
-    // Tell our AJAX request how to resolve
+    // Tell AJAX request how to resolve
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
 
             // Add the new data to the table
-            updateRow(xhttp.response, fullNameValue);
+            updateCustomerRow(xhttp.response, customerIdValue);
 
-
-            // Clear the input fields for another transaction
-            inputFullName.value = '';
+            // Clear the input fields
+            inputFirstName.value = '';
+            inputLastName.value = '';
             inputStreet.value = '';
-/*             inputCity.value = '';
+            inputCity.value = '';
             inputState.value = '';
             inputZip.value = '';
             inputPhone.value = '';
             inputActiveRentals.value = '';
-            inputTotalRentals.value = ''; */
+            inputTotalRentals.value = '';
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -93,7 +84,7 @@ updateCustomerForm.addEventListener("submit", function (e) {
 
 
 
-function updateRow(data, customerID) {
+function updateCustomerRow(data, customerID) {
     let parsedData = JSON.parse(data);
 
     // Get a reference to the current table on the page and clear it out.
@@ -103,19 +94,34 @@ function updateRow(data, customerID) {
         //iterate through rows
         //rows would be accessed using the "row" variable assigned in the for loop
         if (table.rows[i].getAttribute("data-value") == customerID) {
- 
              // Get the location of the row where we found the matching customer ID
              let updateRowIndex = table.getElementsByTagName("tr")[i];
  
-             // Get td of street value
-             let td = updateRowIndex.getElementsByTagName("td")[3];
- 
-             // Reassign street to our value we updated to
-             td.innerHTML = parsedData[0].customer_street; 
+             // Get td of value
+             let firstName = updateRowIndex.getElementsByTagName("td")[1];
+             let lastName = updateRowIndex.getElementsByTagName("td")[2];
+             let customerStreet = updateRowIndex.getElementsByTagName("td")[3];
+             let customerCity = updateRowIndex.getElementsByTagName("td")[4];
+             let customerState = updateRowIndex.getElementsByTagName("td")[5];
+             let customerZip = updateRowIndex.getElementsByTagName("td")[6];
+             let customerPhone = updateRowIndex.getElementsByTagName("td")[7];
+             let customerActiveRentals = updateRowIndex.getElementsByTagName("td")[8];
+             let customerTotalRentals = updateRowIndex.getElementsByTagName("td")[9];
+             
+             //set to what row to update
+             let tableRow = i-1;
+
+             // Reassign the value we updated to
+             firstName.innerHTML = parsedData[tableRow].first_name; 
+             lastName.innerHTML = parsedData[tableRow].last_name;
+             customerStreet.innerHTML = parsedData[tableRow].customer_street;
+             customerCity.innerHTML = parsedData[tableRow].customer_city;
+             customerState.innerHTML = parsedData[tableRow].customer_state;
+             customerZip.innerHTML = parsedData[tableRow].customer_zip;
+             customerPhone.innerHTML = parsedData[tableRow].customer_phone_number;
+             customerActiveRentals.innerHTML = parsedData[tableRow].customer_active_rentals;
+             customerTotalRentals.innerHTML = parsedData[tableRow].customer_total_rentals;
+
         }
      }
-
-
-
-
 }

@@ -45,12 +45,11 @@ function deleteRow(customerID){
 
 
 function deleteDropDownMenu(customerID){
-    let selectMenu = document.getElementById("mySelect");
+    let selectMenu = document.getElementById("update-customer");
     for (let i = 0; i < selectMenu.length; i++){
       if (Number(selectMenu.options[i].value) === Number(customerID)){
         selectMenu[i].remove();
         break;
-      } 
-  
+      }  
     }
   }
