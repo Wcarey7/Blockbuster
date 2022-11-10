@@ -95,7 +95,7 @@
                 <input type="submit" value="Add Order">
             </div>
         </form>
-        {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+        {{!-- Embed javascript to handle the DOM manipulation and AJAX request --}}
         <script src="./js/add_order.js"></script>
     </div> <!-- End of Add Order Column -->
 
@@ -107,7 +107,7 @@
         <div class = "form-inputs">
             <div>
                 <label for="update-order-id">Order: </label>
-                <select name="update-order-id" id="orderSelect">
+                <select name="update-order-id" id="update-order">
                     <option value="update-order-id">Select an Order</option>
                     {{#each data}}
                     <option value="{{this.order_id}}">{{this.order_id}}</option>
@@ -157,7 +157,7 @@
             <input type="submit" value="update Order">
         </div>
     </form>
-    {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+    {{!-- Embed javascript to handle the DOM manipulation and AJAX request --}}
     <script src="./js/update_order.js"></script>
 </div><!-- End of update Order Column -->
 </div> <!-- End of Row -->
@@ -180,7 +180,7 @@
             </div>
 
             <input type="submit" value="Filter Customer Order">
-            <a href='/s'><button>Reset Results</button></a>
+            <a href='/'><button>Reset Results</button></a>
         </div>
     </form>
     </div><!-- End of filter Customer Order Column -->
