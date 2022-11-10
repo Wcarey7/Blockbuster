@@ -459,11 +459,11 @@ app.put('/put-customer-ajax', function(req,res,next){
     let releaseDate = parseInt(data.release_date);
     let genre = parseInt(data.genre);
   
-    let queryUpdateMovie = `UPDATE Movies set movie_title = ? WHERE movie_id = ?`;
-    let selectMovie = `SELECT * FROM Movies WHERE movie_id = ?`
+    let queryUpdateMovie = `UPDATE Movies set movie_title = ?`;
+    let selectMovie = `SELECT * FROM Movies WHERE movie_title = ?`
   
           // Run the 1st query
-          db.pool.query(queryUpdateMovie, [title, releaseDate, genre], function(error, rows, fields){
+          db.pool.query(queryUpdateMovie, [title], function(error, rows, fields){
               if (error) {
   
               // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
