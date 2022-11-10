@@ -44,7 +44,7 @@ function deleteRow(orderID){
 }
 
 function deleteDropDownMenu(orderID){
-    let selectMenu = document.getElementById("orderSelect");
+    let selectMenu = document.getElementById("update-order");
     for (let i = 0; i < selectMenu.length; i++){
       if (Number(selectMenu.options[i].value) === Number(orderID)){
         selectMenu[i].remove();
