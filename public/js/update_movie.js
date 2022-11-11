@@ -7,13 +7,14 @@ updateMovieForm.addEventListener("submit", function (e) {
     // Prevent the form from submitting
     e.preventDefault();
 
-    let inputTitle = document.getElementById("mySelect");
-
+    let inputMovieId = document.getElementById("movieSelect");
+    let inputTitle = document.getElementById("update-movie");
     // Get form fields we need to get data from
     let inputReleaseDate = document.getElementById("input-release_date-update");
     let inputGenre = document.getElementById("input-genre-update");
 
     // Get the values from the form fields
+    let movieIdValue = inputMovieId.value;
     let movieTitleValue = inputTitle.value;
     let releaseDateValue = inputReleaseDate.value;
     let movieGenreValue = inputGenre.value;
@@ -29,6 +30,7 @@ updateMovieForm.addEventListener("submit", function (e) {
 
     // Put our data we want to send in a javascript object
     let data = {
+        movieId: movieIdValue,
         movie_title: movieTitleValue,
         release_date: releaseDateValue,
         genre: movieGenreValue,
