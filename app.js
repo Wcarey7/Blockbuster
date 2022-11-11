@@ -498,8 +498,8 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
     let releaseDate = parseInt(data.release_date);
     let genre = parseInt(data.genre);
   
-    let queryUpdateMovie = `UPDATE Movies set release_date = ?, genre= ?`;
-    let selectMovie = `SELECT * FROM Movies WHERE movie_title = ?`
+    let queryUpdateMovie = `UPDATE Movies set movie_title =?, release_date = ?, genre= ?`;
+    let selectMovie = `SELECT * FROM Movies WHERE movie_title = ?`;
   
           // Run the 1st query
           db.pool.query(queryUpdateMovie, [title, releaseDate, genre], function(error, rows, fields){
