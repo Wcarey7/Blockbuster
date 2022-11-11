@@ -28,38 +28,94 @@
 
             {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
             {{#each data}}
-            <tr>
+            <tr data-value = {{this.movie_id}}>
                 <td>{{this.movie_id}}</td>
                 <td>{{this.movie_title}}</td>
                 <td>{{this.release_date}}</td>
                 <td>{{this.genre}}</td>
-                <td><a href="#" onclick="deleteMovie{{this.movie_id}}"><button>Delete</button></a></td>                                                   
+                <td><button onclick="deleteMovie({{this.movie_id}})">Delete</button></td>                                                   
             </tr>
             {{/each}}
         </tbody>
     </table>
+    <script src="./js/delete_movie.js"></script>
 </div>
+<div class = "row">
+    <div class = "column">
+    <form id="search-movie-html">
+        <h3>Search For Movies</h3>
+        <div class= "form-inputs">
+            <div>
+                <label for="input-title">Search by Movie Title: </label>
+                <input type="text" name="movie_title" id="input-title-html-search">
+            </div>
+            <input type="submit" value="Search Movies">
+            <a href='/movies'><button>Reset</button></a>
+        </div>
+    </form>
+    </div>
 
 
 {{!-- Form to add a record to the table  --}}
-<p>To add a new movie, please enter their information below and click 'Submit'!</p>
-<form id="add-movie-form-ajax">
-    <label for="input-movie_title">Movie Title: </label>
-    <input type="text" name="input-title" id="input-title">
+    <div class = "column">
+        <form id="add-movie-form-ajax">
+            <h3>Add A New Movie:</h3>
+            <p><strong> Note: you may need to refresh the page to see the new items added. </strong></p>
+            <div>
+                <label for="input-movie_title">Movie Title: </label>
+            </div>
+            <div>
+                <input type="text" name="input-title" id="input-title">
+            </div>
+                <div>
+                <label for="input-release_date">Year of Release: </label>
+                </div>
+                <div>
+                <input type="number" name="input-release_date" id="input-release_date">
+                </div>
+                <div>
+                <label for="input-genre">Genre: </label>
+                <div>
+                <input type="text" name="input-genre" id="input-genre">
+                </div>
+            </div>
+            <input type="Submit" value="Add Movie">
+        </form>
+    <script src="./js/add_movie.js"></script>
+    </div>
+</div>
+
+<div class= "row">
+    <div class="column">
+        <form id="update-movie-form-ajax">
+        <h3>Update Movie</h3>
+        <div class= "form-inputs">
+            <div>
+                <label for="update-order-id">Movie Title: </label>
+                <select name="update-movie_title" id="movieSelect">
+                    <option value="update-order-id">Select a Movie</option>
+                    {{#each data}}
+                    <option value="{{this.movie_title}}">{{this.movie_title}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div>
+                <label for="input-release_date">Year of Release: </label>
+                <input type="number" name="input-release_date" id="input-release_date-update">
+            </div>
+
+            <div>
+                <label for="input-genre">Genre: </label>
+                <input type="text" name="input-genre" id="input-genre-update">
+            </div>
     
-    <label for="input-release_date">Year of Release: </label>
-    <input type="number" name="input-release_date" id="input-release_date">
+            <input type="submit" value="Update">
 
-    <label for="input-genre">Genre: </label>
-    <input type="text" name="input-genre" id="input-genre">
+        </form>
 
-    <input type="submit">
-</form>
-
-{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
-<script src="./js/add_movie.js"></script>
-
-
-
+        <script src="./js/update_movie.js"></script>
+    </div>
+</div>
 
 </main>

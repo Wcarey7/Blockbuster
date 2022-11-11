@@ -12,6 +12,8 @@ addMovieForm.addEventListener("submit", function (e) {
     let inputReleaseDate = document.getElementById("input-release_date");
     let inputGenre = document.getElementById("input-genre");
 
+    let deleteCell = document.createElement("TD");
+
     // Get the values from the form fields
     let titleValue = inputTitle.value;
     let releaseDateValue = inputReleaseDate.value;
@@ -79,11 +81,20 @@ addRowToTable = (data) => {
     releaseDateCell.innerText = newRow.release_date;
     genreCell.innerText = newRow.genre;
 
+    deleteCell = document.createElement("button");
+    deleteCell.innerHTML = "Delete";
+    deleteCell.onclick = function(){
+        deleteMovie(newRow.id);
+    };
+
+    deleteCell.appendChild(deleteButton);
+
     // Add the cells to the row 
     row.appendChild(movie_idCell);
     row.appendChild(titleCell);
     row.appendChild(releaseDateCell);
     row.appendChild(genreCell);
+    row.appendChild(deleteCell);
     
     // Add the row to the table
     currentTable.appendChild(row);
