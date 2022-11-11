@@ -350,19 +350,111 @@ app.delete('/delete-order-ajax/', function(req,res,next)
 /*////////////////////////////////////////////////////////////////////////////////////////
                     ORDERED_MOVIES
 */
-app.get('/Ordered_Movies', function(req, res)
+app.get('/ordered_movies', function(req, res)
 {  
-    let query1 = "SELECT * FROM Ordered_Movies;";               
+    let query1;
+    let orders = "SELECT * FROM Orders;";
+    let movies = "SELECT * FROM Movies;";
 
-    db.pool.query(query1, function(error, rows, fields){    
+    // If there is no query string, perform SELECT
+    if (req.query.filterOrder === undefined)
+    {
+        query1 = "SELECT * FROM Ordered_Movies;";
+    }
+    // If there is a query string, search
+    else
+    {
+        query1 = `SELECT * FROM Ordered_Movies WHERE order_id = "${req.query.filterOrder}%"`
+    }
 
-        res.render('ordered_movies', {data: rows});                  
-    })                                                      
+    db.pool.query(query1, function(error, rows, fields){
+        
+        let orderedMovies = rows;
+        
+        // Run the second query
+        db.pool.query(orders, (error, rows, fields) => {
+
+            let orders = rows;
+
+            // Run the third query
+            db.pool.query(movies, (error, rows, fields) => {
+
+                let movies = rows;
+                //Map to replace movie_id with movie title
+                let moviemap = {}
+                movies.map(movie => {
+                    let id = parseInt(movie.movie_id, 10);
+                    moviemap[id] = movie["movie_title"];
+                });
+
+                orderedMovies = orderedMovies.map(orderedMovie => {
+                    return Object.assign(orderedMovie, {movie_id: moviemap[orderedMovie.movie_id], 
+                    });
+                });
+
+                return res.render('ordered_movies', {
+                    data: orderedMovies, orders: orders, movies: movies,
+                });
+            });
+        });
+    });
 });
 
 
 
+//ADD
+app.post('/add-ordered-movie-ajax', function(req, res)
+{
+    let data = req.body;
+    
+    query1 = `INSERT INTO Ordered_Movies (order_id, movie_id, quantity)
+    VALUES ('${data.orderId}', '${data.movieId}', '${data.quantity}')`;
 
+    query2 = "SELECT * FROM Ordered_Movies;";
+    
+    db.pool.query(query1, function(error, rows, fields){
+        if (error) {
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            //Update the front-end
+            db.pool.query(query2, function(error, rows, fields){
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                else
+                {
+                    res.send(rows);
+                }
+            });
+        }
+    })
+});
+
+
+
+//DELETE
+app.delete('/delete-ordered-movies-ajax/', function(req,res,next)
+{
+    let data = req.body;
+    let orderedMovieID = parseInt(data.id);
+    let deleteOrderedMovie = `DELETE FROM Ordered_Movies WHERE ordered_movies_id = ?`;
+
+        db.pool.query(deleteOrderedMovie, [orderedMovieID], function(error, rows, fields){
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            }
+            else
+            {
+                res.sendStatus(204);
+            }
+        })
+});
 
 
 
