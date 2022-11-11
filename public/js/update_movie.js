@@ -8,7 +8,7 @@ updateMovieForm.addEventListener("submit", function (e) {
     // Prevent the form from submitting
     e.preventDefault();
 
-    let inputTitle = document.getElementById("mySelect");
+    let inputTitle = document.getElementById("movieSelect");
 
     // Get form fields we need to get data from
     let inputReleaseDate = document.getElementById("input-release_date-update");
@@ -73,11 +73,18 @@ function updateRow(data, movieID){
             // Get the location of the row where we found the matching movie ID
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
-            // Get td of homeworld value
-            let td = updateRowIndex.getElementsByTagName("td")[3];
+            // Get td of each value
+            // let movieTitle = updateRowIndex.getElementsByTagName("td")[1];
+            let releaseDate = updateRowIndex.getElementsByTagName("td")[1];
+            let movieGenre = updateRowIndex.getElementsByTagName("td")[2];
 
-            // Reassign homeworld to our value we updated to
-            td.innerHTML = parsedData[0].movie_title;
+            //set to what row to update
+            let tableRow = i-1;
+
+            // Reassign each value to our values we updated to
+            // movieTitle.innerHTML = parsedData[tableRow].movieTitle;
+            releaseDate.innerHTML = parsedData[tableRow].releaseDate;
+            movieGenre.innerHTML = parsedData[tableRow].movieGenre;
        }
     }
 }

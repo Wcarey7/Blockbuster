@@ -466,12 +466,11 @@ app.post('/add-movie-ajax', function(req, res)
 });
 
 
-
+//Delete
 app.delete('/delete-movie-ajax/', function(req,res,next){
     let data = req.body;
     let movieID = parseInt(data.id);
     let deleteMovies = `DELETE FROM Movies WHERE movie_id = ?`;
-  
   
           // Run the 1st query
           db.pool.query(deleteMovies, [movieID], function(error, rows, fields){
@@ -490,19 +489,20 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
 
 
 
-
+//UPDATE
   app.put('/put-movie-ajax', function(req,res,next){
     let data = req.body;
-  
+    let movieID = parseInt(data.movie);
+
     let title = parseInt(data.movie_title);
     let releaseDate = parseInt(data.release_date);
     let genre = parseInt(data.genre);
   
-    let queryUpdateMovie = `UPDATE Movies set movie_title = ?`;
+    let queryUpdateMovie = `UPDATE Movies set release_date = ?, genre= ?`;
     let selectMovie = `SELECT * FROM Movies WHERE movie_title = ?`
   
           // Run the 1st query
-          db.pool.query(queryUpdateMovie, [title], function(error, rows, fields){
+          db.pool.query(queryUpdateMovie, [title, releaseDate, genre], function(error, rows, fields){
               if (error) {
   
               // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
