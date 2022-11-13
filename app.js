@@ -10,7 +10,7 @@ var app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(__dirname + '/public'));
-PORT = 7791;
+PORT = 7792;
 
 // Database
 var db = require('./database/db-connector');
@@ -190,14 +190,15 @@ app.get('/orders', function(req, res)
     let locations = "SELECT * FROM Locations;";
 
     // If there is no query string, perform SELECT
-    if (req.query.filterLocation === undefined)
+    if (req.query.filter === undefined)
     {
-        query1 = "SELECT * FROM Orders;";
+        query1 = 'SELECT order_id, customer_id, location_id, DATE_FORMAT(order_date, "%m-%d-%Y") AS OrderDate, DATE_FORMAT(return_date, "%m-%d-%Y") AS ReturnDate, over_due FROM Orders;'
+        
     }
     // If there is a query string, search
     else
     {
-        query1 = `SELECT * FROM Orders WHERE location_id LIKE "${req.query.filterLocation}%"`
+        query1 = `SELECT order_id, customer_id, location_id, DATE_FORMAT(order_date, "%m-%d-%Y") AS OrderDate, DATE_FORMAT(return_date, "%m-%d-%Y") AS ReturnDate, over_due FROM Orders WHERE location_id LIKE "${req.query.filter}%"`
     }
 
     db.pool.query(query1, function(error, rows, fields){
