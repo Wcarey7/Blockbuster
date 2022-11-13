@@ -35,8 +35,8 @@
                 <td>{{this.order_id}}</td>
                 <td>{{this.customer_id}}</td>
                 <td>{{this.location_id}}</td>
-                <td>{{this.order_date}}</td>
-                <td>{{this.return_date}}</td>
+                <td>{{this.[OrderDate]}}</td>
+                <td>{{this.[ReturnDate]}}</td>
                 <td>{{this.over_due}}</td>
                 <td><button onclick="deleteOrder({{this.order_id}})">Delete</button></td>                                                    
             </tr>
@@ -171,7 +171,7 @@
         <div class = "form-inputs">
             <div>
                 <label for="filter-customer-id">Customer: </label>
-                <select name="filterCustomer" id="filter-customer-id">
+                <select name="filter" id="customer_id">
                     <option></option>
                     {{#each customers}}
                     <option value="{{this.customer_id}}">{{this.first_name}} {{this.last_name}}</option>
@@ -192,7 +192,7 @@
         <div class = "form-inputs">
             <div>
                 <label for="filter-location-id">Location: </label>
-                <select name="filterLocation" id="filter-location-id">
+                <select name="filter" id="location_id">
                     <option></option>
                     {{#each locations}}
                     <option value="{{this.location_id}}">#{{this.location_id}}: {{this.location_street}}, 
