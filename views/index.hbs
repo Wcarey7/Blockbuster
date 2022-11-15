@@ -31,19 +31,20 @@
         <tbody>
 
             {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
+            {{!-- Square brackets refer to the alias names of the SELECT query --}}
             {{#each data}}
-            <tr data-value={{this.customer_id}}>
-                <td>{{this.customer_id}}</td>
-                <td>{{this.first_name}}</td>
-                <td>{{this.last_name}}</td>
-                <td>{{this.customer_street}}</td>
-                <td>{{this.customer_city}}</td>
-                <td>{{this.customer_state}}</td>
-                <td>{{this.customer_zip}}</td>
-                <td>{{this.customer_phone_number}}</td>
-                <td>{{this.customer_active_rentals}}</td>
-                <td>{{this.customer_total_rentals}}</td>
-                <td><button onclick="deleteCustomer({{this.customer_id}})">Delete</button></td>                                                  
+            <tr data-value={{this.[ID]}}>
+                <td>{{this.[ID]}}</td>
+                <td>{{this.[First Name]}}</td>
+                <td>{{this.[Last Name]}}</td>
+                <td>{{this.[Street]}}</td>
+                <td>{{this.[City]}}</td>
+                <td>{{this.[State]}}</td>
+                <td>{{this.[Zip]}}</td>
+                <td>{{this.[Phone Number]}}</td>
+                <td>{{this.[Active Rentals]}}</td>
+                <td>{{this.[Total Rentals]}}</td>
+                <td><button onclick="deleteCustomer({{this.[ID]}})">Delete</button></td>                                                  
             </tr>
             {{/each}}
         </tbody>
@@ -120,7 +121,7 @@
                     <select name="input-update-customer" id="update-customer">
                         <option value="input-update-customer">Select a Customer</option>
                         {{#each data}}
-                        <option value="{{this.customer_id}}">{{this.first_name}} {{this.last_name}}</option>
+                        <option value="{{this.[ID]}}">{{this.[First Name]}} {{this.[Last Name]}}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -188,7 +189,7 @@
                 <input type="text" name="lname" id="input-lname-html-search">
             </div>
             <input type="submit" value= "Search customer">
-            <a href='/'><button>Reset Results</button></a>
+            <a href='/index'><button>Reset Results</button></a>
         </div>
     </form>
 </div> <!-- End of Search column -->
