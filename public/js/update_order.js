@@ -50,6 +50,15 @@ updateOrderForm.addEventListener("submit", function (e) {
             // Add the new data to the table
             updateOrderRow(xhttp.response, orderIdValue);
 
+            // Clear the input fields
+            inputOrderId.value = '';
+            inputCustomerId.value = '';
+            inputLocationId.value = '';
+            inputOrderDate.value = '';
+            inputReturnDate.value = '';
+            inputOverdue.value = '';
+
+
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -89,9 +98,11 @@ function updateOrderRow(data, orderID){
              // Reassign the value we updated to
              customerId.innerHTML = parsedData[tableRow].customer_id; 
              locationId.innerHTML = parsedData[tableRow].location_id;
-             orderDate.innerHTML = parsedData[tableRow].order_date;
-             returnDate.innerHTML = parsedData[tableRow].return_date;
+             orderDate.innerHTML = parsedData[tableRow].OrderDate;
+             returnDate.innerHTML = parsedData[tableRow].ReturnDate;
              overDue.innerHTML = parsedData[tableRow].over_due;
+
+             //window.location.reload();
        }
     }
 }
