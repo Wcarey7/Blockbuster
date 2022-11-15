@@ -18,6 +18,8 @@ var db = require('./database/db-connector');
 // Handlebars
 const { engine } = require('express-handlebars');
 var exphbs = require('express-handlebars');     // Import express-handlebars
+
+
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
 
@@ -38,13 +40,14 @@ app.get('/', function(req, res)
     // If there is no query string, perform SELECT
     if (req.query.lname === undefined)
     {
-        query1 = "SELECT * FROM Customers;";
+        //query1 = "SELECT * FROM Customers;";
+        query1 = 'SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" FROM Customers;';
     }
 
     // If there is a query string, search
     else
     {
-        query1 = `SELECT * FROM Customers WHERE last_name LIKE "${req.query.lname}%"`
+        query1 = `SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" FROM Customers WHERE last_name LIKE "${req.query.lname}%"`
     }
 
     db.pool.query(query1, function(error, rows, fields){
@@ -259,7 +262,7 @@ app.post('/add-order-ajax', function(req, res)
     query1 = `INSERT INTO Orders (customer_id, location_id, order_date, return_date, over_due)
     VALUES ('${data.customer}', '${data.location}', '${data.orderDate}', '${data.returnDate}', '${overDue}')`;
 
-    query2 = "SELECT * FROM Orders;";
+    query2 = 'SELECT order_id, customer_id, location_id, DATE_FORMAT(order_date, "%m-%d-%Y") AS OrderDate, DATE_FORMAT(return_date, "%m-%d-%Y") AS ReturnDate, over_due FROM Orders;';
     
     db.pool.query(query1, function(error, rows, fields){
         if (error) {
@@ -297,7 +300,7 @@ app.put('/put-order-ajax', function(req,res,next)
     let queryUpdateOrder = `UPDATE Orders SET customer_id = ?, location_id = ?, order_date = ?, 
     return_date = ?, over_due = ? WHERE order_id = ?`;
 
-    let selectOrder = `SELECT * FROM Orders;`;
+    let selectOrder = 'SELECT order_id, customer_id, location_id, DATE_FORMAT(order_date, "%m-%d-%Y") AS OrderDate, DATE_FORMAT(return_date, "%m-%d-%Y") AS ReturnDate, over_due FROM Orders;';
   
     db.pool.query(queryUpdateOrder,
     [
@@ -618,22 +621,105 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
 */
 app.get('/available_rentals', function(req, res)
 {  
-    let query1 = "SELECT * FROM Available_Rentals;";               
+    let query1 = "SELECT * FROM Available_Rentals;";
+    let movies = "SELECT * FROM Movies;";
+    let locations = "SELECT * FROM Locations;";               
 
-    db.pool.query(query1, function(error, rows, fields){    
+    db.pool.query(query1, function(error, rows, fields){
+        
+        let availRentals = rows;
+        
+        // Run the second query
+        db.pool.query(movies, (error, rows, fields) => {
+            let movies = rows;
+            //Map to replace movie_id with movie title
+            let moviemap = {}
+            movies.map(movie => {
+                let id = parseInt(movie.movie_id, 10);
+                moviemap[id] = movie["movie_title"];
+            });
 
-        res.render('available_rentals', {data: rows});                  
-    })                                                      
+            // Run the third query
+            db.pool.query(locations, (error, rows, fields) => {
+                let locations = rows;
+                //Map to replace location_id with location address
+                let locationmap = {}
+                locations.map(location => {
+                    let id = parseInt(location.location_id, 10);
+                    locationmap[id] = location["location_street"] + ', ' + location["location_city"]
+                    + ', ' + location["location_state"] + ' ' + location["location_zip"];
+                });
+
+                availRentals = availRentals.map(availRental => {
+                    return Object.assign(availRental, {movie_id: moviemap[availRental.movie_id], 
+                        location_id: locationmap[availRental.location_id],
+                    });
+                });
+
+                return res.render('available_rentals', {
+                    data: availRentals, movies: movies, locations: locations,
+                });
+            });
+        });
+    });                                                 
 });
 
 
 
 
 
+//ADD
+app.post('/add-available-rentals-ajax', function(req, res)
+{
+    let data = req.body;
+    
+    query1 = `INSERT INTO Available_Rentals (movie_id, location_id, avail_copies)
+    VALUES ('${data.movieId}', '${data.locationId}', '${data.availCopies}')`;
+
+    query2 = "SELECT * FROM Available_Rentals;";
+    
+    db.pool.query(query1, function(error, rows, fields){
+        if (error) {
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            //Update the front-end
+            db.pool.query(query2, function(error, rows, fields){
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                else
+                {
+                    res.send(rows);
+                }
+            });
+        }
+    })
+});
 
 
+//DELETE
+app.delete('/delete-available-rentals-ajax/', function(req,res,next)
+{
+    let data = req.body;
+    let availRentalID = parseInt(data.id);
+    let deleteAvailableRental = `DELETE FROM Available_Rentals WHERE avail_id = ?`;
 
-
+        db.pool.query(deleteAvailableRental, [availRentalID], function(error, rows, fields){
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            }
+            else
+            {
+                res.sendStatus(204);
+            }
+        })
+});
 
 
 
