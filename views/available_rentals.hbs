@@ -36,10 +36,53 @@
                 <td>{{this.movie_id}}</td>
                 <td>{{this.location_id}}</td>
                 <td>{{this.avail_copies}}</td>
-                <td><button onclick="deleteAvailRental({{this.avail_id}})">Delete</button></td>                                                    
+                <td><button onclick="deleteAvailableRental({{this.avail_id}})">Delete</button></td>                                                    
             </tr>
             {{/each}}
         </tbody>
     </table>
     <script src="./js/delete_available_rentals.js"></script>
 </div>
+
+
+
+
+<!-- Add new Available Rental form -->
+<div class = "row">
+    <div class = "column">
+        <form id="add-available-rental-form-ajax">
+            <h3>Add a New Available Rental</h3>
+            <div class = "form-inputs">
+                <div>
+                    <label for="input-avail-movie-id">Movie: </label>
+                        <select name="input-avail-movie-id" id="input-avail-movie-id">
+                            <option value="input-avail-movie-id">Select a Movie</option>
+                            {{#each movies}}
+                                <option value="{{this.movie_id}}">{{this.movie_title}}</option>
+                            {{/each}}
+                    </select>
+                </div>
+                <div>
+                    <label for="input-avail-location-id">Location: </label>
+                    <select name="input-avail-location-id" id="input-avail-location-id">
+                        <option value="input-avail-location-id">Select a Location</option>
+                        {{#each locations}}
+                        <option value="{{this.location_id}}">#{{this.location_id}}: {{this.location_street}}, 
+                            {{this.location_city}}, {{this.location_state}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="input-available-copies">Available Copies: </label>
+                    <input type="number" name="input-available-copies" id="input-available-copies">
+                </div>
+
+                <input type="submit" value="Add Available Rental">
+            </div>
+        </form>
+        {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+        <script src="./js/add_available_rentals.js"></script>
+    </div> <!-- End of Add Availalbe Rentals Column -->
+
+</div> <!-- End of Row -->
