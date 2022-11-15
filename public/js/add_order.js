@@ -94,8 +94,8 @@ addRowToTable = (data) => {
     orderIdCell.innerText = newRow.order_id
     customerIdCell.innerText = newRow.customer_id;
     locationIdCell.innerText = newRow.location_id;
-    orderDateCell.innerText = newRow.order_date;
-    returnDateCell.innerText = newRow.return_date;
+    orderDateCell.innerText = newRow.OrderDate;
+    returnDateCell.innerText = newRow.ReturnDate;
     overDueCell.innerText = newRow.over_due;
 
 
