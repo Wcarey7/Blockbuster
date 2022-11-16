@@ -80,7 +80,7 @@ addRowToTable = (data) => {
     // Fill the cells with correct data
     availIdCell.innerText = newRow.avail_id
     movieTitleCell.innerText = newRow.movie_title
-    locationIdCell.innerText = newRow.location_id;
+    locationIdCell.innerText = newRow.Location;
     availCopiesIdCell.innerText = newRow.avail_copies;
 
 
