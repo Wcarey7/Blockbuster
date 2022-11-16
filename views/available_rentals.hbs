@@ -31,12 +31,12 @@
 
             {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
             {{#each data}}
-            <tr data-value={{this.avail_id}}>
-                <td>{{this.avail_id}}</td>
-                <td>{{this.movie_id}}</td>
+            <tr data-value={{this.[ID]}}>
+                <td>{{this.[ID]}}</td>
+                <td>{{this.[MovieTitle]}}</td>
                 <td>{{this.[Location]}}</td>
-                <td>{{this.avail_copies}}</td>
-                <td><button onclick="deleteAvailableRental({{this.avail_id}})">Delete</button></td>                                                    
+                <td>{{this.[Available Copies]}}</td>
+                <td><button onclick="deleteAvailableRental({{this.[ID]}})">Delete</button></td>                                                    
             </tr>
             {{/each}}
         </tbody>
