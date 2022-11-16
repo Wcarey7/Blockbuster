@@ -621,7 +621,7 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
 */
 app.get('/available_rentals', function(req, res)
 {  
-    let query1 = "SELECT avail_id, movie_id, location_id AS Location, avail_copies FROM Available_Rentals;";
+    let query1 = "SELECT avail_id AS ID, movie_id AS MovieTitle, location_id AS Location, avail_copies AS 'Available Copies' FROM Available_Rentals;";
     let movies = "SELECT * FROM Movies;";
     let locations = "SELECT * FROM Locations;";               
 
@@ -651,7 +651,7 @@ app.get('/available_rentals', function(req, res)
                 });
 
                 availRentals = availRentals.map(availRental => {
-                    return Object.assign(availRental, {movie_id: moviemap[availRental.movie_id], 
+                    return Object.assign(availRental, {MovieTitle: moviemap[availRental.MovieTitle], 
                         Location: locationmap[availRental.Location],
                     });
                 });
@@ -676,7 +676,7 @@ app.post('/add-available-rentals-ajax', function(req, res)
     let query1 = `INSERT INTO Available_Rentals (movie_id, location_id, avail_copies)
     VALUES ('${data.movieId}', '${data.locationId}', '${data.availCopies}')`;
 
-    let query2 = `SELECT avail_id, movie_title, CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location, avail_copies 
+    let query2 = `SELECT avail_id, movie_title, CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location, avail_copies
     FROM Available_Rentals LEFT JOIN Movies ON Available_Rentals.movie_id = Movies.movie_id 
     LEFT JOIN Locations ON Available_Rentals.location_id = Locations.location_id;`
 
