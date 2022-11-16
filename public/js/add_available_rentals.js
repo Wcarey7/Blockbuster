@@ -72,14 +72,14 @@ addRowToTable = (data) => {
     // Create a row
     let row = document.createElement("TR");
     let availIdCell = document.createElement("TD");
-    let movieIdCell = document.createElement("TD");
+    let movieTitleCell = document.createElement("TD");
     let locationIdCell = document.createElement("TD");
     let availCopiesIdCell = document.createElement("TD");
     let deleteCell = document.createElement("TD");
 
     // Fill the cells with correct data
     availIdCell.innerText = newRow.avail_id
-    movieIdCell.innerText = newRow.movie_id
+    movieTitleCell.innerText = newRow.movie_title
     locationIdCell.innerText = newRow.location_id;
     availCopiesIdCell.innerText = newRow.avail_copies;
 
@@ -95,7 +95,7 @@ addRowToTable = (data) => {
 
     // Add the cells to the row 
     row.appendChild(availIdCell);
-    row.appendChild(movieIdCell);
+    row.appendChild(movieTitleCell);
     row.appendChild(locationIdCell);
     row.appendChild(availCopiesIdCell);
     row.appendChild(deleteCell);
