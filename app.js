@@ -676,12 +676,10 @@ app.post('/add-available-rentals-ajax', function(req, res)
     let query1 = `INSERT INTO Available_Rentals (movie_id, location_id, avail_copies)
     VALUES ('${data.movieId}', '${data.locationId}', '${data.availCopies}')`;
 
-    let query2 = 'SELECT avail_id, movie_title, location_id, avail_copies FROM Available_Rentals JOIN Movies ON Available_Rentals.movie_id = Movies.movie_id'
-    //let query2 = `SELECT avail_id, movie_title, CONCAT(Locations.location_id, ": ", Locations.location_street) AS Location, 
-    //avail_copies FROM Available_Rentals LEFT JOIN Movies ON Available_Rentals.movie_id = Movies.movie_id; 
+    let query2 = `SELECT avail_id, movie_title, CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location, avail_copies 
+    FROM Available_Rentals LEFT JOIN Movies ON Available_Rentals.movie_id = Movies.movie_id 
+    LEFT JOIN Locations ON Available_Rentals.location_id = Locations.location_id;`
 
-
-    
     db.pool.query(query1, function(error, rows, fields){
         if (error) {
             console.log(error)
