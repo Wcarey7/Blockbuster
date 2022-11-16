@@ -673,7 +673,7 @@ app.post('/add-available-rentals-ajax', function(req, res)
 {
     let data = req.body;
     
-    query1 = `INSERT INTO Available_Rentals (movie_id, location_id, avail_copies)
+    let query1 = `INSERT INTO Available_Rentals (movie_id, location_id, avail_copies)
     VALUES ('${data.movieId}', '${data.locationId}', '${data.availCopies}')`;
 
     let query2 = 'SELECT avail_id, movie_title, location_id, avail_copies FROM Available_Rentals JOIN Movies ON Available_Rentals.movie_id = Movies.movie_id'
