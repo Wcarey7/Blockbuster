@@ -42,6 +42,8 @@ addAvailRentalForm.addEventListener("submit", function (e) {
             addRowToTable(xhttp.response);
 
             // Clear the input fields for another transaction
+            inputMovieId.value = '';
+            inputLocationId.value = '';
             inputAvailCopies.value = '';
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
@@ -106,9 +108,4 @@ addRowToTable = (data) => {
     // Add the row to the table
     currentTable.appendChild(row);
 
-    let selectMenu = document.getElementById("update-available-rentals");
-    let option = document.createElement("option");
-    option.text = newRow.avail_id;
-    option.value = newRow.avail_id;
-    selectMenu.add(option);
 }
