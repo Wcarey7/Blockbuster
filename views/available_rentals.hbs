@@ -34,7 +34,7 @@
             <tr data-value={{this.avail_id}}>
                 <td>{{this.avail_id}}</td>
                 <td>{{this.movie_id}}</td>
-                <td>{{this.location_id}}</td>
+                <td>{{this.[Location]}}</td>
                 <td>{{this.avail_copies}}</td>
                 <td><button onclick="deleteAvailableRental({{this.avail_id}})">Delete</button></td>                                                    
             </tr>
@@ -67,7 +67,7 @@
                     <select name="input-avail-location-id" id="input-avail-location-id">
                         <option value="input-avail-location-id">Select a Location</option>
                         {{#each locations}}
-                        <option value="{{this.location_id}}">#{{this.location_id}}: {{this.location_street}}, 
+                        <option value="{{this.Location_id}}">#{{this.location_id}}: {{this.location_street}}, 
                             {{this.location_city}}, {{this.location_state}}</option>
                         {{/each}}
                     </select>
