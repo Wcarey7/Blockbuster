@@ -56,8 +56,6 @@ updateOrderForm.addEventListener("submit", function (e) {
             inputLocationId.value = '';
             inputOrderDate.value = '';
             inputReturnDate.value = '';
-            inputOverdue.value = '';
-
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
@@ -96,13 +94,12 @@ function updateOrderRow(data, orderID){
              let tableRow = i-1;
 
              // Reassign the value we updated to
-             customerId.innerHTML = parsedData[tableRow].customer_id; 
-             locationId.innerHTML = parsedData[tableRow].location_id;
-             orderDate.innerHTML = parsedData[tableRow].OrderDate;
-             returnDate.innerHTML = parsedData[tableRow].ReturnDate;
-             overDue.innerHTML = parsedData[tableRow].over_due;
+             customerId.innerHTML = parsedData[tableRow].Customer_Name; 
+             locationId.innerHTML = parsedData[tableRow].Location_Address;
+             orderDate.innerHTML = parsedData[tableRow].Order_Date;
+             returnDate.innerHTML = parsedData[tableRow].Return_Date;
+             overDue.innerHTML = parsedData[tableRow].Is_Overdue;
 
-             //window.location.reload();
        }
     }
 }

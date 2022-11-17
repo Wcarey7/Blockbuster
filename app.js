@@ -308,8 +308,12 @@ app.put('/put-order-ajax', function(req,res,next)
     let queryUpdateOrder = `UPDATE Orders SET customer_id = ?, location_id = ?, order_date = ?, 
     return_date = ?, over_due = ? WHERE order_id = ?`;
 
-    let selectOrder = 'SELECT order_id, customer_id, location_id, DATE_FORMAT(order_date, "%m-%d-%Y") AS OrderDate, DATE_FORMAT(return_date, "%m-%d-%Y") AS ReturnDate, over_due FROM Orders;';
-  
+    let selectOrder = `SELECT order_id AS ID, CONCAT(Customers.first_name, " ", Customers.last_name) AS Customer_Name,  
+    CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location_Address, 
+    DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue 
+    FROM Orders
+    LEFT JOIN Customers ON Orders.customer_id = Customers.customer_id 
+    LEFT JOIN Locations ON Orders.location_id = Locations.location_id;`  
     
     db.pool.query(queryUpdateOrder,
     [
