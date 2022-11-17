@@ -91,7 +91,7 @@
 
                 <div>
                     <label for="input-phone">Phone Number: </label>
-                    <input type="number" name="input-phone" id="input-phone">
+                    <input type="tel" name="input-phone" id="input-phone" placeholder="###-###-####">
                 </div>
 
                 <div>
@@ -118,8 +118,8 @@
             <div class = "form-inputs">
                 <div>
                     <label for="input-update-customer">Full name: </label>
-                    <select name="input-update-customer" id="update-customer">
-                        <option value="input-update-customer">Select a Customer</option>
+                    <select name="input-update-customer" id="update-customer" onchange="autoFill()">
+                        <option value="">Select a Customer</option>
                         {{#each data}}
                         <option value="{{this.[ID]}}">{{this.[First Name]}} {{this.[Last Name]}}</option>
                         {{/each}}
@@ -155,7 +155,7 @@
 
                 <div>
                     <label for="input-update-phone">Phone Number: </label>
-                    <input type="number" name="input-update-phone" id="input-update-phone">
+                    <input type="tel" name="input-update-phone" id="input-update-phone" placeholder="###-###-####">
                 </div>
 
                 <div>
@@ -193,10 +193,6 @@
     </form>
 </div> <!-- End of Search column -->
 
-
-
-
 </div><!-- End of Row -->
-
 
 </main>
