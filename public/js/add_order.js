@@ -65,8 +65,7 @@ addOrderForm.addEventListener("submit", function (e) {
 })
 
 
-// Creates a single row from an Object representing a single record from 
-// Customers
+// Creates a single row from an Object representing a single record 
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.
@@ -90,7 +89,7 @@ addRowToTable = (data) => {
     let deleteCell = document.createElement("TD");
 
     // Fill the cells with correct data
-    orderIdCell.innerText = newRow.ID
+    orderIdCell.innerText = newRow.order_id
     customerNameCell.innerText = newRow.Customer_Name;
     locationAddressCell.innerText = newRow.Location_Address;
     orderDateCell.innerText = newRow.Order_Date;
