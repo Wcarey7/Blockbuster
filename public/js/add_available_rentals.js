@@ -22,7 +22,7 @@ addAvailRentalForm.addEventListener("submit", function (e) {
     let availCopiesValue = inputAvailCopies.value;
 
 
-    // Put data we want to send in a javascript object
+    // DATA Packet
     let data = {
         movieId: movieIdValue,
         locationId: locationIdValue,
@@ -74,14 +74,14 @@ addRowToTable = (data) => {
     let row = document.createElement("TR");
     let availIdCell = document.createElement("TD");
     let movieTitleCell = document.createElement("TD");
-    let locationIdCell = document.createElement("TD");
+    let locationAddressCell = document.createElement("TD");
     let availCopiesIdCell = document.createElement("TD");
     let deleteCell = document.createElement("TD");
 
     // Fill the cells with correct data
     availIdCell.innerText = newRow.avail_id
     movieTitleCell.innerText = newRow.movie_title
-    locationIdCell.innerText = newRow.Location;
+    locationAddressCell.innerText = newRow.Location;
     availCopiesIdCell.innerText = newRow.avail_copies;
 
 
@@ -93,11 +93,10 @@ addRowToTable = (data) => {
 
     deleteCell.appendChild(deleteButton);
 
-
     // Add the cells to the row 
     row.appendChild(availIdCell);
     row.appendChild(movieTitleCell);
-    row.appendChild(locationIdCell);
+    row.appendChild(locationAddressCell);
     row.appendChild(availCopiesIdCell);
     row.appendChild(deleteCell);
 
