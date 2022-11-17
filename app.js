@@ -40,7 +40,6 @@ app.get('/', function(req, res)
     // If there is no query string, perform SELECT
     if (req.query.lname === undefined)
     {
-        //query1 = "SELECT * FROM Customers;";
         query1 = 'SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" FROM Customers;';
     }
 
@@ -195,13 +194,14 @@ app.get('/orders', function(req, res)
     // If there is no query string, perform SELECT
     if (req.query.filter === undefined)
     {
-        query1 = 'SELECT order_id, customer_id, location_id, DATE_FORMAT(order_date, "%m-%d-%Y") AS OrderDate, DATE_FORMAT(return_date, "%m-%d-%Y") AS ReturnDate, over_due FROM Orders;'
+        query1 = `SELECT order_id AS ID, customer_id AS Customer_Name, location_id AS Location_Address, 
+        DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue FROM Orders;`
         
     }
     // If there is a query string, search
     else
     {
-        query1 = `SELECT order_id, customer_id, location_id, DATE_FORMAT(order_date, "%m-%d-%Y") AS OrderDate, DATE_FORMAT(return_date, "%m-%d-%Y") AS ReturnDate, over_due FROM Orders WHERE location_id LIKE "${req.query.filter}%"`
+        query1 = `SELECT order_id AS ID, customer_id, location_id, DATE_FORMAT(order_date, "%m-%d-%Y") AS OrderDate, DATE_FORMAT(return_date, "%m-%d-%Y") AS ReturnDate, over_due FROM Orders WHERE location_id LIKE "${req.query.filter}%"`
     }
 
     db.pool.query(query1, function(error, rows, fields){
@@ -231,8 +231,8 @@ app.get('/orders', function(req, res)
                 });
 
                 orders = orders.map(order => {
-                    return Object.assign(order, {customer_id: customermap[order.customer_id], 
-                        location_id: locationmap[order.location_id],
+                    return Object.assign(order, {Customer_Name: customermap[order.Customer_Name], 
+                        Location_Address: locationmap[order.Location_Address],
                     });
                 });
 

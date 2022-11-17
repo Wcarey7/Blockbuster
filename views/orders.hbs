@@ -31,14 +31,14 @@
 
             {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
             {{#each data}}
-            <tr data-value={{this.order_id}}>
-                <td>{{this.order_id}}</td>
-                <td>{{this.customer_id}}</td>
-                <td>{{this.location_id}}</td>
-                <td>{{this.[OrderDate]}}</td>
-                <td>{{this.[ReturnDate]}}</td>
-                <td>{{this.over_due}}</td>
-                <td><button onclick="deleteOrder({{this.order_id}})">Delete</button></td>                                                    
+            <tr data-value={{this.[ID]}}>
+                <td>{{this.[ID]}}</td>
+                <td>{{this.[Customer_Name]}}</td>
+                <td>{{this.[Location_Address]}}</td>
+                <td>{{this.[Order_Date]}}</td>
+                <td>{{this.[Return_Date]}}</td>
+                <td>{{this.[Is_Overdue]}}</td>
+                <td><button onclick="deleteOrder({{this.[ID]}})">Delete</button></td>                                                    
             </tr>
             {{/each}}
         </tbody>
