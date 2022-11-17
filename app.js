@@ -201,7 +201,9 @@ app.get('/orders', function(req, res)
     // If there is a query string, search
     else
     {
-        query1 = `SELECT order_id AS ID, customer_id, location_id, DATE_FORMAT(order_date, "%m-%d-%Y") AS OrderDate, DATE_FORMAT(return_date, "%m-%d-%Y") AS ReturnDate, over_due FROM Orders WHERE location_id LIKE "${req.query.filter}%"`
+        query1 = `SELECT order_id AS ID, customer_id AS Customer_Name, location_id AS Location_Address, 
+        DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue 
+        FROM Orders WHERE location_id LIKE "${req.query.filter}%"`
     }
 
     db.pool.query(query1, function(error, rows, fields){
