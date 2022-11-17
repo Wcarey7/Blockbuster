@@ -94,34 +94,54 @@ function updateCustomerRow(data, customerID) {
         //iterate through rows
         //rows would be accessed using the "row" variable assigned in the for loop
         if (table.rows[i].getAttribute("data-value") == customerID) {
-             // Get the location of the row where we found the matching customer ID
-             let updateRowIndex = table.getElementsByTagName("tr")[i];
- 
-             // Get td of value
-             let firstName = updateRowIndex.getElementsByTagName("td")[1];
-             let lastName = updateRowIndex.getElementsByTagName("td")[2];
-             let customerStreet = updateRowIndex.getElementsByTagName("td")[3];
-             let customerCity = updateRowIndex.getElementsByTagName("td")[4];
-             let customerState = updateRowIndex.getElementsByTagName("td")[5];
-             let customerZip = updateRowIndex.getElementsByTagName("td")[6];
-             let customerPhone = updateRowIndex.getElementsByTagName("td")[7];
-             let customerActiveRentals = updateRowIndex.getElementsByTagName("td")[8];
-             let customerTotalRentals = updateRowIndex.getElementsByTagName("td")[9];
-             
-             //set to what row to update
-             let tableRow = i-1;
+            // Get the location of the row where we found the matching customer ID
+            let updateRowIndex = table.getElementsByTagName("tr")[i];
 
-             // Reassign the value we updated to
-             firstName.innerHTML = parsedData[tableRow].first_name; 
-             lastName.innerHTML = parsedData[tableRow].last_name;
-             customerStreet.innerHTML = parsedData[tableRow].customer_street;
-             customerCity.innerHTML = parsedData[tableRow].customer_city;
-             customerState.innerHTML = parsedData[tableRow].customer_state;
-             customerZip.innerHTML = parsedData[tableRow].customer_zip;
-             customerPhone.innerHTML = parsedData[tableRow].customer_phone_number;
-             customerActiveRentals.innerHTML = parsedData[tableRow].customer_active_rentals;
-             customerTotalRentals.innerHTML = parsedData[tableRow].customer_total_rentals;
+            // Get td of value
+            let firstName = updateRowIndex.getElementsByTagName("td")[1];
+            let lastName = updateRowIndex.getElementsByTagName("td")[2];
+            let customerStreet = updateRowIndex.getElementsByTagName("td")[3];
+            let customerCity = updateRowIndex.getElementsByTagName("td")[4];
+            let customerState = updateRowIndex.getElementsByTagName("td")[5];
+            let customerZip = updateRowIndex.getElementsByTagName("td")[6];
+            let customerPhone = updateRowIndex.getElementsByTagName("td")[7];
+            let customerActiveRentals = updateRowIndex.getElementsByTagName("td")[8];
+            let customerTotalRentals = updateRowIndex.getElementsByTagName("td")[9];
+            
+            // Set to what row to update
+            let tableRow = i-1;
+
+            // Reassign the value we updated to
+            firstName.innerHTML = parsedData[tableRow].first_name; 
+            lastName.innerHTML = parsedData[tableRow].last_name;
+            customerStreet.innerHTML = parsedData[tableRow].customer_street;
+            customerCity.innerHTML = parsedData[tableRow].customer_city;
+            customerState.innerHTML = parsedData[tableRow].customer_state;
+            customerZip.innerHTML = parsedData[tableRow].customer_zip;
+            customerPhone.innerHTML = parsedData[tableRow].customer_phone_number;
+            customerActiveRentals.innerHTML = parsedData[tableRow].customer_active_rentals;
+            customerTotalRentals.innerHTML = parsedData[tableRow].customer_total_rentals;
+
+            // Remove the name from the dropdown menu   
+            deleteDropDownMenu(customerID);
+
+            // Add updated name to dropdown menu
+            let selectMenu = document.getElementById("update-customer");
+            let option = document.createElement("option");
+            option.text = parsedData[tableRow].first_name + ' ' +  parsedData[tableRow].last_name;
+            option.value = customerID;
+            selectMenu.add(option);
 
         }
      }
 }
+
+function deleteDropDownMenu(customerID){
+    let selectMenu = document.getElementById("update-customer");
+    for (let i = 0; i < selectMenu.length; i++){
+      if (Number(selectMenu.options[i].value) === Number(customerID)){
+        selectMenu[i].remove();
+        break;
+      }  
+    }
+  }
