@@ -193,7 +193,7 @@
             <div>
                 <label for="filter-location-id">Location: </label>
                 <select name="filter" id="location_id">
-                    <option></option>
+                    <option value="">Select a Location</option>
                     {{#each locations}}
                     <option value="{{this.location_id}}">#{{this.location_id}}: {{this.location_street}}, 
                         {{this.location_city}}, {{this.location_state}}</option>
@@ -205,9 +205,7 @@
             <a href='/'><button>Reset Results</button></a>
         </div>
     </form>
-
     </div><!-- End of filter Location Order Column -->
-
 </div><!-- End of Row -->
 
 </main>
