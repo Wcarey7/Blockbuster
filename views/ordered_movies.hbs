@@ -55,7 +55,7 @@
                 <div>
                     <label for="ordered-movie-order-id">Order: </label>
                     <select name="orderedMovie-order-id" id="ordered-movie-order-id">
-                        <option value="ordered-movie-order-id">Select an Order</option>
+                        <option value="">Select an Order</option>
                         {{#each orders}}
                         <option value="{{this.order_id}}">{{this.order_id}}</option>
                         {{/each}}
@@ -65,7 +65,7 @@
                 <div>
                     <label for="input-movie-id">Movie: </label>
                         <select name="input-movie-id" id="input-movie-id">
-                            <option value="input-movie-id">Select a Movie</option>
+                            <option value="">Select a Movie</option>
                             {{#each movies}}
                                 <option value="{{this.movie_id}}">{{this.movie_title}}</option>
                             {{/each}}
@@ -93,7 +93,7 @@
                 <div>
                     <label for="filter-order-id">Order ID: </label>
                     <select name="filterOrder" id="filter-order-id">
-                        <option></option>
+                        <option value="">Select Order ID</option>
                         {{#each orders}}
                         <option value="{{this.order_id}}">{{this.order_id}}</option>
                         {{/each}}
