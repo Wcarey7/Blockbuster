@@ -58,7 +58,6 @@ addAvailRentalForm.addEventListener("submit", function (e) {
 
 
 // Creates a single row from an Object representing a single record from 
-// Customers
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.

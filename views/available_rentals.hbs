@@ -55,8 +55,8 @@
             <div class = "form-inputs">
                 <div>
                     <label for="input-avail-movie-id">Movie: </label>
-                        <select name="input-avail-movie-id" id="input-avail-movie-id">
-                            <option value="input-avail-movie-id">Select a Movie</option>
+                        <select name="input-avail-movie-id" id="input-avail-movie-id" required="required">
+                            <option value="">Select a Movie</option>
                             {{#each movies}}
                                 <option value="{{this.movie_id}}">{{this.movie_title}}</option>
                             {{/each}}
@@ -64,8 +64,8 @@
                 </div>
                 <div>
                     <label for="input-avail-location-id">Location: </label>
-                    <select name="input-avail-location-id" id="input-avail-location-id">
-                        <option value="input-avail-location-id">Select a Location</option>
+                    <select name="input-avail-location-id" id="input-avail-location-id" required="required">
+                        <option value="">Select a Location</option>
                         {{#each locations}}
                         <option value="{{this.location_id}}">#{{this.location_id}}: {{this.location_street}}, 
                             {{this.location_city}}, {{this.location_state}}</option>
@@ -75,7 +75,7 @@
 
                 <div>
                     <label for="input-available-copies">Available Copies: </label>
-                    <input type="number" name="input-available-copies" id="input-available-copies">
+                    <input type="number" value="0" name="input-available-copies" id="input-available-copies" required="required">
                 </div>
 
                 <input type="submit" value="Add Available Rental">
