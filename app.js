@@ -261,10 +261,16 @@ app.post('/add-order-ajax', function(req, res)
         overDue = 'NULL'
     }
     
-    query1 = `INSERT INTO Orders (customer_id, location_id, order_date, return_date, over_due)
+    let query1 = `INSERT INTO Orders (customer_id, location_id, order_date, return_date, over_due)
     VALUES ('${data.customer}', '${data.location}', '${data.orderDate}', '${data.returnDate}', '${overDue}')`;
 
-    query2 = 'SELECT order_id, customer_id, location_id, DATE_FORMAT(order_date, "%m-%d-%Y") AS OrderDate, DATE_FORMAT(return_date, "%m-%d-%Y") AS ReturnDate, over_due FROM Orders;';
+    let query2 = `SELECT order_id AS ID, CONCAT(Customers.first_name, " ", Customers.last_name) AS Customer_Name,  
+    CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location_Address, 
+    DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue 
+    FROM Orders
+    LEFT JOIN Customers ON Orders.customer_id = Customers.customer_id 
+    LEFT JOIN Locations ON Orders.location_id = Locations.location_id;`
+
     
     db.pool.query(query1, function(error, rows, fields){
         if (error) {
@@ -304,6 +310,7 @@ app.put('/put-order-ajax', function(req,res,next)
 
     let selectOrder = 'SELECT order_id, customer_id, location_id, DATE_FORMAT(order_date, "%m-%d-%Y") AS OrderDate, DATE_FORMAT(return_date, "%m-%d-%Y") AS ReturnDate, over_due FROM Orders;';
   
+    
     db.pool.query(queryUpdateOrder,
     [
         data['customer'], data['location'], data['orderDate'], data['returnDate'], data['overDue'], orderID,
@@ -678,7 +685,8 @@ app.post('/add-available-rentals-ajax', function(req, res)
     let query1 = `INSERT INTO Available_Rentals (movie_id, location_id, avail_copies)
     VALUES ('${data.movieId}', '${data.locationId}', '${data.availCopies}')`;
 
-    let query2 = `SELECT avail_id, movie_title, CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location, avail_copies
+    let query2 = `SELECT avail_id, movie_title, 
+    CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location, avail_copies
     FROM Available_Rentals LEFT JOIN Movies ON Available_Rentals.movie_id = Movies.movie_id 
     LEFT JOIN Locations ON Available_Rentals.location_id = Locations.location_id;`
 

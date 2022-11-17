@@ -53,7 +53,6 @@ addOrderForm.addEventListener("submit", function (e) {
             inputLocationId.value = '';
             inputOrderDate.value = '';
             inputReturnDate.value = '';
-            inputOverdue.value = '';
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -83,20 +82,20 @@ addRowToTable = (data) => {
     // Create a row and 10 cells
     let row = document.createElement("TR");
     let orderIdCell = document.createElement("TD");
-    let customerIdCell = document.createElement("TD");
-    let locationIdCell = document.createElement("TD");
+    let customerNameCell = document.createElement("TD");
+    let locationAddressCell = document.createElement("TD");
     let orderDateCell = document.createElement("TD");
     let returnDateCell = document.createElement("TD");
     let overDueCell = document.createElement("TD");
     let deleteCell = document.createElement("TD");
 
     // Fill the cells with correct data
-    orderIdCell.innerText = newRow.order_id
-    customerIdCell.innerText = newRow.customer_id;
-    locationIdCell.innerText = newRow.location_id;
-    orderDateCell.innerText = newRow.OrderDate;
-    returnDateCell.innerText = newRow.ReturnDate;
-    overDueCell.innerText = newRow.over_due;
+    orderIdCell.innerText = newRow.ID
+    customerNameCell.innerText = newRow.Customer_Name;
+    locationAddressCell.innerText = newRow.Location_Address;
+    orderDateCell.innerText = newRow.Order_Date;
+    returnDateCell.innerText = newRow.Return_Date;
+    overDueCell.innerText = newRow.Is_Overdue;
 
 
     deleteButton = document.createElement("button");
@@ -110,8 +109,8 @@ addRowToTable = (data) => {
 
     // Add the cells to the row 
     row.appendChild(orderIdCell);
-    row.appendChild(customerIdCell);
-    row.appendChild(locationIdCell);
+    row.appendChild(customerNameCell);
+    row.appendChild(locationAddressCell);
     row.appendChild(orderDateCell);
     row.appendChild(returnDateCell);
     row.appendChild(overDueCell);
