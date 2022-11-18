@@ -375,7 +375,7 @@ app.get('/ordered_movies', function(req, res)
     let movies = "SELECT * FROM Movies;";
 
     // If there is no query string, perform SELECT
-    if (req.query.filter === undefined || req.query.filter)
+    if (req.query.filter === undefined || req.query.filter === "")
     {
         query1 = "SELECT ordered_movies_id AS ID, order_id AS Order_ID, movie_id AS Movie_Title, quantity AS Quantity FROM Ordered_Movies;";
     }
