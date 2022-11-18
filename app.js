@@ -195,7 +195,8 @@ app.get('/orders', function(req, res)
     if (req.query.filter === undefined)
     {
         query1 = `SELECT order_id AS ID, customer_id AS Customer_Name, location_id AS Location_Address, 
-        DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue FROM Orders;`
+        DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue 
+        FROM Orders;`
         
     }
     // If there is a query string, search
@@ -374,7 +375,7 @@ app.get('/ordered_movies', function(req, res)
     let movies = "SELECT * FROM Movies;";
 
     // If there is no query string, perform SELECT
-    if (req.query.filterOrder === undefined)
+    if (req.query.filter === undefined || req.query.filter)
     {
         query1 = "SELECT ordered_movies_id AS ID, order_id AS Order_ID, movie_id AS Movie_Title, quantity AS Quantity FROM Ordered_Movies;";
     }
@@ -382,7 +383,7 @@ app.get('/ordered_movies', function(req, res)
     else
     {
         query1 = `SELECT ordered_movies_id AS ID, order_id AS Order_ID, movie_id AS Movie_Title, quantity AS Quantity 
-        FROM Ordered_Movies WHERE order_id = "${req.query.filterOrder}%"`
+        FROM Ordered_Movies WHERE order_id = "${req.query.filter}%"`
     }
 
     db.pool.query(query1, function(error, rows, fields){
