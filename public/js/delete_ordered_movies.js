@@ -37,13 +37,13 @@ function deleteRow(orderedMovieID){
        //rows would be accessed using the "row" variable assigned in the for loop
        if (table.rows[i].getAttribute("data-value") == orderedMovieID) {
             table.deleteRow(i);
-            deleteDropDownMenu(orderedMovieID);
+            //deleteDropDownMenu(orderedMovieID);
             break;
        }
     }
 }
 
-function deleteDropDownMenu(orderedMovieID){
+/* function deleteDropDownMenu(orderedMovieID){
     let selectMenu = document.getElementById("update-ordered-movies");
     for (let i = 0; i < selectMenu.length; i++){
       if (Number(selectMenu.options[i].value) === Number(orderedMovieID)){
@@ -52,4 +52,4 @@ function deleteDropDownMenu(orderedMovieID){
       } 
   
     }
-  }
+  } */
