@@ -167,7 +167,7 @@ function autoFill() {
         let table = document.getElementById('customer-table');
         //Fill each form field with the selected customers info
         for (let i = 0, row; row = table.rows[i]; i++) {
-            console.log(table.rows[i].getAttribute('data-value'));
+
             if (table.rows[i].getAttribute('data-value') == selectElement_id) {
 
                 let updateRowIndex = table.getElementsByTagName("tr")[i];
