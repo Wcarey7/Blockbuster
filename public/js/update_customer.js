@@ -133,7 +133,7 @@ function updateCustomerRow(data, customerID) {
             selectMenu.add(option);
 
         }
-     }
+    }
 }
 
 function deleteDropDownMenu(customerID){
@@ -144,13 +144,13 @@ function deleteDropDownMenu(customerID){
         break;
       }  
     }
-  }
+}
 
 
 function autoFill() {
     let selectElement = document.getElementById('update-customer');
     let selectElement_id = selectElement.value;
-
+    //If the element selected is empty, clear all values in the form
     if (selectElement_id === '') {
         document.getElementById("input-update-fname").value = ''
         document.getElementById("input-update-lname").value = ''
@@ -165,7 +165,7 @@ function autoFill() {
 
     } else {
         let table = document.getElementById('customer-table');
-
+        //Fill each form field with the selected customers info
         for (let i = 0, row; row = table.rows[i]; i++) {
             console.log(table.rows[i].getAttribute('data-value'));
             if (table.rows[i].getAttribute('data-value') == selectElement_id) {
