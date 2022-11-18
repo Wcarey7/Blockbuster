@@ -40,13 +40,18 @@ app.get('/', function(req, res)
     // If there is no query string, perform SELECT
     if (req.query.lname === undefined)
     {
-        query1 = 'SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" FROM Customers;';
+        query1 = `SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, 
+        customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", 
+        customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" FROM Customers;`
     }
 
     // If there is a query string, search
     else
     {
-        query1 = `SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" FROM Customers WHERE last_name LIKE "${req.query.lname}%"`
+        query1 = `SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, 
+        customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", 
+        customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" 
+        FROM Customers WHERE last_name LIKE "${req.query.lname}%"`
     }
 
     db.pool.query(query1, function(error, rows, fields){
