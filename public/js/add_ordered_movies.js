@@ -42,6 +42,8 @@ addOrderedMovieForm.addEventListener("submit", function (e) {
             addRowToTable(xhttp.response);
 
             // Clear the input fields for another transaction
+            inputOrderedId.value = '';
+            inputMovieId.value = '';
             inputQuantity.value = '';
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
@@ -55,8 +57,7 @@ addOrderedMovieForm.addEventListener("submit", function (e) {
 })
 
 
-// Creates a single row from an Object representing a single record from 
-// Customers
+// Creates a single row from an Object representing a single record
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.
@@ -80,7 +81,7 @@ addRowToTable = (data) => {
     // Fill the cells with correct data
     orderedMovieIdCell.innerText = newRow.ordered_movies_id
     orderedIdCell.innerText = newRow.order_id
-    movieIdCell.innerText = newRow.movie_id;
+    movieIdCell.innerText = newRow.movie_title;
     quantityIdCell.innerText = newRow.quantity;
 
 
@@ -106,9 +107,4 @@ addRowToTable = (data) => {
     // Add the row to the table
     currentTable.appendChild(row);
 
-    let selectMenu = document.getElementById("update-ordered-movie");
-    let option = document.createElement("option");
-    option.text = newRow.order_id;
-    option.value = newRow.order_id;
-    selectMenu.add(option);
 }
