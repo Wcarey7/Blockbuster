@@ -103,3 +103,45 @@ function updateOrderRow(data, orderID){
        }
     }
 }
+
+
+function autoFill() {
+    let selectElement = document.getElementById('update-order');
+    let selectElement_id = selectElement.value;
+    //If the element selected is empty, clear all values in the form
+    if (selectElement_id === '') {
+        document.getElementById("update-customer-id").value = ''
+        document.getElementById("update-location-id").value = ''
+        document.getElementById("update-order-date").value = ''
+        document.getElementById("update-return-date").value = ''
+        document.getElementById("update-overdue").value = ''
+    
+
+    } else {
+        let table = document.getElementById('orders-table');
+        //Fill each form field with the selected order info
+        for (let i = 0, row; row = table.rows[i]; i++) {
+
+            if (table.rows[i].getAttribute('data-value') == selectElement_id) {
+
+                let updateRowIndex = table.getElementsByTagName("tr")[i];
+
+                let td1 = updateRowIndex.getElementsByTagName("td")[1];
+                document.getElementById('update-customer-id').value = td1.getAttribute('data-customer_id');
+
+                let td2 = updateRowIndex.getElementsByTagName("td")[2];
+                document.getElementById('update-location-id').value = td2.getAttribute('data-location_id');
+
+                let td3 = updateRowIndex.getElementsByTagName("td")[3];
+                document.getElementById('update-order-date').value = td3.getAttribute('data-orderDate_id');
+
+                let td4 = updateRowIndex.getElementsByTagName("td")[4];
+                document.getElementById('update-return-date').value = td4.innerHTML;
+
+                let td5 = updateRowIndex.getElementsByTagName("td")[5];
+                document.getElementById('update-overdue').value = td5.innerHTML;
+
+            }
+        }
+    }
+}
