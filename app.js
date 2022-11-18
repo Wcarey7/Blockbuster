@@ -264,7 +264,7 @@ app.post('/add-order-ajax', function(req, res)
     let query1 = `INSERT INTO Orders (customer_id, location_id, order_date, return_date, over_due)
     VALUES ('${data.customer}', '${data.location}', '${data.orderDate}', '${data.returnDate}', '${overDue}')`;
 
-    let query2 = `SELECT order_id AS ID, CONCAT(Customers.first_name, " ", Customers.last_name) AS Customer_Name,  
+    let query2 = `SELECT order_id, CONCAT(Customers.first_name, " ", Customers.last_name) AS Customer_Name,  
     CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location_Address, 
     DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue 
     FROM Orders
@@ -376,12 +376,13 @@ app.get('/ordered_movies', function(req, res)
     // If there is no query string, perform SELECT
     if (req.query.filterOrder === undefined)
     {
-        query1 = "SELECT * FROM Ordered_Movies;";
+        query1 = "SELECT ordered_movies_id AS ID, order_id AS Order_ID, movie_id AS Movie_Title, quantity AS Quantity FROM Ordered_Movies;";
     }
     // If there is a query string, search
     else
     {
-        query1 = `SELECT * FROM Ordered_Movies WHERE order_id = "${req.query.filterOrder}%"`
+        query1 = `SELECT ordered_movies_id AS ID, order_id AS Order_ID, movie_id AS Movie_Title, quantity AS Quantity 
+        FROM Ordered_Movies WHERE order_id = "${req.query.filterOrder}%"`
     }
 
     db.pool.query(query1, function(error, rows, fields){
@@ -405,7 +406,7 @@ app.get('/ordered_movies', function(req, res)
                 });
 
                 orderedMovies = orderedMovies.map(orderedMovie => {
-                    return Object.assign(orderedMovie, {movie_id: moviemap[orderedMovie.movie_id], 
+                    return Object.assign(orderedMovie, {Movie_Title: moviemap[orderedMovie.Movie_Title], 
                     });
                 });
 
@@ -427,7 +428,8 @@ app.post('/add-ordered-movie-ajax', function(req, res)
     query1 = `INSERT INTO Ordered_Movies (order_id, movie_id, quantity)
     VALUES ('${data.orderId}', '${data.movieId}', '${data.quantity}')`;
 
-    query2 = "SELECT * FROM Ordered_Movies;";
+    query2 = `SELECT ordered_movies_id, order_id, movie_title, quantity 
+    FROM Ordered_Movies LEFT JOIN Movies ON Ordered_Movies.movie_id = Movies.movie_id;`
     
     db.pool.query(query1, function(error, rows, fields){
         if (error) {
@@ -472,13 +474,6 @@ app.delete('/delete-ordered-movies-ajax/', function(req,res,next)
             }
         })
 });
-
-
-
-
-
-
-
 
 
 
