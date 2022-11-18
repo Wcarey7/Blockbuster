@@ -32,12 +32,12 @@
 
             {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
             {{#each data}}
-            <tr data-value={{this.ordered_movies_id}}>
-                <td>{{this.ordered_movies_id}}</td>
-                <td>{{this.order_id}}</td>
-                <td>{{this.movie_id}}</td>
-                <td>{{this.quantity}}</td>
-                <td><button onclick="deleteOrderedMovie({{this.ordered_movies_id}})">Delete</button></td>                                                    
+            <tr data-value={{this.[ID]}}>
+                <td>{{this.[ID]}}</td>
+                <td>{{this.[Order_ID]}}</td>
+                <td>{{this.[Movie_Title]}}</td>
+                <td>{{this.[Quantity]}}</td>
+                <td><button onclick="deleteOrderedMovie({{this.[ID]}})">Delete</button></td>                                                    
             </tr>
             {{/each}}
         </tbody>
@@ -74,7 +74,7 @@
 
                 <div>
                     <label for="input-order-movie-quantity">Quantity: </label>
-                    <input type="number" name="input-order-movie-quantity" id="input-order-movie-quantity">
+                    <input type="number" value="0" name="input-order-movie-quantity" id="input-order-movie-quantity">
                 </div>
 
                 <input type="submit" value="Add Ordered Movie">
