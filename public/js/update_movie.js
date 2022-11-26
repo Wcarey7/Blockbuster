@@ -1,3 +1,4 @@
+
 // Get the objects we need to modify
 let updateMovieForm = document.getElementById('update-movie-form-ajax');
 
@@ -7,14 +8,13 @@ updateMovieForm.addEventListener("submit", function (e) {
     // Prevent the form from submitting
     e.preventDefault();
 
-    let inputMovieId = document.getElementById("movieSelect");
-    let inputTitle = document.getElementById("update-movie");
+    let inputTitle = document.getElementById("movieSelect");
+
     // Get form fields we need to get data from
     let inputReleaseDate = document.getElementById("input-release_date-update");
     let inputGenre = document.getElementById("input-genre-update");
 
     // Get the values from the form fields
-    let movieIdValue = inputMovieId.value;
     let movieTitleValue = inputTitle.value;
     let releaseDateValue = inputReleaseDate.value;
     let movieGenreValue = inputGenre.value;
@@ -30,7 +30,6 @@ updateMovieForm.addEventListener("submit", function (e) {
 
     // Put our data we want to send in a javascript object
     let data = {
-        movieId: movieIdValue,
         movie_title: movieTitleValue,
         release_date: releaseDateValue,
         genre: movieGenreValue,
@@ -48,6 +47,11 @@ updateMovieForm.addEventListener("submit", function (e) {
             // Add the new data to the table
             updateRow(xhttp.response, releaseDateValue);
             updateRow(xhttp.response, movieGenreValue);
+            
+            // Clear the input fields
+            releaseDate.value = '';
+            movieGenre.value = '';
+
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
@@ -74,11 +78,19 @@ function updateRow(data, movieID){
             // Get the location of the row where we found the matching movie ID
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
-            // Get td of homeworld value
-            let td = updateRowIndex.getElementsByTagName("td")[3];
 
-            // Reassign homeworld to our value we updated to
-            td.innerHTML = parsedData[0].movie_title;
+            // Get td of each value
+            // let movieTitle = updateRowIndex.getElementsByTagName("td")[0];
+            let releaseDate = updateRowIndex.getElementsByTagName("td")[1];
+            let movieGenre = updateRowIndex.getElementsByTagName("td")[3];
+
+            //set to what row to update
+            let tableRow = i-1;
+
+            // Reassign each value to our values we updated to
+            // movieTitle.innerHTML = parsedData[tableRow].movie_title;
+            releaseDate.innerHTML = parsedData[tableRow].release_date;
+            movieGenre.innerHTML = parsedData[tableRow].genre;
        }
     }
 }
