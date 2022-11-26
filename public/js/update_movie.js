@@ -48,6 +48,11 @@ updateMovieForm.addEventListener("submit", function (e) {
             updateRow(xhttp.response, releaseDateValue);
             updateRow(xhttp.response, movieGenreValue);
 
+            // Clear the input fields
+            releaseDate.value = '';
+            movieGenre.value = '';
+
+
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -74,17 +79,17 @@ function updateRow(data, movieID){
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
             // Get td of each value
-            // let movieTitle = updateRowIndex.getElementsByTagName("td")[1];
+            // let movieTitle = updateRowIndex.getElementsByTagName("td")[0];
             let releaseDate = updateRowIndex.getElementsByTagName("td")[1];
-            let movieGenre = updateRowIndex.getElementsByTagName("td")[2];
+            let movieGenre = updateRowIndex.getElementsByTagName("td")[3];
 
             //set to what row to update
             let tableRow = i-1;
 
             // Reassign each value to our values we updated to
-            // movieTitle.innerHTML = parsedData[tableRow].movieTitle;
-            releaseDate.innerHTML = parsedData[tableRow].releaseDate;
-            movieGenre.innerHTML = parsedData[tableRow].movieGenre;
+            // movieTitle.innerHTML = parsedData[tableRow].movie_title;
+            releaseDate.innerHTML = parsedData[tableRow].release_date;
+            movieGenre.innerHTML = parsedData[tableRow].genre;
        }
     }
 }
