@@ -10,7 +10,7 @@ var app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(__dirname + '/public'));
-PORT = 7791;
+PORT = 7792;
 
 // Database
 var db = require('./database/db-connector');
@@ -18,6 +18,8 @@ var db = require('./database/db-connector');
 // Handlebars
 const { engine } = require('express-handlebars');
 var exphbs = require('express-handlebars');     // Import express-handlebars
+
+
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
 
@@ -38,13 +40,13 @@ app.get('/', function(req, res)
     // If there is no query string, perform SELECT
     if (req.query.lname === undefined)
     {
-        query1 = "SELECT * FROM Customers;";
+        query1 = 'SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" FROM Customers;';
     }
 
     // If there is a query string, search
     else
     {
-        query1 = `SELECT * FROM Customers WHERE last_name LIKE "${req.query.lname}%"`
+        query1 = `SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" FROM Customers WHERE last_name LIKE "${req.query.lname}%"`
     }
 
     db.pool.query(query1, function(error, rows, fields){
@@ -53,39 +55,6 @@ app.get('/', function(req, res)
 
         return res.render('index', {data: customers}); 
     })
-});
-
-
-
-app.get('/movies', function(req, res)
-{  
-    let query1; 
-    let query2= "SELECT * FROM Movies;";
-    
-        // If there is no query string, we just perform a basic SELECT
-        if (req.query.movie_title === undefined)
-        {
-            query1 = "SELECT * FROM Movies;";
-        }
-    
-        // If there is a query string, we assume this is a search, and return desired results
-        else
-        {
-            query1 = `SELECT * FROM Movies WHERE movie_title LIKE "${req.query.movie_title}%"`
-        }
-
-        // db.pool.query(query1, function(error, rows, fields){
-        
-        //     // Save the people
-        
-        //     return res.render('index', {data: movies});
-        // })
-
-    db.pool.query(query1, function(error, rows, fields){    // Execute the query
-        let movies = rows;
-
-        res.render('movies', {data: movies});                  // Render the movies.hbs file, and also send the renderer
-    })                                                      // an object where 'data' is equal to the 'rows' 
 });
 
 
@@ -223,14 +192,19 @@ app.get('/orders', function(req, res)
     let locations = "SELECT * FROM Locations;";
 
     // If there is no query string, perform SELECT
-    if (req.query.filterLocation === undefined)
+    if (req.query.filter === undefined)
     {
-        query1 = "SELECT * FROM Orders;";
+        query1 = `SELECT order_id AS ID, customer_id AS Customer_Name, location_id AS Location_Address, 
+        DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue 
+        FROM Orders;`
+        
     }
     // If there is a query string, search
     else
     {
-        query1 = `SELECT * FROM Orders WHERE location_id LIKE "${req.query.filterLocation}%"`
+        query1 = `SELECT order_id AS ID, customer_id AS Customer_Name, location_id AS Location_Address, 
+        DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue 
+        FROM Orders WHERE location_id LIKE "${req.query.filter}%"`
     }
 
     db.pool.query(query1, function(error, rows, fields){
@@ -260,8 +234,8 @@ app.get('/orders', function(req, res)
                 });
 
                 orders = orders.map(order => {
-                    return Object.assign(order, {customer_id: customermap[order.customer_id], 
-                        location_id: locationmap[order.location_id],
+                    return Object.assign(order, {Customer_Name: customermap[order.Customer_Name], 
+                        Location_Address: locationmap[order.Location_Address],
                     });
                 });
 
@@ -288,10 +262,16 @@ app.post('/add-order-ajax', function(req, res)
         overDue = 'NULL'
     }
     
-    query1 = `INSERT INTO Orders (customer_id, location_id, order_date, return_date, over_due)
+    let query1 = `INSERT INTO Orders (customer_id, location_id, order_date, return_date, over_due)
     VALUES ('${data.customer}', '${data.location}', '${data.orderDate}', '${data.returnDate}', '${overDue}')`;
 
-    query2 = "SELECT * FROM Orders;";
+    let query2 = `SELECT order_id, CONCAT(Customers.first_name, " ", Customers.last_name) AS Customer_Name,  
+    CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location_Address, 
+    DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue 
+    FROM Orders
+    LEFT JOIN Customers ON Orders.customer_id = Customers.customer_id 
+    LEFT JOIN Locations ON Orders.location_id = Locations.location_id;`
+
     
     db.pool.query(query1, function(error, rows, fields){
         if (error) {
@@ -329,8 +309,13 @@ app.put('/put-order-ajax', function(req,res,next)
     let queryUpdateOrder = `UPDATE Orders SET customer_id = ?, location_id = ?, order_date = ?, 
     return_date = ?, over_due = ? WHERE order_id = ?`;
 
-    let selectOrder = `SELECT * FROM Orders;`;
-  
+    let selectOrder = `SELECT order_id AS ID, CONCAT(Customers.first_name, " ", Customers.last_name) AS Customer_Name,  
+    CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location_Address, 
+    DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue 
+    FROM Orders
+    LEFT JOIN Customers ON Orders.customer_id = Customers.customer_id 
+    LEFT JOIN Locations ON Orders.location_id = Locations.location_id;`  
+    
     db.pool.query(queryUpdateOrder,
     [
         data['customer'], data['location'], data['orderDate'], data['returnDate'], data['overDue'], orderID,
@@ -383,26 +368,113 @@ app.delete('/delete-order-ajax/', function(req,res,next)
 /*////////////////////////////////////////////////////////////////////////////////////////
                     ORDERED_MOVIES
 */
-app.get('/Ordered_Movies', function(req, res)
+app.get('/ordered_movies', function(req, res)
 {  
-    let query1 = "SELECT * FROM Ordered_Movies;";               
+    let query1;
+    let orders = "SELECT * FROM Orders;";
+    let movies = "SELECT * FROM Movies;";
 
-    db.pool.query(query1, function(error, rows, fields){    
+    // If there is no query string, perform SELECT
+    if (req.query.filter === undefined || req.query.filter)
+    {
+        query1 = "SELECT ordered_movies_id AS ID, order_id AS Order_ID, movie_id AS Movie_Title, quantity AS Quantity FROM Ordered_Movies;";
+    }
+    // If there is a query string, search
+    else
+    {
+        query1 = `SELECT ordered_movies_id AS ID, order_id AS Order_ID, movie_id AS Movie_Title, quantity AS Quantity 
+        FROM Ordered_Movies WHERE order_id = "${req.query.filter}%"`
+    }
 
-        res.render('ordered_movies', {data: rows});                  
-    })                                                      
+    db.pool.query(query1, function(error, rows, fields){
+        
+        let orderedMovies = rows;
+        
+        // Run the second query
+        db.pool.query(orders, (error, rows, fields) => {
+
+            let orders = rows;
+
+            // Run the third query
+            db.pool.query(movies, (error, rows, fields) => {
+
+                let movies = rows;
+                //Map to replace movie_id with movie title
+                let moviemap = {}
+                movies.map(movie => {
+                    let id = parseInt(movie.movie_id, 10);
+                    moviemap[id] = movie["movie_title"];
+                });
+
+                orderedMovies = orderedMovies.map(orderedMovie => {
+                    return Object.assign(orderedMovie, {Movie_Title: moviemap[orderedMovie.Movie_Title], 
+                    });
+                });
+
+                return res.render('ordered_movies', {
+                    data: orderedMovies, orders: orders, movies: movies,
+                });
+            });
+        });
+    });
 });
 
 
 
+//ADD
+app.post('/add-ordered-movie-ajax', function(req, res)
+{
+    let data = req.body;
+    
+    query1 = `INSERT INTO Ordered_Movies (order_id, movie_id, quantity)
+    VALUES ('${data.orderId}', '${data.movieId}', '${data.quantity}')`;
+
+    query2 = `SELECT ordered_movies_id, order_id, movie_title, quantity 
+    FROM Ordered_Movies LEFT JOIN Movies ON Ordered_Movies.movie_id = Movies.movie_id;`
+    
+    db.pool.query(query1, function(error, rows, fields){
+        if (error) {
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            //Update the front-end
+            db.pool.query(query2, function(error, rows, fields){
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                else
+                {
+                    res.send(rows);
+                }
+            });
+        }
+    })
+});
 
 
 
+//DELETE
+app.delete('/delete-ordered-movies-ajax/', function(req,res,next)
+{
+    let data = req.body;
+    let orderedMovieID = parseInt(data.id);
+    let deleteOrderedMovie = `DELETE FROM Ordered_Movies WHERE ordered_movies_id = ?`;
 
-
-
-
-
+        db.pool.query(deleteOrderedMovie, [orderedMovieID], function(error, rows, fields){
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            }
+            else
+            {
+                res.sendStatus(204);
+            }
+        })
+});
 
 
 
@@ -413,13 +485,35 @@ app.get('/Ordered_Movies', function(req, res)
 */
 app.get('/movies', function(req, res)
 {  
-    let query1 = "SELECT * FROM Movies;";               
+    let query1; 
+    let query2= "SELECT * FROM Movies;";
+    
+        // If there is no query string, we just perform a basic SELECT
+        if (req.query.movie_title === undefined)
+        {
+            query1 = "SELECT * FROM Movies;";
+        }
+    
+        // If there is a query string, we assume this is a search, and return desired results
+        else
+        {
+            query1 = `SELECT * FROM Movies WHERE movie_title LIKE "${req.query.movie_title}%"`
+        }
 
-    db.pool.query(query1, function(error, rows, fields){    
+        // db.pool.query(query1, function(error, rows, fields){
+        
+        //     // Save the people
+        
+        //     return res.render('index', {data: movies});
+        // })
 
-        res.render('movies', {data: rows});                  
-    })                                                      
+    db.pool.query(query1, function(error, rows, fields){    // Execute the query
+        let movies = rows;
+
+        res.render('movies', {data: movies});                  // Render the movies.hbs file, and also send the renderer
+    })                                                      // an object where 'data' is equal to the 'rows' 
 });
+
 
 
 //ADD
@@ -434,8 +528,6 @@ app.post('/add-movie-ajax', function(req, res)
         release_date = 'NULL'
     }
 
-
-    // Create the query and run it on the database
     query1 = `INSERT INTO Movies (movie_title, release_date, genre) VALUES ('${data.title}', '${data.release_date}', '${data.genre}')`;
     db.pool.query(query1, function(error, rows, fields){
 
@@ -466,11 +558,11 @@ app.post('/add-movie-ajax', function(req, res)
 });
 
 
-//Delete
 app.delete('/delete-movie-ajax/', function(req,res,next){
     let data = req.body;
     let movieID = parseInt(data.id);
     let deleteMovies = `DELETE FROM Movies WHERE movie_id = ?`;
+  
   
           // Run the 1st query
           db.pool.query(deleteMovies, [movieID], function(error, rows, fields){
@@ -489,20 +581,21 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
 
 
 
-//UPDATE
+
   app.put('/put-movie-ajax', function(req,res,next){
     let data = req.body;
-    let movieID = parseInt(data.movie);
+
+    let movieID = parseInt(data.movieId);
 
     let title = parseInt(data.movie_title);
     let releaseDate = parseInt(data.release_date);
     let genre = parseInt(data.genre);
   
-    let queryUpdateMovie = `UPDATE Movies set movie_title =?, release_date = ?, genre= ?`;
-    let selectMovie = `SELECT * FROM Movies WHERE movie_title = ?`;
+    let queryUpdateMovie = `UPDATE Movies SET movie_title = ?, release_date = ?, genre= ? WHERE movie_id = ?`;
+    let selectMovie = `SELECT * FROM Movies `;
   
           // Run the 1st query
-          db.pool.query(queryUpdateMovie, [title, releaseDate, genre], function(error, rows, fields){
+          db.pool.query(queryUpdateMovie, [data['movie_title'], data['release_date'],data['genre'], movieID], function(error, rows, fields){
               if (error) {
   
               // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
@@ -515,7 +608,7 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
               else
               {
                   // Run the second query
-                  db.pool.query(selectMovie, [title], function(error, rows, fields) {
+                  db.pool.query(selectMovie, function(error, rows, fields) {
   
                       if (error) {
                           console.log(error);
@@ -529,9 +622,189 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
 
 
 
+
+
+
+/*////////////////////////////////////////////////////////////////////////////////////////
+                    AVAILABLE_RENTALS
+*/
+app.get('/available_rentals', function(req, res)
+{  
+    let query1 = "SELECT avail_id AS ID, movie_id AS MovieTitle, location_id AS Location, avail_copies AS 'Available Copies' FROM Available_Rentals;";
+    let movies = "SELECT * FROM Movies;";
+    let locations = "SELECT * FROM Locations;";               
+
+    db.pool.query(query1, function(error, rows, fields){
+        
+        let availRentals = rows;
+        
+        // Run the second query
+        db.pool.query(movies, (error, rows, fields) => {
+            let movies = rows;
+            //Map to replace movie_id with movie title
+            let moviemap = {}
+            movies.map(movie => {
+                let id = parseInt(movie.movie_id, 10);
+                moviemap[id] = movie["movie_title"];
+            });
+
+            // Run the third query
+            db.pool.query(locations, (error, rows, fields) => {
+                let locations = rows;
+                //Map to replace location_id with location address
+                let locationmap = {}
+                locations.map(location => {
+                    let id = parseInt(location.location_id, 10);
+                    locationmap[id] = location["location_street"] + ', ' + location["location_city"]
+                    + ', ' + location["location_state"] + ' ' + location["location_zip"];
+                });
+
+                availRentals = availRentals.map(availRental => {
+                    return Object.assign(availRental, {MovieTitle: moviemap[availRental.MovieTitle], 
+                        Location: locationmap[availRental.Location],
+                    });
+                });
+
+                return res.render('available_rentals', {
+                    data: availRentals, movies: movies, locations: locations,
+                });
+            });
+        });
+    });                                                 
+});
+
+
+
+
+
+//ADD
+app.post('/add-available-rentals-ajax', function(req, res)
+{
+    let data = req.body;
+    
+    let query1 = `INSERT INTO Available_Rentals (movie_id, location_id, avail_copies)
+    VALUES ('${data.movieId}', '${data.locationId}', '${data.availCopies}')`;
+
+    let query2 = `SELECT avail_id, movie_title, 
+    CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location, avail_copies
+    FROM Available_Rentals LEFT JOIN Movies ON Available_Rentals.movie_id = Movies.movie_id 
+    LEFT JOIN Locations ON Available_Rentals.location_id = Locations.location_id;`
+
+    db.pool.query(query1, function(error, rows, fields){
+        if (error) {
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            //Update the front-end
+            db.pool.query(query2, function(error, rows, fields){
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                else
+                {
+                    res.send(rows);
+                }
+            });
+        }
+    })
+});
+
+
+//DELETE
+app.delete('/delete-available-rentals-ajax/', function(req,res,next)
+{
+    let data = req.body;
+    let availRentalID = parseInt(data.id);
+    let deleteAvailableRental = `DELETE FROM Available_Rentals WHERE avail_id = ?`;
+
+        db.pool.query(deleteAvailableRental, [availRentalID], function(error, rows, fields){
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            }
+            else
+            {
+                res.sendStatus(204);
+            }
+        })
+});
+
+
+
+
+
+/*////////////////////////////////////////////////////////////////////////////////////////
+                    LOCATIONS
+*/
+//DISPLAY
+app.get('/locations', function(req, res)
+{  
+    let query1 = "SELECT * FROM Locations;";               
+
+    db.pool.query(query1, function(error, rows, fields){    
+
+        res.render('locations', {data: rows});                  
+    })                                                      
+});
+//ADD
+app.post('/add-location-ajax', function(req, res)
+{
+    let data = req.body;
+
+    // Capture NULL values
+    let zip = parseInt(data.location_zip);
+    if (isNaN(location_zip))
+    {
+        zip = 'NULL'
+    }
+
+    let phone = parseInt(data.location_phone_number);
+    if (isNaN(location_phone_number))
+    {
+        phone = 'NULL'
+    }
+  
+
+    query1 = `INSERT INTO Locations (location_street, location_city, location_state, location_zip, location_phone_number) 
+    VALUES ('${data.location_street}', '${data.location_city}', '${data.location_state}', '${data.location_zip}', '${data.location_phone_number}')`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        if (error) {
+            console.log(error)
+            res.sendStatus(400);
+        }
+
+       else
+        {
+            query2 = "SELECT * FROM Locations;";
+            db.pool.query(query2, function(error, rows, fields){
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
+
+
+
+
+
+
+
+
 /*
     LISTENER
-    Replace # with the number of the server you have placed the files on to run
 */
 app.listen(PORT, function(){
     console.log('Express started on flip#.engr.oregonstate.edu:' + PORT + '; press Ctrl-C to terminate.')

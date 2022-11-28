@@ -1,0 +1,146 @@
+{{!-- Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) --}}
+{{!-- Locations Page --}}
+
+
+
+<main>
+<h2>locations</h2>
+<p>&nbsp;</p>
+
+{{!-- The Data from our Database --}}
+{{!-- Create a table --}}
+<div id = "browse" class = "data-table">
+    <table id= "location-table" border="1" cellpadding="5">
+
+        {{!-- Header section --}}
+        <thead>
+
+            {{!-- For just the first row, we print each key of the row object as a header cell so we
+            know what each column means when the page renders --}}
+            <tr>
+                {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Delete</th>
+            </tr>
+        </thead>
+
+        {{!-- Body section --}}
+        <tbody>
+
+            {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
+            {{#each data}}
+            <tr data-value={{this.location_id}}>
+                <td>{{this.location_id}}</td>
+                <td>{{this.location_street}}</td>
+                <td>{{this.location_city}}</td>
+                <td>{{this.location_state}}</td>
+                <td>{{this.location_zip}}</td>
+                <td>{{this.location_phone_number}}</td>
+                <td><button onclick="deleteLocation({{this.location_id}})">Delete</button></td>                                                  
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <script src="./js/delete_location.js"></script>
+</div>
+
+<div class = "row">
+    <div class = "column">
+        <form id="add-location-form-ajax">
+            <h3>Add Store Location</h3>
+            <div class = "form-inputs">
+                <div>
+                    <label for="input-location_street">Street Address: </label>
+                    <input type="text" name="input-location_street" id="input-location_street">
+                </div>
+
+                <div>
+                    <label for="input-location_city">City: </label>
+                    <input type="text" name="input-location_city" id="input-location_city">
+                </div>
+
+                <div>
+                    <label for="input-location_state">State: </label>
+                    <input type="text" name="input-location_state" id="input-location_state" maxlength="2">                    
+                </div>  
+
+                <div>
+                    <label for="input-location_zip">Zip Code: </label>
+                    <input type="number" name="input-location_zip" id="input-location_zip">
+                </div>
+
+                <div>
+                    <label for="input-location_phone_number">Phone Number: </label>
+                    <input type="text" name="input-location_phone_number" id="input-location_phone_number" maxlength="12">
+                </div>
+
+                <input type="submit" value="Add Store">
+            </div>
+        </form>
+        {{!-- Embed javascript to handle the DOM manipulation and AJAX request --}}
+        <script src="./js/add_location.js"></script>
+    </div> <!-- End of Add Location Column -->
+
+<div class = "column">
+        <form id="update-location-form-ajax">
+        <h3>Update location</h3>
+            <div class = "form-inputs">
+                <div>
+                    <label for="input-update-location">Store Address: </label>
+                    <select name="input-update-location" id="update-location">
+                      <option value="input-update-location">Select a store location</option>
+                        {{#each data}}
+                        <option value="{{this.location_id}}">{{this.location_street}} {{this.location_city}} {{this.location_state}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="input-update-street">Street: </label>
+                    <input type="text" name="input-update-street" id="input-update-street">                    
+                </div>
+                <div>
+                    <label for="input-update-city">City: </label>
+                    <input type="text" name="input-update-city" id="input-update-city">                    
+                </div>
+                <div>
+                    <label for="input-update-state">State: </label>
+                    <input type="text" name="input-update-state" id="input-update-state">
+                </div>
+
+                <div>
+                    <label for="input-update-zip">Zip: </label>
+                    <input type="number" name="input-update-zip" id="input-update-zip">
+                </div>
+
+                <div>
+                    <label for="input-update-phone">Phone Number: </label>
+                    <input type="number" name="input-update-phone" id="input-update-phone">
+                </div>
+
+                
+                <input type="submit" value= "Update Store Location">
+            </div>
+        </form>
+    <script src="./js/update_location.js"></script>
+</div> <!-- End of update location Column -->
+
+</div> <!-- End of Row -->
+
+<div class = "row">
+    <div class = "column">
+    <form id="search-location-html" method='GET' action='/locations'>
+        <h3>Search locations</h3>
+        <div class = "form-inputs">
+            <div>
+                <label for="input-state">State: </label>
+                <input type="text" name="location_state" id="input-lname-html-search" maxlength="2">
+            </div>
+            <input type="submit" value= "Search location">
+            <a href='/locations'><button>Reset Results</button></a>
+        </div>
+    </form>
+</div> <!-- End of Search column -->
