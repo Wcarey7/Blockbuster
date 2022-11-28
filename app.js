@@ -64,39 +64,6 @@ app.get('/', function(req, res)
 
 
 
-app.get('/movies', function(req, res)
-{  
-    let query1; 
-    let query2= "SELECT * FROM Movies;";
-    
-        // If there is no query string, we just perform a basic SELECT
-        if (req.query.movie_title === undefined)
-        {
-            query1 = "SELECT * FROM Movies;";
-        }
-    
-        // If there is a query string, we assume this is a search, and return desired results
-        else
-        {
-            query1 = `SELECT * FROM Movies WHERE movie_title LIKE "${req.query.movie_title}%"`
-        }
-
-        // db.pool.query(query1, function(error, rows, fields){
-        
-        //     // Save the people
-        
-        //     return res.render('index', {data: movies});
-        // })
-
-    db.pool.query(query1, function(error, rows, fields){    // Execute the query
-        let movies = rows;
-
-        res.render('movies', {data: movies});                  // Render the movies.hbs file, and also send the renderer
-    })                                                      // an object where 'data' is equal to the 'rows' 
-});
-
-
-
 //ADD
 app.post('/add-customer-ajax', function(req, res)
 {
@@ -566,8 +533,6 @@ app.post('/add-movie-ajax', function(req, res)
         release_date = 'NULL'
     }
 
-
-    // Create the query and run it on the database
     query1 = `INSERT INTO Movies (movie_title, release_date, genre) VALUES ('${data.title}', '${data.release_date}', '${data.genre}')`;
     db.pool.query(query1, function(error, rows, fields){
 
@@ -598,11 +563,11 @@ app.post('/add-movie-ajax', function(req, res)
 });
 
 
-//Delete
 app.delete('/delete-movie-ajax/', function(req,res,next){
     let data = req.body;
     let movieID = parseInt(data.id);
     let deleteMovies = `DELETE FROM Movies WHERE movie_id = ?`;
+  
   
           // Run the 1st query
           db.pool.query(deleteMovies, [movieID], function(error, rows, fields){
@@ -620,19 +585,22 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
   })});
 
 
-//UPDATE
+
+
   app.put('/put-movie-ajax', function(req,res,next){
     let data = req.body;
-    let movieID = parseInt(data.movie);
+
+    let movieID = parseInt(data.movieId);
+
     let title = parseInt(data.movie_title);
     let releaseDate = parseInt(data.release_date);
     let genre = parseInt(data.genre);
   
-    let queryUpdateMovie = `UPDATE Movies set movie_title =?, release_date = ?, genre= ?`;
-    let selectMovie = `SELECT * FROM Movies WHERE movie_title = ?`;
+    let queryUpdateMovie = `UPDATE Movies SET movie_title = ?, release_date = ?, genre= ? WHERE movie_id = ?`;
+    let selectMovie = `SELECT * FROM Movies `;
   
           // Run the 1st query
-          db.pool.query(queryUpdateMovie, [title, releaseDate, genre], function(error, rows, fields){
+          db.pool.query(queryUpdateMovie, [data['movie_title'], data['release_date'],data['genre'], movieID], function(error, rows, fields){
               if (error) {
   
               // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
@@ -645,7 +613,7 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
               else
               {
                   // Run the second query
-                  db.pool.query(selectMovie, [title], function(error, rows, fields) {
+                  db.pool.query(selectMovie, function(error, rows, fields) {
   
                       if (error) {
                           console.log(error);
@@ -656,6 +624,7 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
                   })
               }
   })});
+
 
 
 
@@ -793,9 +762,9 @@ app.get('/locations', function(req, res)
 
 
 
+
 /*
     LISTENER
-    Replace # with the number of the server you have placed the files on to run
 */
 app.listen(PORT, function(){
     console.log('Express started on flip#.engr.oregonstate.edu:' + PORT + '; press Ctrl-C to terminate.')

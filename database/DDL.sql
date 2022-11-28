@@ -81,8 +81,7 @@ INSERT INTO `Customers` (`customer_id`, `first_name`, `last_name`, `customer_str
 (2, 'Andrew', 'Sabin', '4489 5th St', 'Albany', 'OR', 90402, '928-134-4736', 4, 6),
 (3, 'John', 'Smith', '1806 Couch St', 'Portland', 'OR', 97209, '503-719-6456', 3, 5),
 (4, 'Jane', 'Doe', '1126 Queens Hwy', 'Long Beach', 'CA', 90802, '877-342-0738', 2, 4),
-(5, 'Ash', 'Williams', '635 NE Water Ave', 'Albany', 'OR', 97321, '541-928-7699', 0, 0),
-(6, 'Wade', 'Carey', '3333 West Ave L6', 'Lancaster', 'CA', 93536, '6618773529', NULL, NULL);
+(5, 'Ash', 'Williams', '635 NE Water Ave', 'Albany', 'OR', 97321, '541-928-7699', 0, 0);
 
 -- --------------------------------------------------------
 
