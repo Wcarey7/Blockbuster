@@ -1,0 +1,88 @@
+{{!-- Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) --}}
+{{!-- Available_Rentals --}}
+
+<main>
+
+<h2>Available Rentals</h2>
+<p>&nbsp;</p>
+
+{{!-- The Data from our Database --}}
+{{!-- Create a table --}}
+<div id = "browse" class = "data-table">
+    <table id= "available-rentals-table" border="1" cellpadding="5">
+
+        {{!-- Header section --}}
+        <thead>
+
+            {{!-- For just the first row, we print each key of the row object as a header cell so we
+            know what each column means when the page renders --}}
+            <tr>
+                {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Delete</th>
+            </tr>
+        </thead>
+
+        {{!-- Body section --}}
+        <tbody>
+
+            {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
+            {{#each data}}
+            <tr data-value={{this.[ID]}}>
+                <td>{{this.[ID]}}</td>
+                <td>{{this.[MovieTitle]}}</td>
+                <td>{{this.[Location]}}</td>
+                <td>{{this.[Available Copies]}}</td>
+                <td><button onclick="deleteAvailableRental({{this.[ID]}})">Delete</button></td>                                                    
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <script src="./js/delete_available_rentals.js"></script>
+</div>
+
+
+
+
+<!-- Add new Available Rental form -->
+<div class = "row">
+    <div class = "column">
+        <form id="add-available-rental-form-ajax">
+            <h3>Add a New Available Rental</h3>
+            <div class = "form-inputs">
+                <div>
+                    <label for="input-avail-movie-id">Movie: </label>
+                        <select name="input-avail-movie-id" id="input-avail-movie-id" required="required">
+                            <option value="">Select a Movie</option>
+                            {{#each movies}}
+                                <option value="{{this.movie_id}}">{{this.movie_title}}</option>
+                            {{/each}}
+                    </select>
+                </div>
+                <div>
+                    <label for="input-avail-location-id">Location: </label>
+                    <select name="input-avail-location-id" id="input-avail-location-id" required="required">
+                        <option value="">Select a Location</option>
+                        {{#each locations}}
+                        <option value="{{this.location_id}}">#{{this.location_id}}: {{this.location_street}}, 
+                            {{this.location_city}}, {{this.location_state}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="input-available-copies">Available Copies: </label>
+                    <input type="number" value="0" name="input-available-copies" id="input-available-copies" required="required">
+                </div>
+
+                <input type="submit" value="Add Available Rental">
+            </div>
+        </form>
+        {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+        <script src="./js/add_available_rentals.js"></script>
+    </div> <!-- End of Add Availalbe Rentals Column -->
+
+</div> <!-- End of Row -->

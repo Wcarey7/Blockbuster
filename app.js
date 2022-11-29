@@ -10,7 +10,7 @@ var app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(__dirname + '/public'));
-PORT = 7792;
+PORT = 7791;
 
 // Database
 var db = require('./database/db-connector');
@@ -40,13 +40,18 @@ app.get('/', function(req, res)
     // If there is no query string, perform SELECT
     if (req.query.lname === undefined)
     {
-        query1 = 'SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" FROM Customers;';
+        query1 = `SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, 
+        customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", 
+        customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" FROM Customers;`
     }
 
     // If there is a query string, search
     else
     {
-        query1 = `SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" FROM Customers WHERE last_name LIKE "${req.query.lname}%"`
+        query1 = `SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, 
+        customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", 
+        customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" 
+        FROM Customers WHERE last_name LIKE "${req.query.lname}%"`
     }
 
     db.pool.query(query1, function(error, rows, fields){
@@ -375,7 +380,7 @@ app.get('/ordered_movies', function(req, res)
     let movies = "SELECT * FROM Movies;";
 
     // If there is no query string, perform SELECT
-    if (req.query.filter === undefined || req.query.filter)
+    if (req.query.filter === undefined || req.query.filter === "")
     {
         query1 = "SELECT ordered_movies_id AS ID, order_id AS Order_ID, movie_id AS Movie_Title, quantity AS Quantity FROM Ordered_Movies;";
     }
@@ -750,6 +755,7 @@ app.get('/locations', function(req, res)
         res.render('locations', {data: rows});                  
     })                                                      
 });
+
 //ADD
 app.post('/add-location-ajax', function(req, res)
 {
@@ -796,12 +802,60 @@ app.post('/add-location-ajax', function(req, res)
     })
 });
 
+//UPDATE
+app.put('/put-location-ajax', function(req,res,next)
+{
+    let data = req.body;
+    let locationID = parseInt(data.locationId);
 
+    let queryUpdateCustomer = `UPDATE Location SET location_street = ?, location_city = ?, location_state = ?, location_phone_number = ?`;
 
+    selectCustomer =  `SELECT * FROM Locations;`;
 
+    db.pool.query(queryUpdateCustomer, 
+    [
+        data['street'], data['city'], data['state'],
+        data['zip'], data['phone'], locationID,
+    ],
+    function(error, rows, fields){
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        }
+        // Update the front-end
+        else
+        {
+        db.pool.query(selectCustomer, function(error, rows, fields) {
 
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            } else {
+                res.send(rows);
+            }
+        });
+        }
+  })
+});
 
+//DELETE
+app.delete('/delete-customer-ajax/', function(req,res,next)
+{
+    let data = req.body;
+    let locationID = parseInt(data.id);
+    let deleteLocations = `DELETE FROM Locations WHERE location_id = ?`;
 
+        db.pool.query(deleteLocations, [locationID], function(error, rows, fields){
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            }
+            else
+            {
+                res.sendStatus(204);
+            }
+        });
+});
 
 /*
     LISTENER
