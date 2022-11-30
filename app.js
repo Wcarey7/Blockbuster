@@ -10,7 +10,7 @@ var app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(__dirname + '/public'));
-PORT = 7791;
+PORT = 7792;
 
 // Database
 var db = require('./database/db-connector');
@@ -753,6 +753,107 @@ app.get('/locations', function(req, res)
 
         res.render('locations', {data: rows});                  
     })                                                      
+});
+
+//ADD
+app.post('/add-location-ajax', function(req, res)
+{
+    let data = req.body;
+
+    // Capture NULL values
+    let zip = parseInt(data.zip);
+    if (isNaN(zip))
+    {
+        zip = 'NULL'
+    }
+
+    let phone = parseInt(data.phone);
+    if (isNaN(phone))
+    {
+        phone = 'NULL'
+    }
+  
+
+    query1 = `INSERT INTO Locations (location_street, location_city, location_state, location_zip, location_phone_number) 
+    VALUES ('${data.street}', '${data.city}', '${data.state}', ${zip}, ${phone})`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        if (error) {
+            console.log(error)
+            res.sendStatus(400);
+        }
+
+       else
+        {
+            query2 = "SELECT * FROM Locations;";
+            db.pool.query(query2, function(error, rows, fields){
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
+
+//UPDATE
+app.put('/put-location-ajax', function(req,res,next)
+{
+    let data = req.body;
+    let locationID = parseInt(data.locationId);
+
+    let queryUpdateCustomer = `UPDATE Location SET location_street = ?, location_city = ?, location_state = ?, location_phone_number = ?`;
+
+    selectCustomer =  `SELECT * FROM Locations;`;
+
+    db.pool.query(queryUpdateCustomer, 
+    [
+        data['street'], data['city'], data['state'],
+        data['zip'], data['phone'], locationID,
+    ],
+    function(error, rows, fields){
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        }
+        // Update the front-end
+        else
+        {
+        db.pool.query(selectCustomer, function(error, rows, fields) {
+
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            } else {
+                res.send(rows);
+            }
+        });
+        }
+  })
+});
+
+//DELETE
+app.delete('/delete-customer-ajax/', function(req,res,next)
+{
+    let data = req.body;
+    let locationID = parseInt(data.id);
+    let deleteLocations = `DELETE FROM Locations WHERE location_id = ?`;
+
+        db.pool.query(deleteLocations, [locationID], function(error, rows, fields){
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            }
+            else
+            {
+                res.sendStatus(204);
+            }
+        });
 });
 
 
