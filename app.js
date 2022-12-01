@@ -196,22 +196,11 @@ app.get('/orders', function(req, res)
     let customers = "SELECT * FROM Customers;";
     let locations = "SELECT * FROM Locations;";
 
-    // If there is no query string, perform SELECT
-    if (req.query.filter === undefined)
-    {
-        query1 = `SELECT order_id AS ID, customer_id AS Customer_Name, location_id AS Location_Address, 
-        DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue 
-        FROM Orders;`
+    query1 = `SELECT order_id AS ID, customer_id AS Customer_Name, location_id AS Location_Address, 
+    DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, 
+    IF(over_due=0, "No", "Yes") AS Is_Overdue 
+    FROM Orders;`
         
-    }
-    // If there is a query string, search
-    else
-    {
-        query1 = `SELECT order_id AS ID, customer_id AS Customer_Name, location_id AS Location_Address, 
-        DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue 
-        FROM Orders WHERE location_id LIKE "${req.query.filter}%"`
-    }
-
     db.pool.query(query1, function(error, rows, fields){
         
         let orders = rows;
@@ -253,6 +242,66 @@ app.get('/orders', function(req, res)
 });
 
 
+// SEARCH / FILTER
+app.get('/orders/:filter', function(req, res)
+{
+    let query1;
+    let customers = "SELECT * FROM Customers;";
+    let locations = "SELECT * FROM Locations;";
+    let {filter} = req.params;
+
+    console.log(req.params);
+    console.log(req.params.filter);
+    console.log(req.query);
+    console.log(req.query.filter);
+    console.log(filter);
+        
+
+    query1 = `SELECT order_id AS ID, customer_id AS Customer_Name, location_id AS Location_Address, 
+    DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, 
+    IF(over_due=0, "No", "Yes") AS Is_Overdue 
+    FROM Orders WHERE ?? LIKE "${req.query.filter}%"`
+
+    db.pool.query(query1, [filter], function(error, rows, fields){
+        
+        let orders = rows;
+        
+        // Run the second query
+        db.pool.query(customers, (error, rows, fields) => {
+            let customers = rows;
+            //Map to replace customer_id with customer name
+            let customermap = {}
+            customers.map(customer => {
+                let id = parseInt(customer.customer_id, 10);
+                customermap[id] = customer["first_name"] + ' ' + customer["last_name"];
+            });
+
+
+            // Run the third query
+            db.pool.query(locations, (error, rows, fields) => {
+                let locations = rows;
+                //Map to replace location_id with location address
+                let locationmap = {}
+                locations.map(location => {
+                    let id = parseInt(location.location_id, 10);
+                    locationmap[id] = location["location_street"] + ', ' + location["location_city"]
+                    + ', ' + location["location_state"] + ' ' + location["location_zip"];
+                });
+
+                orders = orders.map(order => {
+                    return Object.assign(order, {Customer_Name: customermap[order.Customer_Name], 
+                        Location_Address: locationmap[order.Location_Address],
+                    });
+                });
+
+                return res.render('orders', {
+                    data: orders, customers: customers, locations: locations,
+                });
+            });
+        });
+    });
+});
+
 
 
 //ADD
@@ -272,7 +321,8 @@ app.post('/add-order-ajax', function(req, res)
 
     let query2 = `SELECT order_id, CONCAT(Customers.first_name, " ", Customers.last_name) AS Customer_Name,  
     CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location_Address, 
-    DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue 
+    DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, 
+    IF(over_due=0, "No", "Yes") AS Is_Overdue 
     FROM Orders
     LEFT JOIN Customers ON Orders.customer_id = Customers.customer_id 
     LEFT JOIN Locations ON Orders.location_id = Locations.location_id;`
@@ -316,7 +366,8 @@ app.put('/put-order-ajax', function(req,res,next)
 
     let selectOrder = `SELECT order_id AS ID, CONCAT(Customers.first_name, " ", Customers.last_name) AS Customer_Name,  
     CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location_Address, 
-    DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, over_due AS Is_Overdue 
+    DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, 
+    IF(over_due=0, "No", "Yes") AS Is_Overdue 
     FROM Orders
     LEFT JOIN Customers ON Orders.customer_id = Customers.customer_id 
     LEFT JOIN Locations ON Orders.location_id = Locations.location_id;`  

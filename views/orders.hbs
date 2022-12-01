@@ -166,13 +166,13 @@
 
 <div class = "row">
     <div class = "column">
-        <form id="filter-customer-order-html" method='GET' action='/orders'>
+        <form id="filter-customer-order-html" method='GET' action='/orders/customer_id'>
         <h3>Filter by Customer</h3>
         <div class = "form-inputs">
             <div>
                 <label for="filter-customer-id">Customer: </label>
                 <select name="filter" id="customer_id">
-                    <option></option>
+                    <option value="">Select a Customer</option>
                     {{#each customers}}
                     <option value="{{this.customer_id}}">{{this.first_name}} {{this.last_name}}</option>
                     {{/each}}
@@ -187,7 +187,7 @@
 
 
     <div class = "column">
-        <form id="filter-location-order-html" method='GET' action='/orders'>
+        <form id="filter-location-order-html" method='GET' action='/orders/location_id'>
         <h3>Filter by Location</h3>
         <div class = "form-inputs">
             <div>
