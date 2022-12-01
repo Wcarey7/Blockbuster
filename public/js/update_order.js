@@ -1,10 +1,8 @@
-// Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+// Referenced structure and AJAX request from: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
 
 
-// Get the objects we need to modify
 let updateOrderForm = document.getElementById('update-order-form-ajax');
 
-// Modify the objects we need
 updateOrderForm.addEventListener("submit", function (e) {
     
     // Prevent the form from submitting
@@ -65,19 +63,14 @@ updateOrderForm.addEventListener("submit", function (e) {
 
     // Send the request and wait for the response
     xhttp.send(JSON.stringify(data));
-
 })
-
 
 
 function updateOrderRow(data, orderID){
     let parsedData = JSON.parse(data);
-    
     let table = document.getElementById("orders-table");
 
     for (let i = 0, row; row = table.rows[i]; i++) {
-       //iterate through rows
-       //rows would be accessed using the "row" variable assigned in the for loop
        if (table.rows[i].getAttribute("data-value") == orderID) {
 
             // Get the location of the row where we found the matching order ID
@@ -90,7 +83,7 @@ function updateOrderRow(data, orderID){
              let returnDate = updateRowIndex.getElementsByTagName("td")[4];
              let overDue = updateRowIndex.getElementsByTagName("td")[5];
 
-             //set to what row to update 
+             // set to what row to update 
              let tableRow = i-1;
 
              // Reassign the value we updated to
@@ -99,27 +92,28 @@ function updateOrderRow(data, orderID){
              orderDate.innerHTML = parsedData[tableRow].Order_Date;
              returnDate.innerHTML = parsedData[tableRow].Return_Date;
              overDue.innerHTML = parsedData[tableRow].Is_Overdue;
-
        }
     }
 }
 
 
+// Fill update html form on selection change
 function autoFill() {
     let selectElement = document.getElementById('update-order');
     let selectElement_id = selectElement.value;
-    //If the element selected is empty, clear all values in the form
+
+    // If the element selected is empty, clear all values in the form
     if (selectElement_id === '') {
         document.getElementById("update-customer-id").value = ''
         document.getElementById("update-location-id").value = ''
         document.getElementById("update-order-date").value = ''
         document.getElementById("update-return-date").value = ''
         document.getElementById("update-overdue").value = ''
-    
 
     } else {
         let table = document.getElementById('orders-table');
-        //Fill each form field with the selected order info
+
+        // Fill each form field with the selected order info
         for (let i = 0, row; row = table.rows[i]; i++) {
 
             if (table.rows[i].getAttribute('data-value') == selectElement_id) {
@@ -140,7 +134,7 @@ function autoFill() {
 
                 let td5 = updateRowIndex.getElementsByTagName("td")[5];
                 document.getElementById('update-overdue').value = td5.innerHTML;
-
+                console.log(td1.innerHTML);
             }
         }
     }

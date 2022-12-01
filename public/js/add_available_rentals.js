@@ -1,10 +1,7 @@
-// Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+// Referenced structure and AJAX request from: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
 
-
-// Get the objects we need to modify
 let addAvailRentalForm = document.getElementById('add-available-rental-form-ajax');
 
-// Modify the objects we need
 addAvailRentalForm.addEventListener("submit", function (e) {
     
     // Prevent the form from submitting
@@ -15,12 +12,10 @@ addAvailRentalForm.addEventListener("submit", function (e) {
     let inputLocationId = document.getElementById("input-avail-location-id");
     let inputAvailCopies = document.getElementById("input-available-copies");
 
-
     // Get the values from the form fields
     let movieIdValue = inputMovieId.value;
     let locationIdValue = inputLocationId.value;
     let availCopiesValue = inputAvailCopies.value;
-
 
     // DATA Packet
     let data = {
@@ -57,7 +52,7 @@ addAvailRentalForm.addEventListener("submit", function (e) {
 })
 
 
-// Creates a single row from an Object representing a single record from 
+// Update frontend with new row
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.
@@ -90,7 +85,6 @@ addRowToTable = (data) => {
     deleteButton.onclick = function(){
         deleteAvailableRental(newRow.avail_id);
     };
-
     deleteCell.appendChild(deleteButton);
 
     // Add the cells to the row 

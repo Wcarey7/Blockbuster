@@ -1,20 +1,17 @@
-{{!-- Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) --}}
 {{!-- Orders Page --}}
+{{!-- Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app --}}
+
 
 <main>
-
 <h2>Ordered Movies</h2>
-
 <p>&nbsp;</p>
 
-{{!-- The Data from our Database --}}
-{{!-- Create a table --}}
+
+{{!-- Create a table for the database --}}
 <div id = "browse" class = "data-table">
     <table id= "ordered-movies-table" border="1" cellpadding="5">
-
         {{!-- Header section --}}
         <thead>
-
             {{!-- For just the first row, we print each key of the row object as a header cell so we
             know what each column means when the page renders --}}
             <tr>
@@ -29,8 +26,8 @@
 
         {{!-- Body section --}}
         <tbody>
-
-            {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
+            {{!-- For each row, insert the table data --}}
+            {{!-- Square brackets refer to the alias names of the SELECT query --}}
             {{#each data}}
             <tr data-value={{this.[ID]}}>
                 <td>{{this.[ID]}}</td>
@@ -61,7 +58,6 @@
                         {{/each}}
                     </select>
                 </div>
-
                 <div>
                     <label for="input-movie-id">Movie: </label>
                         <select name="input-movie-id" id="input-movie-id">
@@ -80,12 +76,11 @@
                 <input type="submit" value="Add Ordered Movie">
             </div>
         </form>
-        {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
         <script src="./js/add_ordered_movies.js"></script>
     </div> <!-- End of Add Ordered Movie Column -->
 
 
-<!-- Filter by order ID -->
+    <!-- Filter by order ID -->
     <div class = "column">
         <form id="filter-order-html" method='GET' action='/ordered_movies'>
             <h3>Filter by Order ID</h3>
@@ -105,7 +100,5 @@
             </div>
         </form>
     </div> <!-- End of filter order Column -->
-
 </div><!-- End of Row -->
-
 </main>

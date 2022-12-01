@@ -1,10 +1,7 @@
-// Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+// Referenced structure and AJAX request from: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
 
-
-// Get the objects we need to modify
 let addOrderedMovieForm = document.getElementById('add-ordered-movie-form-ajax');
 
-// Modify the objects we need
 addOrderedMovieForm.addEventListener("submit", function (e) {
     
     // Prevent the form from submitting
@@ -57,7 +54,7 @@ addOrderedMovieForm.addEventListener("submit", function (e) {
 })
 
 
-// Creates a single row from an Object representing a single record
+// Update frontend with new row
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.

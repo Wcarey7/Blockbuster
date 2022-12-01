@@ -1,10 +1,7 @@
-// Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+// Referenced structure and AJAX request from: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
 
-
-// Get the objects we need to modify
 let addOrderForm = document.getElementById('add-order-form-ajax');
 
-// Modify the objects we need
 addOrderForm.addEventListener("submit", function (e) {
     
     // Prevent the form from submitting
@@ -65,7 +62,7 @@ addOrderForm.addEventListener("submit", function (e) {
 })
 
 
-// Creates a single row from an Object representing a single record 
+// Update frontend with new row
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.
@@ -78,7 +75,7 @@ addRowToTable = (data) => {
     let parsedData = JSON.parse(data);
     let newRow = parsedData[parsedData.length - 1]
 
-    // Create a row and 10 cells
+    // Create a row 
     let row = document.createElement("TR");
     let orderIdCell = document.createElement("TD");
     let customerNameCell = document.createElement("TD");
@@ -121,6 +118,9 @@ addRowToTable = (data) => {
     // Add the row to the table
     currentTable.appendChild(row);
 
+    // Find drop down menu, create a new option, fill data in the option (full name, id),
+    // then append option to drop down menu 
+    // so newly created rows via ajax will be found in it without needing a refresh
     let selectMenu = document.getElementById("update-order");
     let option = document.createElement("option");
     option.text = newRow.order_id;

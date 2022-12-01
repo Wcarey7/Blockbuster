@@ -1,4 +1,5 @@
-//Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+// Main Routes
+// Routes Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app
 
 /*
     SETUP
@@ -17,17 +18,14 @@ var db = require('./database/db-connector');
 
 // Handlebars
 const { engine } = require('express-handlebars');
-var exphbs = require('express-handlebars');     // Import express-handlebars
-
-
+var exphbs = require('express-handlebars');   
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
-app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
+app.set('view engine', '.hbs');   // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
 
 
 /*
     ROUTES
 */
-
 
 /*////////////////////////////////////////////////////////////////////////////////////////
                 INDEX
@@ -64,7 +62,7 @@ app.get('/', function(req, res)
 
 
 
-//ADD
+// ADD
 app.post('/add-customer-ajax', function(req, res)
 {
     let data = req.body;
@@ -125,7 +123,7 @@ app.post('/add-customer-ajax', function(req, res)
 
 
 
-//UPDATE
+// UPDATE
 app.put('/put-customer-ajax', function(req,res,next)
 {
     let data = req.body;
@@ -164,8 +162,7 @@ app.put('/put-customer-ajax', function(req,res,next)
 });
 
 
-
-//DELETE
+// DELETE
 app.delete('/delete-customer-ajax/', function(req,res,next)
 {
     let data = req.body;
@@ -186,7 +183,6 @@ app.delete('/delete-customer-ajax/', function(req,res,next)
 
 
 
-
 /*////////////////////////////////////////////////////////////////////////////////////////
                     ORDERS
 */
@@ -202,7 +198,6 @@ app.get('/orders', function(req, res)
     FROM Orders;`
         
     db.pool.query(query1, function(error, rows, fields){
-        
         let orders = rows;
         
         // Run the second query
@@ -248,14 +243,7 @@ app.get('/orders/:filter', function(req, res)
     let query1;
     let customers = "SELECT * FROM Customers;";
     let locations = "SELECT * FROM Locations;";
-    let {filter} = req.params;
-
-    console.log(req.params);
-    console.log(req.params.filter);
-    console.log(req.query);
-    console.log(req.query.filter);
-    console.log(filter);
-        
+    let {filter} = req.params;   
 
     query1 = `SELECT order_id AS ID, customer_id AS Customer_Name, location_id AS Location_Address, 
     DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, 
@@ -263,7 +251,6 @@ app.get('/orders/:filter', function(req, res)
     FROM Orders WHERE ?? LIKE "${req.query.filter}%"`
 
     db.pool.query(query1, [filter], function(error, rows, fields){
-        
         let orders = rows;
         
         // Run the second query
@@ -275,7 +262,6 @@ app.get('/orders/:filter', function(req, res)
                 let id = parseInt(customer.customer_id, 10);
                 customermap[id] = customer["first_name"] + ' ' + customer["last_name"];
             });
-
 
             // Run the third query
             db.pool.query(locations, (error, rows, fields) => {
@@ -304,7 +290,7 @@ app.get('/orders/:filter', function(req, res)
 
 
 
-//ADD
+// ADD
 app.post('/add-order-ajax', function(req, res)
 {
     let data = req.body;
@@ -353,9 +339,7 @@ app.post('/add-order-ajax', function(req, res)
 
 
 
-
-
-//UPDATE
+// UPDATE
 app.put('/put-order-ajax', function(req,res,next)
 {
     let data = req.body;
@@ -397,8 +381,7 @@ app.put('/put-order-ajax', function(req,res,next)
 });
 
 
-
-//DELETE
+// DELETE
 app.delete('/delete-order-ajax/', function(req,res,next)
 {
     let data = req.body;
@@ -416,8 +399,6 @@ app.delete('/delete-order-ajax/', function(req,res,next)
             }
         })
 });
-
-
 
 
 
@@ -443,17 +424,14 @@ app.get('/ordered_movies', function(req, res)
     }
 
     db.pool.query(query1, function(error, rows, fields){
-        
         let orderedMovies = rows;
         
         // Run the second query
         db.pool.query(orders, (error, rows, fields) => {
-
             let orders = rows;
 
             // Run the third query
             db.pool.query(movies, (error, rows, fields) => {
-
                 let movies = rows;
                 //Map to replace movie_id with movie title
                 let moviemap = {}
@@ -477,7 +455,7 @@ app.get('/ordered_movies', function(req, res)
 
 
 
-//ADD
+// ADD
 app.post('/add-ordered-movie-ajax', function(req, res)
 {
     let data = req.body;
@@ -512,8 +490,7 @@ app.post('/add-ordered-movie-ajax', function(req, res)
 });
 
 
-
-//DELETE
+// DELETE
 app.delete('/delete-ordered-movies-ajax/', function(req,res,next)
 {
     let data = req.body;
@@ -531,8 +508,6 @@ app.delete('/delete-ordered-movies-ajax/', function(req,res,next)
             }
         })
 });
-
-
 
 
 
@@ -678,9 +653,6 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
 
 
 
-
-
-
 /*////////////////////////////////////////////////////////////////////////////////////////
                     AVAILABLE_RENTALS
 */
@@ -691,7 +663,6 @@ app.get('/available_rentals', function(req, res)
     let locations = "SELECT * FROM Locations;";               
 
     db.pool.query(query1, function(error, rows, fields){
-        
         let availRentals = rows;
         
         // Run the second query
@@ -730,10 +701,7 @@ app.get('/available_rentals', function(req, res)
 });
 
 
-
-
-
-//ADD
+// ADD
 app.post('/add-available-rentals-ajax', function(req, res)
 {
     let data = req.body;
@@ -770,7 +738,7 @@ app.post('/add-available-rentals-ajax', function(req, res)
 });
 
 
-//DELETE
+// DELETE
 app.delete('/delete-available-rentals-ajax/', function(req,res,next)
 {
     let data = req.body;
@@ -788,7 +756,6 @@ app.delete('/delete-available-rentals-ajax/', function(req,res,next)
             }
         })
 });
-
 
 
 
@@ -906,12 +873,6 @@ app.delete('/delete-customer-ajax/', function(req,res,next)
             }
         });
 });
-
-
-
-
-
-
 
 
 

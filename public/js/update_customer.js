@@ -1,10 +1,8 @@
-// Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+// Referenced structure and AJAX request from: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
 
 
-// Get the objects we need to modify
 let updateCustomerForm = document.getElementById('update-customer-form-ajax');
 
-// Modify the objects we need
 updateCustomerForm.addEventListener("submit", function (e) {
     
     // Prevent the form from submitting
@@ -79,21 +77,16 @@ updateCustomerForm.addEventListener("submit", function (e) {
 
     // Send the request and wait for the response
     xhttp.send(JSON.stringify(data));
-
 })
-
 
 
 function updateCustomerRow(data, customerID) {
     let parsedData = JSON.parse(data);
-
-    // Get a reference to the current table on the page and clear it out.
     let table = document.getElementById("customer-table");
 
     for (let i = 0, row; row = table.rows[i]; i++) {
-        //iterate through rows
-        //rows would be accessed using the "row" variable assigned in the for loop
         if (table.rows[i].getAttribute("data-value") == customerID) {
+
             // Get the location of the row where we found the matching customer ID
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
@@ -136,6 +129,7 @@ function updateCustomerRow(data, customerID) {
     }
 }
 
+
 function deleteDropDownMenu(customerID){
     let selectMenu = document.getElementById("update-customer");
     for (let i = 0; i < selectMenu.length; i++){
@@ -147,9 +141,11 @@ function deleteDropDownMenu(customerID){
 }
 
 
+// Fill update html form on selection change
 function autoFill() {
     let selectElement = document.getElementById('update-customer');
     let selectElement_id = selectElement.value;
+
     //If the element selected is empty, clear all values in the form
     if (selectElement_id === '') {
         document.getElementById("input-update-fname").value = ''
@@ -161,7 +157,6 @@ function autoFill() {
         document.getElementById("input-update-phone").value = ''
         document.getElementById("input-update-active-rentals").value = ''
         document.getElementById("input-update-total-rentals").value = ''
-    
 
     } else {
         let table = document.getElementById('customer-table');
@@ -198,7 +193,6 @@ function autoFill() {
 
                 let td9 = updateRowIndex.getElementsByTagName("td")[9];
                 document.getElementById('input-update-total-rentals').value = td9.innerHTML;
-
             }
         }
     }
