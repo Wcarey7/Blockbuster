@@ -1,4 +1,7 @@
-// Referenced structure and AJAX request from: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
+// Code Citations
+// Date: 11/15/2022
+// Referenced structure and AJAX request from:
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
 
 
 let updateCustomerForm = document.getElementById('update-customer-form-ajax');

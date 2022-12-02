@@ -1,4 +1,7 @@
-// Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+// Code Citations
+// Date: 11/15/2022
+// Referenced structure and AJAX request from:
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
 
 
 // Get the objects we need to modify

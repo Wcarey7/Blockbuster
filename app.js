@@ -1,5 +1,10 @@
 // Main Routes
-// Routes Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+
+// Code Citations
+// Date: 11/15/2022
+// Routes Referenced from:
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
+
 
 /*
     SETUP
@@ -18,9 +23,9 @@ var db = require('./database/db-connector');
 
 // Handlebars
 const { engine } = require('express-handlebars');
-var exphbs = require('express-handlebars');   
-app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
-app.set('view engine', '.hbs');   // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
+var exphbs = require('express-handlebars');
+app.engine('.hbs', engine({extname: ".hbs"}));
+app.set('view engine', '.hbs');
 
 
 /*
@@ -38,16 +43,19 @@ app.get('/', function(req, res)
     // If there is no query string, perform SELECT
     if (req.query.lname === undefined)
     {
-        query1 = `SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, 
-        customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", 
-        customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" FROM Customers;`
+        query1 = `SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", 
+        customer_street AS Street, customer_city AS City, customer_state AS State, customer_zip AS Zip, 
+        customer_phone_number AS "Phone Number", customer_active_rentals AS "Active Rentals", 
+        customer_total_rentals AS "Total Rentals" 
+        FROM Customers;`
     }
 
     // If there is a query string, search
     else
     {
-        query1 = `SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", customer_street AS Street, 
-        customer_city AS City, customer_state AS State, customer_zip AS Zip, customer_phone_number AS "Phone Number", 
+        query1 = `SELECT customer_id AS ID, first_name AS "First Name", last_name AS "Last Name", 
+        customer_street AS Street, customer_city AS City, customer_state AS State, 
+        customer_zip AS Zip, customer_phone_number AS "Phone Number", 
         customer_active_rentals AS "Active Rentals", customer_total_rentals AS "Total Rentals" 
         FROM Customers WHERE last_name LIKE "${req.query.lname}%"`
     }
@@ -129,9 +137,10 @@ app.put('/put-customer-ajax', function(req,res,next)
     let data = req.body;
     let customerID = parseInt(data.customerId);
 
-    let queryUpdateCustomer = `UPDATE Customers SET first_name = ?, last_name = ?, customer_street = ?, customer_city = ?,
-    customer_state = ?, customer_zip = ?, customer_phone_number = ?, customer_active_rentals = ?,
-    customer_total_rentals = ? WHERE customer_id = ?`;
+    let queryUpdateCustomer = `UPDATE Customers SET first_name = ?, last_name = ?, customer_street = ?, 
+    customer_city = ?, customer_state = ?, customer_zip = ?, customer_phone_number = ?, 
+    customer_active_rentals = ?, customer_total_rentals = ? 
+    WHERE customer_id = ?`;
 
     selectCustomer =  `SELECT * FROM Customers;`;
 
@@ -209,7 +218,6 @@ app.get('/orders', function(req, res)
                 let id = parseInt(customer.customer_id, 10);
                 customermap[id] = customer["first_name"] + ' ' + customer["last_name"];
             });
-
 
             // Run the third query
             db.pool.query(locations, (error, rows, fields) => {
@@ -414,13 +422,15 @@ app.get('/ordered_movies', function(req, res)
     // If there is no query string, perform SELECT
     if (req.query.filter === undefined || req.query.filter === "")
     {
-        query1 = "SELECT ordered_movies_id AS ID, order_id AS Order_ID, movie_id AS Movie_Title, quantity AS Quantity FROM Ordered_Movies;";
+        query1 = `SELECT ordered_movies_id AS ID, order_id AS Order_ID, movie_id AS Movie_Title, quantity AS Quantity 
+        FROM Ordered_Movies;`;
     }
     // If there is a query string, search
     else
     {
         query1 = `SELECT ordered_movies_id AS ID, order_id AS Order_ID, movie_id AS Movie_Title, quantity AS Quantity 
-        FROM Ordered_Movies WHERE order_id = "${req.query.filter}%"`
+        FROM Ordered_Movies 
+        WHERE order_id = "${req.query.filter}%"`
     }
 
     db.pool.query(query1, function(error, rows, fields){
@@ -713,7 +723,8 @@ app.post('/add-available-rentals-ajax', function(req, res)
 
     let query2 = `SELECT avail_id, movie_title, 
     CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location, avail_copies
-    FROM Available_Rentals LEFT JOIN Movies ON Available_Rentals.movie_id = Movies.movie_id 
+    FROM Available_Rentals 
+    LEFT JOIN Movies ON Available_Rentals.movie_id = Movies.movie_id 
     LEFT JOIN Locations ON Available_Rentals.location_id = Locations.location_id;`
 
     db.pool.query(query1, function(error, rows, fields){
@@ -762,7 +773,8 @@ app.put('/put-available-rentals-ajax', function(req,res,next)
 
     let selectAvailRental = `SELECT avail_id, movie_title, 
     CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location, avail_copies
-    FROM Available_Rentals LEFT JOIN Movies ON Available_Rentals.movie_id = Movies.movie_id 
+    FROM Available_Rentals 
+    LEFT JOIN Movies ON Available_Rentals.movie_id = Movies.movie_id 
     LEFT JOIN Locations ON Available_Rentals.location_id = Locations.location_id;`  
     
     db.pool.query(queryUpdateAvailRental,
