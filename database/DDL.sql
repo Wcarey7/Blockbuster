@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 11, 2022 at 12:26 AM
+-- Generation Time: Dec 02, 2022 at 04:55 AM
 -- Server version: 10.6.10-MariaDB-log
 -- PHP Version: 7.4.33
 
@@ -33,9 +33,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Available_Rentals` (
-  `avail_id` int(10) UNSIGNED NOT NULL,
-  `movie_id` int(11) NOT NULL,
-  `location_id` int(11) NOT NULL,
+  `avail_id` int(11) NOT NULL,
+  `movie_id` int(11) DEFAULT NULL,
+  `location_id` int(11) DEFAULT NULL,
   `avail_copies` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -159,8 +159,7 @@ INSERT INTO `Ordered_Movies` (`ordered_movies_id`, `order_id`, `movie_id`, `quan
 (4, 4, 4, 1),
 (5, 4, 8, 2),
 (6, 5, 7, 1),
-(7, 6, 1, 1),
-(10, 5, 8, 1);
+(7, 6, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -181,14 +180,13 @@ CREATE TABLE `Orders` (
 -- Dumping data for table `Orders`
 --
 
-INSERT INTO `Orders` (`order_id`, `customer_id`, `location_id`, `order_date`,`return_date`, `over_due`) VALUES
+INSERT INTO `Orders` (`order_id`, `customer_id`, `location_id`, `order_date`, `return_date`, `over_due`) VALUES
 (1, 4, 2, '2022-10-10', '2022-10-17', 1),
 (2, 1, 2, '2022-10-11', '2022-10-18', 0),
 (3, 1, 1, '2022-10-13', '2022-10-20', 0),
 (4, 2, 4, '2022-10-18', '2022-10-25', 0),
 (5, 3, 3, '2022-10-19', '2022-10-26', 0),
 (6, 4, 2, '2022-10-20', '2022-10-27', 0);
-
 
 --
 -- Indexes for dumped tables
@@ -198,7 +196,7 @@ INSERT INTO `Orders` (`order_id`, `customer_id`, `location_id`, `order_date`,`re
 -- Indexes for table `Available_Rentals`
 --
 ALTER TABLE `Available_Rentals`
-  ADD PRIMARY KEY (`avail_id`,`location_id`,`movie_id`),
+  ADD PRIMARY KEY (`avail_id`),
   ADD UNIQUE KEY `avail_id_UNIQUE` (`avail_id`),
   ADD KEY `fk_Available_Rentals_Movies1_idx` (`movie_id`),
   ADD KEY `fk_Available_Rentals_Locations1_idx` (`location_id`);
@@ -227,7 +225,7 @@ ALTER TABLE `Movies`
 -- Indexes for table `Ordered_Movies`
 --
 ALTER TABLE `Ordered_Movies`
-  ADD PRIMARY KEY (`ordered_movies_id`,`order_id`,`movie_id`),
+  ADD PRIMARY KEY (`ordered_movies_id`,`movie_id`,`order_id`),
   ADD UNIQUE KEY `Ordered_Movies_id_UNIQUE` (`ordered_movies_id`),
   ADD KEY `fk_Orders_has_Available_Rentals_Orders1_idx` (`order_id`),
   ADD KEY `fk_Ordered_Movies_Has_Movies_idx` (`movie_id`);
@@ -249,13 +247,13 @@ ALTER TABLE `Orders`
 -- AUTO_INCREMENT for table `Available_Rentals`
 --
 ALTER TABLE `Available_Rentals`
-  MODIFY `avail_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `avail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `Customers`
 --
 ALTER TABLE `Customers`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `Locations`
@@ -273,7 +271,7 @@ ALTER TABLE `Movies`
 -- AUTO_INCREMENT for table `Ordered_Movies`
 --
 ALTER TABLE `Ordered_Movies`
-  MODIFY `ordered_movies_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ordered_movies_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `Orders`
@@ -305,8 +303,7 @@ ALTER TABLE `Ordered_Movies`
 ALTER TABLE `Orders`
   ADD CONSTRAINT `fk_Orders_Customers` FOREIGN KEY (`customer_id`) REFERENCES `Customers` (`customer_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_Orders_Locations1` FOREIGN KEY (`location_id`) REFERENCES `Locations` (`location_id`) ON DELETE CASCADE;
-  
-SET FOREIGN_KEY_CHECKS = 1;
+COMMIT;SET FOREIGN_KEY_CHECKS = 1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
