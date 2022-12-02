@@ -76,22 +76,22 @@ function updateOrderRow(data, orderID){
             // Get the location of the row where we found the matching order ID
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
-             // Get td of value
-             let customerId = updateRowIndex.getElementsByTagName("td")[1];
-             let locationId = updateRowIndex.getElementsByTagName("td")[2];
-             let orderDate = updateRowIndex.getElementsByTagName("td")[3];
-             let returnDate = updateRowIndex.getElementsByTagName("td")[4];
-             let overDue = updateRowIndex.getElementsByTagName("td")[5];
+            // Get td of value
+            let customerId = updateRowIndex.getElementsByTagName("td")[1];
+            let locationId = updateRowIndex.getElementsByTagName("td")[2];
+            let orderDate = updateRowIndex.getElementsByTagName("td")[3];
+            let returnDate = updateRowIndex.getElementsByTagName("td")[4];
+            let overDue = updateRowIndex.getElementsByTagName("td")[5];
 
-             // set to what row to update 
-             let tableRow = i-1;
+            // set to what row to update 
+            let tableRow = i-1;
 
-             // Reassign the value we updated to
-             customerId.innerHTML = parsedData[tableRow].Customer_Name; 
-             locationId.innerHTML = parsedData[tableRow].Location_Address;
-             orderDate.innerHTML = parsedData[tableRow].Order_Date;
-             returnDate.innerHTML = parsedData[tableRow].Return_Date;
-             overDue.innerHTML = parsedData[tableRow].Is_Overdue;
+            // Reassign the value we updated to
+            customerId.innerHTML = parsedData[tableRow].Customer_Name; 
+            locationId.innerHTML = parsedData[tableRow].Location_Address;
+            orderDate.innerHTML = parsedData[tableRow].Order_Date;
+            returnDate.innerHTML = parsedData[tableRow].Return_Date;
+            overDue.innerHTML = parsedData[tableRow].Is_Overdue;
        }
     }
 }

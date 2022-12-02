@@ -658,7 +658,9 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
 */
 app.get('/available_rentals', function(req, res)
 {  
-    let query1 = "SELECT avail_id AS ID, movie_id AS MovieTitle, location_id AS Location, avail_copies AS 'Available Copies' FROM Available_Rentals;";
+    let query1 = `SELECT avail_id AS ID, movie_id AS MovieTitle, location_id AS Location, 
+    avail_copies AS 'Available Copies' FROM Available_Rentals;`;
+
     let movies = "SELECT * FROM Movies;";
     let locations = "SELECT * FROM Locations;";               
 
@@ -736,6 +738,57 @@ app.post('/add-available-rentals-ajax', function(req, res)
         }
     })
 });
+
+
+
+// UPDATE
+app.put('/put-available-rentals-ajax', function(req,res,next)
+{
+    let data = req.body;
+    let availID = parseInt(data.availId);
+    let movieId = parseInt(data.movieId);
+    let locationId = parseInt(data.locationId);
+    if (isNaN(movieId))
+    {
+        movieId = null
+    }
+    if (isNaN(locationId))
+    {
+        locationId = null
+    }
+
+    let queryUpdateAvailRental = `UPDATE Available_Rentals SET movie_id = ?, location_id = ?, avail_copies = ?
+    WHERE avail_id = ?`;
+
+    let selectAvailRental = `SELECT avail_id, movie_title, 
+    CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location, avail_copies
+    FROM Available_Rentals LEFT JOIN Movies ON Available_Rentals.movie_id = Movies.movie_id 
+    LEFT JOIN Locations ON Available_Rentals.location_id = Locations.location_id;`  
+    
+    db.pool.query(queryUpdateAvailRental,
+    [
+        movieId, locationId, data['availCopies'], availID,
+    ],
+    function(error, rows, fields){
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        }
+        // Update the front-end
+        else
+        {
+        db.pool.query(selectAvailRental, function(error, rows, fields) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            } else {
+                res.send(rows);
+            }
+        })
+        }
+  });
+});
+
 
 
 // DELETE
