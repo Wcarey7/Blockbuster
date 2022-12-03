@@ -64,7 +64,8 @@
                 <div>
                     <label for="input-avail-location-id">Location: </label>
                     <select name="input-avail-location-id" id="input-avail-location-id" required="required">
-                        <option value="">Select a Location</option>
+                        <option value="">Select a location</option>
+                        <option value=''>NULL</option>
                         {{#each locations}}
                         <option value="{{this.location_id}}">#{{this.location_id}}: {{this.location_street}}, 
                             {{this.location_city}}, {{this.location_state}}</option>
@@ -102,8 +103,8 @@
 
             <div>
                 <label for="update-avail-movie-id">Movie: </label>
-                    <select name="update-avail-movie-id" id="update-avail-movie-id">
-                        <option value=''>NULL</option>
+                    <select name="update-avail-movie-id" id="update-avail-movie-id" required="required">
+                        <option>Select a Movie</option>
                         {{#each movies}}
                             <option value="{{this.movie_id}}">{{this.movie_title}}</option>
                         {{/each}}
@@ -112,8 +113,9 @@
 
             <div>
                 <label for="update-avail-location-id">Location: </label>
-                <select name="update-avail-location-id" id="update-avail-location-id">
-                    <option value=''>Select a Location</option>
+                <select name="update-avail-location-id" id="update-avail-location-id" required="required">
+                    <option value="">Select a location</option>
+                    <option value=''>NULL</option>
                     {{#each locations}}
                     <option value="{{this.location_id}}">#{{this.location_id}}: {{this.location_street}}, 
                         {{this.location_city}}, {{this.location_state}}</option>
