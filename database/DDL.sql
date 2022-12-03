@@ -34,7 +34,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `Available_Rentals` (
   `avail_id` int(11) NOT NULL,
-  `movie_id` int(11) DEFAULT NULL,
+  `movie_id` int(11) NOT NULL,
   `location_id` int(11) DEFAULT NULL,
   `avail_copies` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -51,7 +51,8 @@ INSERT INTO `Available_Rentals` (`avail_id`, `movie_id`, `location_id`, `avail_c
 (5, 6, 1, 1),
 (6, 4, 4, 3),
 (7, 8, 4, 3),
-(8, 7, 3, 1);
+(8, 7, 3, 1),
+(9, 3, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -303,8 +304,9 @@ ALTER TABLE `Ordered_Movies`
 ALTER TABLE `Orders`
   ADD CONSTRAINT `fk_Orders_Customers` FOREIGN KEY (`customer_id`) REFERENCES `Customers` (`customer_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_Orders_Locations1` FOREIGN KEY (`location_id`) REFERENCES `Locations` (`location_id`) ON DELETE CASCADE;
-COMMIT;
 SET FOREIGN_KEY_CHECKS = 1;
+COMMIT;
+
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
