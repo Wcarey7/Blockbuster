@@ -109,11 +109,11 @@ function autoFill() {
                 let updateRowIndex = table.getElementsByTagName("tr")[i];
 
                 let td1 = updateRowIndex.getElementsByTagName("td")[1];
-                document.getElementById('update-avail-movie-id').value = td1.parentElement.dataset.value;
-                testTD1 = td1
+                document.getElementById('update-avail-movie-id').value = td1.getAttribute('data-movie_title');
+                testTD1 = td1.getAttribute('data-movie_title');
                 console.log(testTD1)
                 let td2 = updateRowIndex.getElementsByTagName("td")[2];
-                document.getElementById('update-avail-location-id').value = td2.innerHTML;
+                document.getElementById('update-avail-location-id').value = td2.getAttribute('data-location');
 
                 let td3 = updateRowIndex.getElementsByTagName("td")[3];
                 document.getElementById('update-available-copies').value = td3.innerHTML;
