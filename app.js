@@ -717,9 +717,15 @@ app.get('/available_rentals', function(req, res)
 app.post('/add-available-rentals-ajax', function(req, res)
 {
     let data = req.body;
+
+    let locationId = parseInt(data.locationId);
+    if (isNaN(locationId))
+    {
+        locationId = null
+    }
     
     let query1 = `INSERT INTO Available_Rentals (movie_id, location_id, avail_copies)
-    VALUES ('${data.movieId}', '${data.locationId}', '${data.availCopies}')`;
+    VALUES ('${data.movieId}', ${locationId}, '${data.availCopies}')`;
 
     let query2 = `SELECT avail_id, movie_title, 
     CONCAT(Locations.location_street, ", ", Locations.location_city, ", ", Locations.location_state," ", Locations.location_zip) AS Location, avail_copies

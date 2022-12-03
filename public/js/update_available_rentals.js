@@ -47,7 +47,7 @@ updateAvailRentalForm.addEventListener("submit", function (e) {
             updateAvailId.value = '';
             updateMovieId.value = '';
             updateLocationId.value = '';
-            updateAvailCopies.value = '';
+            updateAvailCopies.value = '0';
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -94,9 +94,9 @@ function autoFill() {
     console.log(selectElement_id)
     // If the element selected is empty, clear all values in the form
     if (selectElement_id === '') {
-        document.getElementById("update-avail-movie-id").value = ''
-        document.getElementById("update-avail-location-id").value = ''
-        document.getElementById("update-available-copies").value = ''
+        document.getElementById("update-avail-movie-id").value = '';
+        document.getElementById("update-avail-location-id").value = '';
+        document.getElementById("update-available-copies").value = '0';
 
     } else {
         let table = document.getElementById('available-rentals-table');

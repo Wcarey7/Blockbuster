@@ -111,7 +111,7 @@ function autoFill() {
         document.getElementById("update-location-id").value = ''
         document.getElementById("update-order-date").value = ''
         document.getElementById("update-return-date").value = ''
-        document.getElementById("update-overdue").value = ''
+        document.getElementById("update-overdue").value = '0'
 
     } else {
         let table = document.getElementById('orders-table');

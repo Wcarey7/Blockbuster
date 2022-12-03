@@ -46,7 +46,7 @@ function deleteRow(availableRentalID){
 
 
 function deleteDropDownMenu(availableRentalID){
-    let selectMenu = document.getElementById("update-available-rentals");
+    let selectMenu = document.getElementById("update-avail-rental");
     for (let i = 0; i < selectMenu.length; i++){
       if (Number(selectMenu.options[i].value) === Number(availableRentalID)){
         selectMenu[i].remove();
