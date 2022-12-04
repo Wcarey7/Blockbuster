@@ -1,19 +1,19 @@
-{{!-- Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) --}}
 {{!-- Orders Page --}}
+{{!-- Code Citations --}}
+{{!-- Date: 11/15/2022 --}}
+{{!-- Referenced structure and data-table from: --}}
+{{!-- Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app --}}
+
 
 <main>
-
 <h2>Orders</h2>
 <p>&nbsp;</p>
 
-{{!-- The Data from our Database --}}
-{{!-- Create a table --}}
+{{!-- Create a table for the database --}}
 <div id = "browse" class = "data-table">
     <table id= "orders-table" border="1" cellpadding="5">
-
         {{!-- Header section --}}
         <thead>
-
             {{!-- For just the first row, we print each key of the row object as a header cell so we
             know what each column means when the page renders --}}
             <tr>
@@ -28,17 +28,17 @@
 
         {{!-- Body section --}}
         <tbody>
-
-            {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
+            {{!-- For each row, insert the table data --}}
+            {{!-- Square brackets refer to the alias names of the SELECT query --}}
             {{#each data}}
-            <tr data-value={{this.order_id}}>
-                <td>{{this.order_id}}</td>
-                <td>{{this.customer_id}}</td>
-                <td>{{this.location_id}}</td>
-                <td>{{this.order_date}}</td>
-                <td>{{this.return_date}}</td>
-                <td>{{this.over_due}}</td>
-                <td><button onclick="deleteOrder({{this.order_id}})">Delete</button></td>                                                    
+            <tr data-value={{this.[ID]}}>
+                <td>{{this.[ID]}}</td>
+                <td data-customer_id={{this.[ID]}}>{{this.[Customer_Name]}}</td>
+                <td data-location_id={{this.[ID]}}>{{this.[Location_Address]}}</td>
+                <td data-orderDate_id={{this.[ID]}}>{{this.[Order_Date]}}</td>
+                <td>{{this.[Return_Date]}}</td>
+                <td>{{this.[Is_Overdue]}}</td>
+                <td><button onclick="deleteOrder({{this.[ID]}})">Delete</button></td>                                                    
             </tr>
             {{/each}}
         </tbody>
@@ -55,18 +55,18 @@
             <div class = "form-inputs">
                 <div>
                     <label for="input-customer-id">Customer: </label>
-                    <select name="input-customer-id" id="input-customer-id">
-                        <option value="input-customer-id">Select a Customer</option>
+                    <select name="input-customer-id" id="input-customer-id" required="required" >
+                        <option value="">Select a Customer</option>
                         {{#each customers}}
-                        <option value="{{this.customer_id}}">{{this.first_name}} {{this.last_name}}</option>
+                        <option value="{{this.customer_id}}">{{this.customer_id}} </option>
                         {{/each}}
                     </select>
                 </div>
 
                 <div>
                     <label for="input-location-id">Location: </label>
-                        <select name="input-location-id" id="input-location-id">
-                            <option value="input-location-id">Select a Location</option>
+                        <select name="input-location-id" id="input-location-id" required="required">
+                            <option value="">Select a Location</option>
                             {{#each locations}}
                             <option value="{{this.location_id}}">#{{this.location_id}}: {{this.location_street}}, 
                                 {{this.location_city}}, {{this.location_state}}</option>
@@ -75,13 +75,13 @@
                 </div>
 
                 <div>
-                    <label for="input-order-date">Order Date(YYYY-MM-DD): </label>
-                    <input type="text" name="input-order-date" id="input-order-date">                    
+                    <label for="input-order-date">Order Date: </label>
+                    <input type="date" name="input-order-date" id="input-order-date" required="required">                    
                 </div>  
 
                 <div>
-                    <label for="input-return-date">Return Date (YYYY-MM-DD): </label>
-                    <input type="text" name="input-return-date" id="input-return-date">
+                    <label for="input-return-date">Return Date: </label>
+                    <input type="date" name="input-return-date" id="input-return-date">
                 </div>
 
                 <div>
@@ -95,7 +95,6 @@
                 <input type="submit" value="Add Order">
             </div>
         </form>
-        {{!-- Embed javascript to handle the DOM manipulation and AJAX request --}}
         <script src="./js/add_order.js"></script>
     </div> <!-- End of Add Order Column -->
 
@@ -107,18 +106,18 @@
         <div class = "form-inputs">
             <div>
                 <label for="update-order-id">Order: </label>
-                <select name="update-order-id" id="update-order">
-                    <option value="update-order-id">Select an Order</option>
+                <select name="update-order-id" id="update-order" required="required" onchange="autoFill()">
+                    <option value="">Select an Order</option>
                     {{#each data}}
-                    <option value="{{this.order_id}}">{{this.order_id}}</option>
+                    <option value="{{this.[ID]}}">{{this.[ID]}}</option>
                     {{/each}}
                 </select>
             </div>
 
             <div>
                 <label for="update-customer-id">Customer: </label>
-                <select name="update-customer-id" id="update-customer-id">
-                    <option value="update-customer-id">Select a Customer</option>
+                <select name="update-customer-id" id="update-customer-id" required="required">
+                    <option value="">Select a Customer</option>
                     {{#each customers}}
                     <option value="{{this.customer_id}}">{{this.first_name}} {{this.last_name}}</option>
                     {{/each}}
@@ -127,8 +126,8 @@
 
             <div>
                 <label for="update-location-id">Location: </label>
-                <select name="update-location-id" id="update-location-id">
-                    <option value="update-location-id">Select a Location</option>
+                <select name="update-location-id" id="update-location-id" required="required">
+                    <option value="">Select a Location</option>
                     {{#each locations}}
                     <option value="{{this.location_id}}">#{{this.location_id}}: {{this.location_street}}, 
                         {{this.location_city}}, {{this.location_state}}</option>
@@ -137,13 +136,13 @@
             </div>
 
             <div>
-                <label for="update-order-date">Order Date(YYYY-MM-DD): </label>
-                <input type="text" name="update-order-date" id="update-order-date">                    
+                <label for="update-order-date">Order Date: </label>
+                <input type="date" name="update-order-date" id="update-order-date">                    
             </div>  
 
             <div>
-                <label for="update-return-date">Return Date (YYYY-MM-DD): </label>
-                <input type="text" name="update-return-date" id="update-return-date">
+                <label for="update-return-date">Return Date: </label>
+                <input type="date" name="update-return-date" id="update-return-date">
             </div>
 
             <div>
@@ -154,10 +153,9 @@
                 </select>
             </div>
 
-            <input type="submit" value="update Order">
+            <input type="submit" value="Update Order">
         </div>
     </form>
-    {{!-- Embed javascript to handle the DOM manipulation and AJAX request --}}
     <script src="./js/update_order.js"></script>
 </div><!-- End of update Order Column -->
 </div> <!-- End of Row -->
@@ -165,14 +163,15 @@
 
 
 <div class = "row">
+    <!-- filter Customer Column -->
     <div class = "column">
-        <form id="filter-customer-order-html" method='GET' action='/orders'>
+        <form id="filter-customer-order-html" method='GET' action='/orders/customer_id'>
         <h3>Filter by Customer</h3>
         <div class = "form-inputs">
             <div>
                 <label for="filter-customer-id">Customer: </label>
-                <select name="filterCustomer" id="filter-customer-id">
-                    <option></option>
+                <select name="filter" id="customer_id">
+                    <option value="">Select a Customer</option>
                     {{#each customers}}
                     <option value="{{this.customer_id}}">{{this.first_name}} {{this.last_name}}</option>
                     {{/each}}
@@ -183,17 +182,18 @@
             <a href='/'><button>Reset Results</button></a>
         </div>
     </form>
-    </div><!-- End of filter Customer Order Column -->
+    </div><!-- End of filter Customer Column -->
 
 
+    <!-- Filter location Column -->
     <div class = "column">
-        <form id="filter-location-order-html" method='GET' action='/orders'>
+        <form id="filter-location-order-html" method='GET' action='/orders/location_id'>
         <h3>Filter by Location</h3>
         <div class = "form-inputs">
             <div>
                 <label for="filter-location-id">Location: </label>
-                <select name="filterLocation" id="filter-location-id">
-                    <option></option>
+                <select name="filter" id="location_id">
+                    <option value="">Select a Location</option>
                     {{#each locations}}
                     <option value="{{this.location_id}}">#{{this.location_id}}: {{this.location_street}}, 
                         {{this.location_city}}, {{this.location_state}}</option>
@@ -205,9 +205,6 @@
             <a href='/'><button>Reset Results</button></a>
         </div>
     </form>
-
-    </div><!-- End of filter Location Order Column -->
-
+    </div><!-- End of filter Location Column -->
 </div><!-- End of Row -->
-
 </main>

@@ -1,10 +1,12 @@
-// Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+// Code Citations
+// Date: 11/15/2022
+// Referenced structure and AJAX request from:
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
 
 
-// Get the objects we need to modify
+
 let addOrderForm = document.getElementById('add-order-form-ajax');
 
-// Modify the objects we need
 addOrderForm.addEventListener("submit", function (e) {
     
     // Prevent the form from submitting
@@ -53,7 +55,6 @@ addOrderForm.addEventListener("submit", function (e) {
             inputLocationId.value = '';
             inputOrderDate.value = '';
             inputReturnDate.value = '';
-            inputOverdue.value = '';
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -66,8 +67,7 @@ addOrderForm.addEventListener("submit", function (e) {
 })
 
 
-// Creates a single row from an Object representing a single record from 
-// Customers
+// Update frontend with new row
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.
@@ -80,11 +80,11 @@ addRowToTable = (data) => {
     let parsedData = JSON.parse(data);
     let newRow = parsedData[parsedData.length - 1]
 
-    // Create a row and 10 cells
+    // Create a row 
     let row = document.createElement("TR");
     let orderIdCell = document.createElement("TD");
-    let customerIdCell = document.createElement("TD");
-    let locationIdCell = document.createElement("TD");
+    let customerNameCell = document.createElement("TD");
+    let locationAddressCell = document.createElement("TD");
     let orderDateCell = document.createElement("TD");
     let returnDateCell = document.createElement("TD");
     let overDueCell = document.createElement("TD");
@@ -92,11 +92,11 @@ addRowToTable = (data) => {
 
     // Fill the cells with correct data
     orderIdCell.innerText = newRow.order_id
-    customerIdCell.innerText = newRow.customer_id;
-    locationIdCell.innerText = newRow.location_id;
-    orderDateCell.innerText = newRow.order_date;
-    returnDateCell.innerText = newRow.return_date;
-    overDueCell.innerText = newRow.over_due;
+    customerNameCell.innerText = newRow.Customer_Name;
+    locationAddressCell.innerText = newRow.Location_Address;
+    orderDateCell.innerText = newRow.Order_Date;
+    returnDateCell.innerText = newRow.Return_Date;
+    overDueCell.innerText = newRow.Is_Overdue;
 
 
     deleteButton = document.createElement("button");
@@ -110,8 +110,8 @@ addRowToTable = (data) => {
 
     // Add the cells to the row 
     row.appendChild(orderIdCell);
-    row.appendChild(customerIdCell);
-    row.appendChild(locationIdCell);
+    row.appendChild(customerNameCell);
+    row.appendChild(locationAddressCell);
     row.appendChild(orderDateCell);
     row.appendChild(returnDateCell);
     row.appendChild(overDueCell);
@@ -123,6 +123,9 @@ addRowToTable = (data) => {
     // Add the row to the table
     currentTable.appendChild(row);
 
+    // Find drop down menu, create a new option, fill data in the option (full name, id),
+    // then append option to drop down menu 
+    // so newly created rows via ajax will be found in it without needing a refresh
     let selectMenu = document.getElementById("update-order");
     let option = document.createElement("option");
     option.text = newRow.order_id;

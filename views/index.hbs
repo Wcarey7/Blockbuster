@@ -1,20 +1,19 @@
-{{!-- Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) --}}
 {{!-- Customers Page --}}
-
+{{!-- Code Citations --}}
+{{!-- Date: 11/15/2022 --}}
+{{!-- Referenced structure and data-table from: --}}
+{{!-- Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app --}}
 
 
 <main>
 <h2>Customers</h2>
 <p>&nbsp;</p>
 
-{{!-- The Data from our Database --}}
-{{!-- Create a table --}}
+{{!-- Create a table for the database --}}
 <div id = "browse" class = "data-table">
     <table id= "customer-table" border="1" cellpadding="5">
-
         {{!-- Header section --}}
         <thead>
-
             {{!-- For just the first row, we print each key of the row object as a header cell so we
             know what each column means when the page renders --}}
             <tr>
@@ -29,21 +28,21 @@
 
         {{!-- Body section --}}
         <tbody>
-
-            {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
+            {{!-- For each row, insert the table data --}}
+            {{!-- Square brackets refer to the alias names of the SELECT query --}}
             {{#each data}}
-            <tr data-value={{this.customer_id}}>
-                <td>{{this.customer_id}}</td>
-                <td>{{this.first_name}}</td>
-                <td>{{this.last_name}}</td>
-                <td>{{this.customer_street}}</td>
-                <td>{{this.customer_city}}</td>
-                <td>{{this.customer_state}}</td>
-                <td>{{this.customer_zip}}</td>
-                <td>{{this.customer_phone_number}}</td>
-                <td>{{this.customer_active_rentals}}</td>
-                <td>{{this.customer_total_rentals}}</td>
-                <td><button onclick="deleteCustomer({{this.customer_id}})">Delete</button></td>                                                  
+            <tr data-value={{this.[ID]}}>
+                <td>{{this.[ID]}}</td>
+                <td>{{this.[First Name]}}</td>
+                <td>{{this.[Last Name]}}</td>
+                <td>{{this.[Street]}}</td>
+                <td>{{this.[City]}}</td>
+                <td>{{this.[State]}}</td>
+                <td>{{this.[Zip]}}</td>
+                <td>{{this.[Phone Number]}}</td>
+                <td>{{this.[Active Rentals]}}</td>
+                <td>{{this.[Total Rentals]}}</td>
+                <td><button onclick="deleteCustomer({{this.[ID]}})">Delete</button></td>                                                  
             </tr>
             {{/each}}
         </tbody>
@@ -60,12 +59,12 @@
             <div class = "form-inputs">
                 <div>
                     <label for="input-fname">First Name: </label>
-                    <input type="text" name="input-fname" id="input-fname">
+                    <input type="text" name="input-fname" id="input-fname" required="required" placeholder="Required">
                 </div>
 
                 <div>
                     <label for="input-lname">Last Name: </label>
-                    <input type="text" name="input-lname" id="input-lname">
+                    <input type="text" name="input-lname" id="input-lname" required="required" placeholder="Required">
                 </div>
 
                 <div>
@@ -90,7 +89,7 @@
 
                 <div>
                     <label for="input-phone">Phone Number: </label>
-                    <input type="number" name="input-phone" id="input-phone">
+                    <input type="tel" name="input-phone" id="input-phone" placeholder="###-###-####">
                 </div>
 
                 <div>
@@ -106,32 +105,31 @@
                 <input type="submit" value="Add Customer">
             </div>
         </form>
-        {{!-- Embed javascript to handle the DOM manipulation and AJAX request --}}
         <script src="./js/add_customer.js"></script>
     </div> <!-- End of Add Customer Column -->
 
-
+<!-- Update customer form -->
 <div class = "column">
         <form id="update-customer-form-ajax">
         <h3>Update Customer</h3>
             <div class = "form-inputs">
                 <div>
                     <label for="input-update-customer">Full name: </label>
-                    <select name="input-update-customer" id="update-customer">
-                      <option value="input-update-customer">Select a Customer</option>
+                    <select name="input-update-customer" id="update-customer" onchange="autoFill()">
+                        <option value="">Select a Customer</option>
                         {{#each data}}
-                        <option value="{{this.customer_id}}">{{this.first_name}} {{this.last_name}}</option>
+                        <option value="{{this.[ID]}}">{{this.[First Name]}} {{this.[Last Name]}}</option>
                         {{/each}}
                     </select>
                 </div>
 
                 <div>
                     <label for="input-update-fname">First Name: </label>
-                    <input type="text" name="input-update-fname" id="input-update-fname">
+                    <input type="text" name="input-update-fname" id="input-update-fname" required="required" placeholder="Required">
                 </div>
                 <div>
                     <label for="input-update-lname">Last Name: </label>
-                    <input type="text" name="input-update-lname" id="input-update-lname">
+                    <input type="text" name="input-update-lname" id="input-update-lname" required="required" placeholder="Required">
                 </div>
 
                 <div>
@@ -154,7 +152,7 @@
 
                 <div>
                     <label for="input-update-phone">Phone Number: </label>
-                    <input type="number" name="input-update-phone" id="input-update-phone">
+                    <input type="tel" name="input-update-phone" id="input-update-phone" placeholder="###-###-####">
                 </div>
 
                 <div>
@@ -166,37 +164,29 @@
                     <label for="input-update-total-rentals">Total Rentals: </label>
                     <input type="number" name="input-update-total-rentals" id="input-update-total-rentals">
                 </div>
-
                 
                 <input type="submit" value= "Update Customer">
             </div>
         </form>
     <script src="./js/update_customer.js"></script>
 </div> <!-- End of update Customer Column -->
-
 </div> <!-- End of Row -->
 
 
-
 <div class = "row">
+    <!-- Search customer form -->
     <div class = "column">
     <form id="search-customer-html" method='GET' action='/'>
         <h3>Search Customers</h3>
         <div class = "form-inputs">
             <div>
                 <label for="input-lname">Last Name: </label>
-                <input type="text" name="lname" id="input-lname-html-search">
+                <input type="text" name="lname" id="input-lname-html-search" >
             </div>
             <input type="submit" value= "Search customer">
-            <a href='/'><button>Reset Results</button></a>
+            <a href='/index'><button>Reset Results</button></a>
         </div>
     </form>
 </div> <!-- End of Search column -->
-
-
-
-
 </div><!-- End of Row -->
-
-
 </main>

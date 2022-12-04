@@ -1,10 +1,11 @@
-// Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+// Code Citations
+// Date: 11/15/2022
+// Referenced structure and AJAX request from:
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
 
 
-// Get the objects we need to modify
 let addAvailRentalForm = document.getElementById('add-available-rental-form-ajax');
 
-// Modify the objects we need
 addAvailRentalForm.addEventListener("submit", function (e) {
     
     // Prevent the form from submitting
@@ -15,12 +16,10 @@ addAvailRentalForm.addEventListener("submit", function (e) {
     let inputLocationId = document.getElementById("input-avail-location-id");
     let inputAvailCopies = document.getElementById("input-available-copies");
 
-
     // Get the values from the form fields
     let movieIdValue = inputMovieId.value;
     let locationIdValue = inputLocationId.value;
     let availCopiesValue = inputAvailCopies.value;
-
 
     // DATA Packet
     let data = {
@@ -44,7 +43,7 @@ addAvailRentalForm.addEventListener("submit", function (e) {
             // Clear the input fields for another transaction
             inputMovieId.value = '';
             inputLocationId.value = '';
-            inputAvailCopies.value = '';
+            inputAvailCopies.value = '0';
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -57,7 +56,7 @@ addAvailRentalForm.addEventListener("submit", function (e) {
 })
 
 
-// Creates a single row from an Object representing a single record from 
+// Update frontend with new row
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.
@@ -90,7 +89,6 @@ addRowToTable = (data) => {
     deleteButton.onclick = function(){
         deleteAvailableRental(newRow.avail_id);
     };
-
     deleteCell.appendChild(deleteButton);
 
     // Add the cells to the row 
@@ -105,5 +103,15 @@ addRowToTable = (data) => {
 
     // Add the row to the table
     currentTable.appendChild(row);
+
+
+    // Find drop down menu, create a new option, fill data in the option (full name, id),
+    // then append option to drop down menu 
+    // so newly created rows via ajax will be found in it without needing a refresh
+    let selectMenu = document.getElementById("update-avail-rental");
+    let option = document.createElement("option");
+    option.text = newRow.avail_id;
+    option.value = newRow.avail_id;
+    selectMenu.add(option);
 
 }

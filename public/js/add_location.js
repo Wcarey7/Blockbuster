@@ -1,4 +1,7 @@
-// Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+// Code Citations
+// Date: 11/15/2022
+// Referenced structure and AJAX request from:
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
 
 
 // Get the objects we need to modify
@@ -14,7 +17,7 @@ addLocationForm.addEventListener("submit", function (e) {
     let inputStreet = document.getElementById("input-location_street");
     let inputCity = document.getElementById("input-location_city");
     let inputState = document.getElementById("input-location_state");
-    let inputZip = document.getElementById("input-input-location_zip");
+    let inputZip = document.getElementById("input-location_zip");
     let inputPhone = document.getElementById("input-location_phone_number");
 
     // Get the values from the form fields

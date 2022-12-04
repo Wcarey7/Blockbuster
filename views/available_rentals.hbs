@@ -1,19 +1,19 @@
-{{!-- Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) --}}
 {{!-- Available_Rentals --}}
+{{!-- Code Citations --}}
+{{!-- Date: 11/15/2022 --}}
+{{!-- Referenced structure and data-table from: --}}
+{{!-- Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app --}}
+
 
 <main>
-
 <h2>Available Rentals</h2>
 <p>&nbsp;</p>
 
-{{!-- The Data from our Database --}}
-{{!-- Create a table --}}
+{{!-- Create a table for the database --}}
 <div id = "browse" class = "data-table">
     <table id= "available-rentals-table" border="1" cellpadding="5">
-
         {{!-- Header section --}}
         <thead>
-
             {{!-- For just the first row, we print each key of the row object as a header cell so we
             know what each column means when the page renders --}}
             <tr>
@@ -28,13 +28,13 @@
 
         {{!-- Body section --}}
         <tbody>
-
-            {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
+            {{!-- For each row, insert the table data --}}
+            {{!-- Square brackets refer to the alias names of the SELECT query --}}
             {{#each data}}
             <tr data-value={{this.[ID]}}>
                 <td>{{this.[ID]}}</td>
-                <td>{{this.[MovieTitle]}}</td>
-                <td>{{this.[Location]}}</td>
+                <td data-movie_title="{{this.[MovieTitle]}}">{{this.[MovieTitle]}}</td>
+                <td data-location="{{this.[Location]}}">{{this.[Location]}}</td>
                 <td>{{this.[Available Copies]}}</td>
                 <td><button onclick="deleteAvailableRental({{this.[ID]}})">Delete</button></td>                                                    
             </tr>
@@ -43,7 +43,6 @@
     </table>
     <script src="./js/delete_available_rentals.js"></script>
 </div>
-
 
 
 
@@ -65,7 +64,8 @@
                 <div>
                     <label for="input-avail-location-id">Location: </label>
                     <select name="input-avail-location-id" id="input-avail-location-id" required="required">
-                        <option value="">Select a Location</option>
+                        <option value="">Select a location</option>
+                        <option value=''>NULL</option>
                         {{#each locations}}
                         <option value="{{this.location_id}}">#{{this.location_id}}: {{this.location_street}}, 
                             {{this.location_city}}, {{this.location_state}}</option>
@@ -81,8 +81,57 @@
                 <input type="submit" value="Add Available Rental">
             </div>
         </form>
-        {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
         <script src="./js/add_available_rentals.js"></script>
     </div> <!-- End of Add Availalbe Rentals Column -->
 
+
+
+<!-- Update form -->
+<div class= "column">
+    <form id="update-avail-form-ajax">
+        <h3>Update Available Rental</h3>
+        <div class = "form-inputs">
+            <div>
+                <label for="update-avail-rental">ID: </label>
+                <select name="update-avail-rental" id="update-avail-rental" required="required" onchange="autoFill()">
+                    <option value="">Select an Available Rental</option>
+                    {{#each data}}
+                    <option value="{{this.[ID]}}">{{this.[ID]}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div>
+                <label for="update-avail-movie-id">Movie: </label>
+                    <select name="update-avail-movie-id" id="update-avail-movie-id" required="required">
+                        <option>Select a Movie</option>
+                        {{#each movies}}
+                            <option value="{{this.movie_id}}">{{this.movie_title}}</option>
+                        {{/each}}
+                </select>
+            </div>
+
+            <div>
+                <label for="update-avail-location-id">Location: </label>
+                <select name="update-avail-location-id" id="update-avail-location-id" required="required">
+                    <option value="">Select a location</option>
+                    <option value=''>NULL</option>
+                    {{#each locations}}
+                    <option value="{{this.location_id}}">#{{this.location_id}}: {{this.location_street}}, 
+                        {{this.location_city}}, {{this.location_state}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div>
+                <label for="update-available-copies">Available Copies: </label>
+                <input type="number" value="0" name="update-available-copies" id="update-available-copies" required="required">
+            </div>
+
+            <input type="submit" value="Update Available Rental">
+        </div>
+    </form>
+    <script src="./js/update_available_rentals.js"></script>
+</div><!-- End of update Column -->
 </div> <!-- End of Row -->
+</main>

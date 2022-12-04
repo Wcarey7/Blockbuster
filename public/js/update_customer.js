@@ -1,10 +1,11 @@
-// Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+// Code Citations
+// Date: 11/15/2022
+// Referenced structure and AJAX request from:
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
 
 
-// Get the objects we need to modify
 let updateCustomerForm = document.getElementById('update-customer-form-ajax');
 
-// Modify the objects we need
 updateCustomerForm.addEventListener("submit", function (e) {
     
     // Prevent the form from submitting
@@ -79,49 +80,123 @@ updateCustomerForm.addEventListener("submit", function (e) {
 
     // Send the request and wait for the response
     xhttp.send(JSON.stringify(data));
-
 })
-
 
 
 function updateCustomerRow(data, customerID) {
     let parsedData = JSON.parse(data);
-
-    // Get a reference to the current table on the page and clear it out.
     let table = document.getElementById("customer-table");
 
     for (let i = 0, row; row = table.rows[i]; i++) {
-        //iterate through rows
-        //rows would be accessed using the "row" variable assigned in the for loop
         if (table.rows[i].getAttribute("data-value") == customerID) {
-             // Get the location of the row where we found the matching customer ID
-             let updateRowIndex = table.getElementsByTagName("tr")[i];
- 
-             // Get td of value
-             let firstName = updateRowIndex.getElementsByTagName("td")[1];
-             let lastName = updateRowIndex.getElementsByTagName("td")[2];
-             let customerStreet = updateRowIndex.getElementsByTagName("td")[3];
-             let customerCity = updateRowIndex.getElementsByTagName("td")[4];
-             let customerState = updateRowIndex.getElementsByTagName("td")[5];
-             let customerZip = updateRowIndex.getElementsByTagName("td")[6];
-             let customerPhone = updateRowIndex.getElementsByTagName("td")[7];
-             let customerActiveRentals = updateRowIndex.getElementsByTagName("td")[8];
-             let customerTotalRentals = updateRowIndex.getElementsByTagName("td")[9];
-             
-             //set to what row to update
-             let tableRow = i-1;
 
-             // Reassign the value we updated to
-             firstName.innerHTML = parsedData[tableRow].first_name; 
-             lastName.innerHTML = parsedData[tableRow].last_name;
-             customerStreet.innerHTML = parsedData[tableRow].customer_street;
-             customerCity.innerHTML = parsedData[tableRow].customer_city;
-             customerState.innerHTML = parsedData[tableRow].customer_state;
-             customerZip.innerHTML = parsedData[tableRow].customer_zip;
-             customerPhone.innerHTML = parsedData[tableRow].customer_phone_number;
-             customerActiveRentals.innerHTML = parsedData[tableRow].customer_active_rentals;
-             customerTotalRentals.innerHTML = parsedData[tableRow].customer_total_rentals;
+            // Get the location of the row where we found the matching customer ID
+            let updateRowIndex = table.getElementsByTagName("tr")[i];
+
+            // Get td of value
+            let firstName = updateRowIndex.getElementsByTagName("td")[1];
+            let lastName = updateRowIndex.getElementsByTagName("td")[2];
+            let customerStreet = updateRowIndex.getElementsByTagName("td")[3];
+            let customerCity = updateRowIndex.getElementsByTagName("td")[4];
+            let customerState = updateRowIndex.getElementsByTagName("td")[5];
+            let customerZip = updateRowIndex.getElementsByTagName("td")[6];
+            let customerPhone = updateRowIndex.getElementsByTagName("td")[7];
+            let customerActiveRentals = updateRowIndex.getElementsByTagName("td")[8];
+            let customerTotalRentals = updateRowIndex.getElementsByTagName("td")[9];
+            
+            // Set to what row to update
+            let tableRow = i-1;
+
+            // Reassign the value we updated to
+            firstName.innerHTML = parsedData[tableRow].first_name; 
+            lastName.innerHTML = parsedData[tableRow].last_name;
+            customerStreet.innerHTML = parsedData[tableRow].customer_street;
+            customerCity.innerHTML = parsedData[tableRow].customer_city;
+            customerState.innerHTML = parsedData[tableRow].customer_state;
+            customerZip.innerHTML = parsedData[tableRow].customer_zip;
+            customerPhone.innerHTML = parsedData[tableRow].customer_phone_number;
+            customerActiveRentals.innerHTML = parsedData[tableRow].customer_active_rentals;
+            customerTotalRentals.innerHTML = parsedData[tableRow].customer_total_rentals;
+
+            // Remove the name from the dropdown menu   
+            deleteDropDownMenu(customerID);
+
+            // Add updated name to dropdown menu
+            let selectMenu = document.getElementById("update-customer");
+            let option = document.createElement("option");
+            option.text = parsedData[tableRow].first_name + ' ' +  parsedData[tableRow].last_name;
+            option.value = customerID;
+            selectMenu.add(option);
 
         }
-     }
+    }
+}
+
+
+function deleteDropDownMenu(customerID){
+    let selectMenu = document.getElementById("update-customer");
+    for (let i = 0; i < selectMenu.length; i++){
+      if (Number(selectMenu.options[i].value) === Number(customerID)){
+        selectMenu[i].remove();
+        break;
+      }  
+    }
+}
+
+
+// Fill update html form on selection change
+function autoFill() {
+    let selectElement = document.getElementById('update-customer');
+    let selectElement_id = selectElement.value;
+
+    //If the element selected is empty, clear all values in the form
+    if (selectElement_id === '') {
+        document.getElementById("input-update-fname").value = ''
+        document.getElementById("input-update-lname").value = ''
+        document.getElementById("input-update-street").value = ''
+        document.getElementById("input-update-city").value = ''
+        document.getElementById("input-update-state").value = ''
+        document.getElementById("input-update-zip").value = ''
+        document.getElementById("input-update-phone").value = ''
+        document.getElementById("input-update-active-rentals").value = ''
+        document.getElementById("input-update-total-rentals").value = ''
+
+    } else {
+        let table = document.getElementById('customer-table');
+        //Fill each form field with the selected customers info
+        for (let i = 0, row; row = table.rows[i]; i++) {
+
+            if (table.rows[i].getAttribute('data-value') == selectElement_id) {
+
+                let updateRowIndex = table.getElementsByTagName("tr")[i];
+
+                let td1 = updateRowIndex.getElementsByTagName("td")[1];
+                document.getElementById('input-update-fname').value = td1.innerHTML;
+
+                let td2 = updateRowIndex.getElementsByTagName("td")[2];
+                document.getElementById('input-update-lname').value = td2.innerHTML;
+
+                let td3 = updateRowIndex.getElementsByTagName("td")[3];
+                document.getElementById('input-update-street').value = td3.innerHTML;
+
+                let td4 = updateRowIndex.getElementsByTagName("td")[4];
+                document.getElementById('input-update-city').value = td4.innerHTML;
+
+                let td5 = updateRowIndex.getElementsByTagName("td")[5];
+                document.getElementById('input-update-state').value = td5.innerHTML;
+
+                let td6 = updateRowIndex.getElementsByTagName("td")[6];
+                document.getElementById('input-update-zip').value = td6.innerHTML;
+
+                let td7 = updateRowIndex.getElementsByTagName("td")[7];
+                document.getElementById('input-update-phone').value = td7.innerHTML;
+
+                let td8 = updateRowIndex.getElementsByTagName("td")[8];
+                document.getElementById('input-update-active-rentals').value = td8.innerHTML;
+
+                let td9 = updateRowIndex.getElementsByTagName("td")[9];
+                document.getElementById('input-update-total-rentals').value = td9.innerHTML;
+            }
+        }
+    }
 }

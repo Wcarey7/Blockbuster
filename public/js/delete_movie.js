@@ -1,3 +1,9 @@
+// Code Citations
+// Date: 11/15/2022
+// Referenced structure and AJAX request from:
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
+
+
 function deleteMovie(movieID) {
     // Put our data we want to send in a javascript object
     let data = {
@@ -25,18 +31,6 @@ function deleteMovie(movieID) {
     xhttp.send(JSON.stringify(data));
 }
 
-  
-    // $.ajax({
-    //   url: link,
-    //   type: 'DELETE',
-    //   data: JSON.stringify(data),
-    //   contentType: "application/json; charset=utf-8",
-    //   success: function(result) {
-    //     deleteRow(movieID);
-    //   }
-    // });
-
-  
     function deleteRow(movieID){
 
         let table = document.getElementById("movie-table");
