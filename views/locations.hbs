@@ -1,10 +1,12 @@
-{{!-- Referenced from: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%203%20-%20Integrating%20a%20Templating%20Engine%20(Handlebars) --}}
 {{!-- Locations Page --}}
-
+{{!-- Code Citations --}}
+{{!-- Date: 11/15/2022 --}}
+{{!-- Referenced structure and data-table from: --}}
+{{!-- Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app --}}
 
 
 <main>
-<h2>locations</h2>
+<h2>Store Locations</h2>
 <p>&nbsp;</p>
 
 {{!-- The Data from our Database --}}
@@ -74,7 +76,7 @@
 
                 <div>
                     <label for="input-location_phone_number">Phone Number: </label>
-                    <input type="text" name="input-location_phone_number" id="input-location_phone_number" maxlength="12">
+                    <input type="number" name="input-location_phone_number" id="input-location_phone_number" maxlength="12">
                 </div>
 
                 <input type="submit" value="Add Store">
