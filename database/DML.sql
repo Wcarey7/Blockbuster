@@ -45,7 +45,16 @@ WHERE last_name LIKE "${req.query.lname}%";
 -- LOCATIONS ------
 ----------------------------------------------------------------------------------------------------------------------------
 -- Get all Locations for Locations page
-SELECT * FROM Locations; 
+SELECT location_id AS ID, location_street AS Street, location_city AS City, 
+location_state AS State, location_zip AS Zip, location_phone_number AS "Phone Number"
+FROM Locations;
+
+
+-- Search Locations by State
+SELECT location_id AS ID, location_street AS Street, location_city AS City, 
+location_state AS State, location_zip AS Zip, location_phone_number AS "Phone Number"
+FROM Locations
+WHERE location_state LIKE "${req.query.location_state}%";
 
 -- Add a new Location
 INSERT INTO Locations (location_street,	location_city,	location_state,	location_zip,	location_phone_number)
@@ -64,7 +73,13 @@ DELETE FROM Locations WHERE location_id = :location_id_deleteButton;
 -- MOVIES ------
 ------------------------------------------------------------------------------------------------------------------------------
 -- Get all Movies for Movies page
-SELECT * FROM Movies; 
+SELECT movie_id AS ID, movie_title AS Title, release_date AS "Year of Release", genre AS Genre
+FROM Movies; 
+
+-- Search Movies by Title
+SELECT movie_id AS ID, movie_title AS Title, release_date AS "Year of Release", genre AS Genre
+FROM Movies
+WHERE movie_title LIKE "${req.query.movie_title}%";
 
 -- Add a new Movie
 INSERT INTO Movies (movie_title, release_date, genre)
@@ -79,9 +94,9 @@ WHERE movie_id = :movie_id_editButton;
 -----------------------------------------------------------------------------------------------------------------------------
 -- Get all Orders for Orders page
 SELECT order_id AS ID, customer_id AS Customer_Name, location_id AS Location_Address, 
-    DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, 
-    IF(over_due=0, "No", "Yes") AS Is_Overdue 
-    FROM Orders;
+DATE_FORMAT(order_date, "%m-%d-%Y") AS Order_Date, DATE_FORMAT(return_date, "%m-%d-%Y") AS Return_Date, 
+IF(over_due=0, "No", "Yes") AS Is_Overdue 
+FROM Orders;
 
 
 -- Add a new Order
