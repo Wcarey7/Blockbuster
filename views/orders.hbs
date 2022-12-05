@@ -106,7 +106,7 @@
         <div class = "form-inputs">
             <div>
                 <label for="update-order-id">Order: </label>
-                <select name="update-order-id" id="update-order" required="required" onchange="autoFill()">
+                <select name="update-order-id" id="update-order" required="required">
                     <option value="">Select an Order</option>
                     {{#each data}}
                     <option value="{{this.[ID]}}">{{this.[ID]}}</option>
