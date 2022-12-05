@@ -527,28 +527,23 @@ app.delete('/delete-ordered-movies-ajax/', function(req,res,next)
 app.get('/movies', function(req, res)
 {  
     let query1; 
-    let query2= "SELECT * FROM Movies;";
     
         // If there is no query string, we just perform a basic SELECT
         if (req.query.movie_title === undefined)
         {
-            query1 = "SELECT * FROM Movies;";
+            query1 = 'SELECT movie_id AS ID, movie_title AS Title, release_date AS "Year of Release", genre AS Genre FROM Movies;';
         }
     
         // If there is a query string, we assume this is a search, and return desired results
         else
         {
-            query1 = `SELECT * FROM Movies WHERE movie_title LIKE "${req.query.movie_title}%"`
+            query1 = `SELECT movie_id AS ID, movie_title AS Title, release_date AS "Year of Release", genre AS Genre FROM Movies 
+            WHERE movie_title LIKE "${req.query.movie_title}%"`
         }
 
-        // db.pool.query(query1, function(error, rows, fields){
-        
-        //     // Save the people
-        
-        //     return res.render('index', {data: movies});
-        // })
 
     db.pool.query(query1, function(error, rows, fields){    // Execute the query
+        
         let movies = rows;
 
         res.render('movies', {data: movies});                  // Render the movies.hbs file, and also send the renderer
@@ -598,7 +593,7 @@ app.post('/add-movie-ajax', function(req, res)
     })
 });
 
-
+// DELETE
 app.delete('/delete-movie-ajax/', function(req,res,next){
     let data = req.body;
     let movieID = parseInt(data.id);
@@ -622,7 +617,7 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
 
 
 
-
+// UPDATE
   app.put('/put-movie-ajax', function(req,res,next){
     let data = req.body;
 

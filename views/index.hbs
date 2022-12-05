@@ -111,11 +111,11 @@
 <!-- Update customer form -->
 <div class = "column">
         <form id="update-customer-form-ajax">
-        <h3>Update Customer</h3>
+        <h3>Update a Customer</h3>
             <div class = "form-inputs">
                 <div>
                     <label for="input-update-customer">Full name: </label>
-                    <select name="input-update-customer" id="update-customer" onchange="autoFill()">
+                    <select name="input-update-customer" id="update-customer" onchange="autoFill()" required="required">
                         <option value="">Select a Customer</option>
                         {{#each data}}
                         <option value="{{this.[ID]}}">{{this.[First Name]}} {{this.[Last Name]}}</option>
@@ -181,9 +181,9 @@
         <div class = "form-inputs">
             <div>
                 <label for="input-lname">Last Name: </label>
-                <input type="text" name="lname" id="input-lname-html-search" >
+                <input type="text" name="lname" id="input-lname-html-search" required="required">
             </div>
-            <input type="submit" value= "Search customer">
+            <input type="submit" value= "Search Customer">
             <a href='/index'><button>Reset Results</button></a>
         </div>
     </form>

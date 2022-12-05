@@ -4,7 +4,6 @@
 // Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
 
 
-
 // Get the objects we need to modify
 let addMovieForm = document.getElementById('add-movie-form-ajax');
 
@@ -18,8 +17,6 @@ addMovieForm.addEventListener("submit", function (e) {
     let inputTitle = document.getElementById("input-title");
     let inputReleaseDate = document.getElementById("input-release_date");
     let inputGenre = document.getElementById("input-genre");
-
-    let deleteCell = document.createElement("TD");
 
     // Get the values from the form fields
     let titleValue = inputTitle.value;
@@ -102,7 +99,11 @@ addRowToTable = (data) => {
     row.appendChild(releaseDateCell);
     row.appendChild(genreCell);
     row.appendChild(deleteCell);
+
+    // Add a row attribute so the deleteRow function can find a newly added row
+    row.setAttribute('data-value', newRow.movie_id);
     
     // Add the row to the table
     currentTable.appendChild(row);
+
 }

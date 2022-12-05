@@ -6,6 +6,7 @@
     --primary-color: #e0e1e2;
     --blockbuster-orange-color: #ffa903;
     --blockbuster-blue-color: #0e3fa9;
+    --blockbuster-lighter-blue: rgba(117, 130, 211, 0.742);
 }
 
 header {
@@ -126,11 +127,11 @@ tbody > tr:nth-child(odd) {
     background-color: rgb(255, 255, 255);
 }
 tbody > tr:hover{
-    background-color:rgb(77, 68, 201);
+    background-color:var(--blockbuster-lighter-blue);
     color:rgb(255, 255, 255);
     }
 tbody > tr.selected{
-    background-color: #0e3fa9;
+    background-color: var(--blockbuster-orange-color);
     color:rgb(255, 255, 255)
 }
 button {

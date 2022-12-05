@@ -56,6 +56,9 @@ UPDATE Locations SET location_street = :locationStreet,	location_city = :locatio
 location_zip = :locationZip, location_phone_number = :locationPhone
 WHERE location_id = :location_id_editButton;
 
+-- Delete a Location
+DELETE FROM Locations WHERE location_id = :location_id_deleteButton;
+
 
 
 -- MOVIES ------
