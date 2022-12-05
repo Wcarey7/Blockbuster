@@ -46,6 +46,7 @@ main > h2 {
     background-color: var(--primary-color);
     align-self: center;
     padding: 5px;
+    box-shadow: 4px 4px;
 }
 
 nav {
@@ -56,6 +57,7 @@ nav {
     flex-wrap: wrap;
     padding-top: 5px;
     padding-bottom: 5px;
+    
 }
 
 nav > a {
@@ -75,23 +77,19 @@ form {
     display: flex;
     flex-direction: column;
     background-color: var(--primary-color);
-    gap: 1vh;
     border: solid black 2px;
     width: min-content;
     min-width: 400px;
     padding-left: 5px;
     padding-right: 5px;
     padding-bottom: 5px;
+    box-shadow: 1px 1px;
 }
 
 .data-table {
     align-self: center;
 }
 
-.form-inputs {
-    border-bottom: solid black 1px;
-    
-}
 
 form > h3 {
     border-bottom: solid black 1px;
@@ -100,7 +98,7 @@ form > h3 {
 .form-inputs > div {
     display: flex;
     flex-direction: row;
-    padding-bottom: 3px;
+    padding-bottom: 5px;
 }
 
 .update-form {
@@ -114,6 +112,7 @@ table {
     background-color: var(--primary-color);
     border: 1px solid black;
     border-collapse: collapse;
+    box-shadow: 1px 1px;
 }
 
 th, td {
@@ -126,7 +125,14 @@ th, td {
 tbody > tr:nth-child(odd) {
     background-color: rgb(255, 255, 255);
 }
-
+tbody > tr:hover{
+    background-color:rgb(77, 68, 201);
+    color:rgb(255, 255, 255);
+    }
+tbody > tr.selected{
+    background-color: #0e3fa9;
+    color:rgb(255, 255, 255)
+}
 button {
     max-width: 100px;
 }
