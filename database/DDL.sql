@@ -26,6 +26,15 @@ SET time_zone = "+00:00";
 -- Database: `cs340_careyw`
 --
 
+
+DROP TABLE IF EXISTS `Available_Rentals`;
+DROP TABLE IF EXISTS `Ordered_Movies`;
+DROP TABLE IF EXISTS `Orders`;
+DROP TABLE IF EXISTS `Customers`;
+DROP TABLE IF EXISTS `Locations`;
+DROP TABLE IF EXISTS `Movies`;
+
+
 -- --------------------------------------------------------
 
 --

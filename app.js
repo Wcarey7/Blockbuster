@@ -763,12 +763,8 @@ app.put('/put-available-rentals-ajax', function(req,res,next)
 {
     let data = req.body;
     let availID = parseInt(data.availId);
-    let movieId = parseInt(data.movieId);
     let locationId = parseInt(data.locationId);
-    if (isNaN(movieId))
-    {
-        movieId = null
-    }
+
     if (isNaN(locationId))
     {
         locationId = null
@@ -785,7 +781,7 @@ app.put('/put-available-rentals-ajax', function(req,res,next)
     
     db.pool.query(queryUpdateAvailRental,
     [
-        movieId, locationId, data['availCopies'], availID,
+        data['movieId'], locationId, data['availCopies'], availID,
     ],
     function(error, rows, fields){
         if (error) {
@@ -836,7 +832,20 @@ app.delete('/delete-available-rentals-ajax/', function(req,res,next)
 */
 app.get('/locations', function(req, res)
 {  
-    let query1 = "SELECT * FROM Locations;";               
+    let query1 = "SELECT * FROM Locations;";
+    
+        // If there is no query string, we just perform a basic SELECT
+        if (req.query.location_state === undefined)
+        {
+            query1 = "SELECT * FROM Locations;";
+        }
+    
+        // If there is a query string, we assume this is a search, and return desired results
+        else
+        {
+            query1 = `SELECT * FROM Locations WHERE location_state LIKE "${req.query.location_state}%"`
+        }
+    
 
     db.pool.query(query1, function(error, rows, fields){    
 
@@ -896,11 +905,11 @@ app.put('/put-location-ajax', function(req,res,next)
     let data = req.body;
     let locationID = parseInt(data.locationId);
 
-    let queryUpdateCustomer = `UPDATE Location SET location_street = ?, location_city = ?, location_state = ?, location_phone_number = ?`;
+    let queryUpdateLocation = `UPDATE Locations SET location_street = ?, location_city = ?, location_state = ?, location_zip = ?, location_phone_number = ? WHERE location_id = ?`;
 
-    selectCustomer =  `SELECT * FROM Locations;`;
+    selectLocation =  `SELECT * FROM Locations;`;
 
-    db.pool.query(queryUpdateCustomer, 
+    db.pool.query(queryUpdateLocation, 
     [
         data['street'], data['city'], data['state'],
         data['zip'], data['phone'], locationID,
@@ -913,7 +922,7 @@ app.put('/put-location-ajax', function(req,res,next)
         // Update the front-end
         else
         {
-        db.pool.query(selectCustomer, function(error, rows, fields) {
+        db.pool.query(selectLocation, function(error, rows, fields) {
 
             if (error) {
                 console.log(error);
@@ -927,7 +936,7 @@ app.put('/put-location-ajax', function(req,res,next)
 });
 
 //DELETE
-app.delete('/delete-customer-ajax/', function(req,res,next)
+app.delete('/delete-location-ajax/', function(req,res,next)
 {
     let data = req.body;
     let locationID = parseInt(data.id);

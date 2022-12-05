@@ -54,7 +54,7 @@
             <div class = "form-inputs">
                 <div>
                     <label for="ordered-movie-order-id">Order: </label>
-                    <select name="orderedMovie-order-id" id="ordered-movie-order-id">
+                    <select name="orderedMovie-order-id" id="ordered-movie-order-id" required="required">
                         <option value="">Select an Order</option>
                         {{#each orders}}
                         <option value="{{this.order_id}}">{{this.order_id}}</option>
@@ -63,7 +63,7 @@
                 </div>
                 <div>
                     <label for="input-movie-id">Movie: </label>
-                        <select name="input-movie-id" id="input-movie-id">
+                        <select name="input-movie-id" id="input-movie-id" required="required">
                             <option value="">Select a Movie</option>
                             {{#each movies}}
                                 <option value="{{this.movie_id}}">{{this.movie_title}}</option>
@@ -73,7 +73,7 @@
 
                 <div>
                     <label for="input-order-movie-quantity">Quantity: </label>
-                    <input type="number" value="0" name="input-order-movie-quantity" id="input-order-movie-quantity">
+                    <input type="number" value="0" name="input-order-movie-quantity" id="input-order-movie-quantity" required="required">
                 </div>
 
                 <input type="submit" value="Add Ordered Movie">
@@ -90,7 +90,7 @@
             <div class = "form-inputs">
                 <div>
                     <label for="filter-order-id">Order ID: </label>
-                    <select name="filter" id="filter-order-id">
+                    <select name="filter" id="filter-order-id" required="required">
                         <option value="">Select Order ID</option>
                         {{#each orders}}
                         <option value="{{this.order_id}}">{{this.order_id}}</option>
