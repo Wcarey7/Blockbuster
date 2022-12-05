@@ -831,18 +831,20 @@ app.delete('/delete-available-rentals-ajax/', function(req,res,next)
 */
 app.get('/locations', function(req, res)
 {  
-    let query1 = "SELECT * FROM Locations;";
+    let query1;
     
         // If there is no query string, we just perform a basic SELECT
         if (req.query.location_state === undefined)
         {
-            query1 = "SELECT * FROM Locations;";
+            query1 = 'SELECT location_id AS ID, location_street AS Street, location_city AS City, location_state AS State, location_zip AS Zip, location_phone_number AS "Phone Number" FROM Locations;';
         }
     
         // If there is a query string, we assume this is a search, and return desired results
         else
         {
-            query1 = `SELECT * FROM Locations WHERE location_state LIKE "${req.query.location_state}%"`
+            query1 = `SELECT location_id AS ID, location_street AS Street, location_city AS City, location_state AS State, 
+            location_zip AS Zip, location_phone_number AS "Phone Number" 
+            FROM Locations WHERE location_state LIKE "${req.query.location_state}%"`
         }
     
 

@@ -34,14 +34,14 @@
 
             {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
             {{#each data}}
-            <tr data-value={{this.location_id}}>
-                <td>{{this.location_id}}</td>
-                <td>{{this.location_street}}</td>
-                <td>{{this.location_city}}</td>
-                <td>{{this.location_state}}</td>
-                <td>{{this.location_zip}}</td>
-                <td>{{this.location_phone_number}}</td>
-                <td><button onclick="deleteLocation({{this.location_id}})">Delete</button></td>                                                  
+            <tr data-value={{this.[ID]}}>
+                <td>{{this.[ID]}}</td>
+                <td>{{this.[Street]}}</td>
+                <td>{{this.[City]}}</td>
+                <td>{{this.[State]}}</td>
+                <td>{{this.[Zip]}}</td>
+                <td>{{this.[Phone Number]}}</td>
+                <td><button onclick="deleteLocation({{this.[ID]}})">Delete</button></td>                                                  
             </tr>
             {{/each}}
         </tbody>
@@ -95,7 +95,7 @@
                     <select name="input-update-location" id="update-location">
                       <option value="input-update-location">Select a store location</option>
                         {{#each data}}
-                        <option value="{{this.location_id}}">{{this.location_street}} {{this.location_city}} {{this.location_state}}</option>
+                        <option value="{{this.[ID]}}">{{this.[Street]}} {{this.[City]}} {{this.[State]}}</option>
                         {{/each}}
                     </select>
                 </div>
