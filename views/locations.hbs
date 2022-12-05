@@ -86,12 +86,12 @@
 
 <div class = "column">
         <form id="update-location-form-ajax">
-        <h3>Update location</h3>
+        <h3>Update Location</h3>
             <div class = "form-inputs">
                 <div>
                     <label for="input-update-location">Store Address: </label>
                     <select name="input-update-location" id="update-location" onchange="autoFill()" required="required">
-                      <option value="">Select a store location</option>
+                      <option value="">Select a Store Location</option>
                         {{#each data}}
                         <option value="{{this.[ID]}}">#{{this.[ID]}}: {{this.[Street]}}, 
                         {{this.[City]}}, {{this.[State]}}</option>
@@ -133,7 +133,7 @@
 <div class = "row">
     <div class = "column">
     <form id="search-location-html" method='GET' action='/locations'>
-        <h3>Search locations</h3>
+        <h3>Search Locations</h3>
         <div class = "form-inputs">
             <div>
                 <label for="input-state">State: </label>

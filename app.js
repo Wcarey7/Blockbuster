@@ -104,6 +104,7 @@ app.post('/add-customer-ajax', function(req, res)
     customer_active_rentals, customer_total_rentals) 
     VALUES ('${data.fname}', '${data.lname}', '${data.street}', '${data.city}', '${data.state}', 
     ${zip}, ${phone}, ${activeRentals}, ${totalRentals})`;
+
     db.pool.query(query1, function(error, rows, fields){
 
         if (error) {
@@ -531,23 +532,23 @@ app.get('/movies', function(req, res)
         // If there is no query string, we just perform a basic SELECT
         if (req.query.movie_title === undefined)
         {
-            query1 = 'SELECT movie_id AS ID, movie_title AS Title, release_date AS "Year of Release", genre AS Genre FROM Movies;';
+            query1 = `SELECT movie_id AS ID, movie_title AS Title, release_date AS "Year of Release", genre AS Genre
+            FROM Movies;`;
         }
-    
         // If there is a query string, we assume this is a search, and return desired results
         else
         {
-            query1 = `SELECT movie_id AS ID, movie_title AS Title, release_date AS "Year of Release", genre AS Genre FROM Movies 
+            query1 = `SELECT movie_id AS ID, movie_title AS Title, release_date AS "Year of Release", genre AS Genre
+            FROM Movies 
             WHERE movie_title LIKE "${req.query.movie_title}%"`
         }
 
-
-    db.pool.query(query1, function(error, rows, fields){    // Execute the query
+    db.pool.query(query1, function(error, rows, fields){
         
         let movies = rows;
 
-        res.render('movies', {data: movies});                  // Render the movies.hbs file, and also send the renderer
-    })                                                      // an object where 'data' is equal to the 'rows' 
+        res.render('movies', {data: movies});
+    })
 });
 
 
@@ -565,6 +566,7 @@ app.post('/add-movie-ajax', function(req, res)
     }
 
     query1 = `INSERT INTO Movies (movie_title, release_date, genre) VALUES ('${data.title}', '${data.release_date}', '${data.genre}')`;
+
     db.pool.query(query1, function(error, rows, fields){
 
         // Check to see if there was an error
@@ -628,7 +630,7 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
     let genre = parseInt(data.genre);
   
     let queryUpdateMovie = `UPDATE Movies SET movie_title = ?, release_date = ?, genre= ? WHERE movie_id = ?`;
-    let selectMovie = `SELECT * FROM Movies `;
+    let selectMovie = `SELECT * FROM Movies;`;
   
           // Run the 1st query
           db.pool.query(queryUpdateMovie, [data['movie_title'], data['release_date'],data['genre'], movieID], function(error, rows, fields){

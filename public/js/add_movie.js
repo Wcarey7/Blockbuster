@@ -4,7 +4,6 @@
 // Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app 
 
 
-
 // Get the objects we need to modify
 let addMovieForm = document.getElementById('add-movie-form-ajax');
 
@@ -18,8 +17,6 @@ addMovieForm.addEventListener("submit", function (e) {
     let inputTitle = document.getElementById("input-title");
     let inputReleaseDate = document.getElementById("input-release_date");
     let inputGenre = document.getElementById("input-genre");
-
-    let deleteCell = document.createElement("TD");
 
     // Get the values from the form fields
     let titleValue = inputTitle.value;
@@ -61,8 +58,7 @@ addMovieForm.addEventListener("submit", function (e) {
 })
 
 
-// Creates a single row from an Object representing a single record from 
-// bsg_people
+// Update frontend with new row
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.
@@ -81,6 +77,7 @@ addRowToTable = (data) => {
     let titleCell = document.createElement("TD");
     let releaseDateCell = document.createElement("TD");
     let genreCell = document.createElement("TD");
+    let deleteCell = document.createElement("TD");
 
     // Fill the cells with correct data
     movie_idCell.innerText = newRow.movie_id;
@@ -88,10 +85,10 @@ addRowToTable = (data) => {
     releaseDateCell.innerText = newRow.release_date;
     genreCell.innerText = newRow.genre;
 
-    deleteCell = document.createElement("button");
-    deleteCell.innerHTML = "Delete";
-    deleteCell.onclick = function(){
-        deleteMovie(newRow.id);
+    deleteButton = document.createElement("button");
+    deleteButton.innerHTML = "Delete";
+    deleteButton.onclick = function(){
+        deleteMovie(newRow.movie_id);
     };
 
     deleteCell.appendChild(deleteButton);
@@ -102,7 +99,20 @@ addRowToTable = (data) => {
     row.appendChild(releaseDateCell);
     row.appendChild(genreCell);
     row.appendChild(deleteCell);
+
+    // Add a row attribute so the deleteRow function can find a newly added row
+    row.setAttribute('data-value', newRow.movie_id);
     
     // Add the row to the table
     currentTable.appendChild(row);
+
+
+    // Find drop down menu, create a new option, fill data in the option (full name, id),
+    // then append option to drop down menu 
+    // so newly created rows via ajax will be found in it without needing a refresh
+    let selectMenu = document.getElementById("update-movie");
+    let option = document.createElement("option");
+    option.text = newRow.movie_title;
+    option.value = newRow.movie_id;
+    selectMenu.add(option);
 }

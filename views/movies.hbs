@@ -6,18 +6,14 @@
 
 
 <main>
-
 <h2>Movies</h2>
 <p>&nbsp;</p>
 
-{{!-- The Data from our Database --}}
-{{!-- Create a table --}}
+{{!-- Create a table for the database --}}
 <div id = "browse" class = "data-table">
     <table id= "movie-table" border="1" cellpadding="5">
-
         {{!-- Header section --}}
         <thead>
-
             {{!-- For just the first row, we print each key of the row object as a header cell so we
             know what each column means when the page renders --}}
             <tr>
@@ -32,100 +28,115 @@
 
         {{!-- Body section --}}
         <tbody>
-
-            {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
+            {{!-- For each row, insert the table data --}}
+            {{!-- Square brackets refer to the alias names of the SELECT query --}}
             {{#each data}}
-            <tr data-value = {{this.movie_id}}>
-                <td>{{this.movie_id}}</td>
-                <td>{{this.movie_title}}</td>
-                <td>{{this.release_date}}</td>
-                <td>{{this.genre}}</td>
-                <td><button onclick="deleteMovie({{this.movie_id}})">Delete</button></td>                                                   
+            <tr data-value = {{this.[ID]}}>
+                <td>{{this.[ID]}}</td>
+                <td>{{this.[Title]}}</td>
+                <td>{{this.[Year of Release]}}</td>
+                <td>{{this.[Genre]}}</td>
+                <td><button onclick="deleteMovie({{this.[ID]}})">Delete</button></td>                                                   
             </tr>
             {{/each}}
         </tbody>
     </table>
     <script src="./js/delete_movie.js"></script>
 </div>
+
+
 <div class = "row">
     <div class = "column">
-    <form id="search-movie-html">
-        <h3>Search For Movies</h3>
-        <div class= "form-inputs">
-            <div>
-                <label for="input-title">Search by Movie Title: </label>
-                <input type="text" name="movie_title" id="input-title-html-search">
+        <form id="add-movie-form-ajax">
+            <h3>Add A New Movie</h3>
+            <div class = "form-inputs">
+                <div>
+                    <label for="input-movie_title">Movie Title: </label>
+                    <input type="text" name="input-title" id="input-title" required="required" placeholder="Required">
+                </div>
+
+                <div>
+                    <label for="input-release_date">Year of Release: </label>
+                    <input type="number" name="input-release_date" id="input-release_date" min="1900" max="2025" required="required" placeholder="Required">
+                </div>
+
+                <div>
+                    <label for="input-genre">Genre: </label>
+                    <select name="input-genre" id="input-genre" required="required">
+                        <option value="">Select a Genre</option>
+                        <option value="Action">Action</option>
+                        <option value="Comedy">Comedy</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Sci-Fi">Sci-Fi</option>
+                        <option value="Thriller">Thriller</option>
+                    </select>
+                </div>  
+
+                <input type="Submit" value="Add Movie">
             </div>
-            <input type="submit" value="Search Movies">
+        </form>
+        <script src="./js/add_movie.js"></script>
+    </div> <!-- End of Add Location Column -->
+
+
+<div class = "column">
+        <form id="update-movie-form-ajax">
+        <h3>Update Movie</h3>
+            <div class = "form-inputs">
+                <div>
+                    <label for="update-movie">Movie Title: </label>
+                    <select name="update-movie_title" id="update-movie" onchange="autoFill()" required="required" placeholder="Required">
+                      <option value="">Select a Movie</option>
+                        {{#each data}}
+                        <option value="{{this.[ID]}}">{{this.[Title]}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="update-title">New Title: </label>
+                    <input type="text" name="update-title" id="update-title" required="required" placeholder="Required">                    
+                </div>
+                <div>
+                    <label for="input--release_date-update">Year of Release: </label>
+                    <input type="number" name="input-release_date-update" id="input-release_date-update" min="1900" max="2025" required="required" placeholder="Required">                    
+                </div>
+                
+                <div>
+                    <label for="input-genre-update">Genre: </label>
+                    <select name="input-genre-update" id="input-genre-update" required="required">
+                        <option value="">Select a Genre</option>
+                        <option value="Action">Action</option>
+                        <option value="Comedy">Comedy</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Sci-Fi">Sci-Fi</option>
+                        <option value="Thriller">Thriller</option>
+                    </select>
+                </div>
+                
+                <input type="submit" value="Update">
+            </div>
+        </form>
+    <script src="./js/update_movie.js"></script>
+</div> <!-- End of update location Column -->
+</div> <!-- End of Row -->
+
+
+<div class = "row">
+    <div class = "column">
+    <form id="search-movie-html" method='GET' action='/movies'>
+        <h3>Search Movies By Title</h3>
+        <div class = "form-inputs">
+            <div>
+                <label for="input-title">Movie Title: </label>
+                <input type="text" name="movie_title" id="input-title-html-search" placeholder="Required">
+            </div>
+            <input type="submit" value= "Search Movies">
             <a href='/movies'><button>Reset</button></a>
         </div>
     </form>
-    </div>
-
-
-{{!-- Form to add a record to the table  --}}
-    <div class = "column">
-        <form id="add-movie-form-ajax">
-            <h3>Add A New Movie:</h3>
-            <p><strong> Note: you may need to refresh the page to see the new items added. </strong></p>
-            <div>
-                <label for="input-movie_title">Movie Title: </label>
-            </div>
-            <div>
-                <input type="text" name="input-title" id="input-title">
-            </div>
-                <div>
-                <label for="input-release_date">Year of Release: </label>
-                </div>
-                <div>
-                <input type="number" name="input-release_date" id="input-release_date">
-                </div>
-                <div>
-                <label for="input-genre">Genre: </label>
-                <div>
-                <input type="text" name="input-genre" id="input-genre">
-                </div>
-            </div>
-            <input type="Submit" value="Add Movie">
-        </form>
-    <script src="./js/add_movie.js"></script>
-    </div>
-</div>
-
-<div class= "row">
-    <div class="column">
-        <form id="update-movie-form-ajax">
-        <h3>Update Movie</h3>
-        <div class= "form-inputs">
-            <div>
-                <label for="update-order-id">Movie Title: </label>
-                <select name="update-movie_title" id="movieSelect">
-                    <option value="update-order-id">Select a Movie</option>
-                    {{#each data}}
-                    <option value="{{this.movie_id}}">{{this.movie_title}}</option>
-                    {{/each}}
-                </select>
-            </div>
-            <div>
-                <label for="update-movie">Change Movie Title: </label>
-                <input type="text" name="update-movie" id="update-movie">
-            </div>
-            <div>
-                <label for="input-release_date">Year of Release: </label>
-                <input type="number" name="input-release_date" id="input-release_date-update">
-            </div>
-
-            <div>
-                <label for="input-genre">Genre: </label>
-                <input type="text" name="input-genre" id="input-genre-update">
-            </div>
-    
-            <input type="submit" value="Update">
-
-        </form>
-
-        <script src="./js/update_movie.js"></script>
-    </div>
-</div>
-
+</div> <!-- End of Search column -->
+</div> <!-- End of Row -->
 </main>
