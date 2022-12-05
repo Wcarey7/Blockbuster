@@ -9,14 +9,11 @@
 <h2>Store Locations</h2>
 <p>&nbsp;</p>
 
-{{!-- The Data from our Database --}}
-{{!-- Create a table --}}
+{{!-- Create a table for the database --}}
 <div id = "browse" class = "data-table">
     <table id= "location-table" border="1" cellpadding="5">
-
         {{!-- Header section --}}
         <thead>
-
             {{!-- For just the first row, we print each key of the row object as a header cell so we
             know what each column means when the page renders --}}
             <tr>
@@ -31,23 +28,24 @@
 
         {{!-- Body section --}}
         <tbody>
-
-            {{!-- For each row, print the id, first_name, last_name, etc, in order --}}
+            {{!-- For each row, insert the table data --}}
+            {{!-- Square brackets refer to the alias names of the SELECT query --}}
             {{#each data}}
-            <tr data-value={{this.location_id}}>
-                <td>{{this.location_id}}</td>
-                <td>{{this.location_street}}</td>
-                <td>{{this.location_city}}</td>
-                <td>{{this.location_state}}</td>
-                <td>{{this.location_zip}}</td>
-                <td>{{this.location_phone_number}}</td>
-                <td><button onclick="deleteLocation({{this.location_id}})">Delete</button></td>                                                  
+            <tr data-value={{this.[ID]}}>
+                <td>{{this.[ID]}}</td>
+                <td>{{this.[Street]}}</td>
+                <td>{{this.[City]}}</td>
+                <td>{{this.[State]}}</td>
+                <td>{{this.[Zip]}}</td>
+                <td>{{this.[Phone Number]}}</td>
+                <td><button onclick="deleteLocation({{this.[ID]}})">Delete</button></td>                                                  
             </tr>
             {{/each}}
         </tbody>
     </table>
     <script src="./js/delete_location.js"></script>
 </div>
+
 
 <div class = "row">
     <div class = "column">
@@ -56,35 +54,35 @@
             <div class = "form-inputs">
                 <div>
                     <label for="input-location_street">Street Address: </label>
-                    <input type="text" name="input-location_street" id="input-location_street">
+                    <input type="text" name="input-location_street" id="input-location_street" placeholder="Required" required="required">
                 </div>
 
                 <div>
                     <label for="input-location_city">City: </label>
-                    <input type="text" name="input-location_city" id="input-location_city">
+                    <input type="text" name="input-location_city" id="input-location_city" placeholder="Required" required="required">
                 </div>
 
                 <div>
                     <label for="input-location_state">State: </label>
-                    <input type="text" name="input-location_state" id="input-location_state" maxlength="2">                    
+                    <input type="text" name="input-location_state" id="input-location_state" maxlength="2" placeholder="Required" required="required">                    
                 </div>  
 
                 <div>
                     <label for="input-location_zip">Zip Code: </label>
-                    <input type="number" name="input-location_zip" id="input-location_zip">
+                    <input type="number" name="input-location_zip" id="input-location_zip" placeholder="Required" required="required">
                 </div>
 
                 <div>
-                    <label for="input-location_phone_number">Phone Number: </label>
-                    <input type="number" name="input-location_phone_number" id="input-location_phone_number" maxlength="12">
+                    <label for="input-update-phone">Phone Number: </label>
+                    <input type="tel" name="input-location_phone_number" id="input-location_phone_number" placeholder="###-###-####" maxlength="10">
                 </div>
 
                 <input type="submit" value="Add Store">
             </div>
         </form>
-        {{!-- Embed javascript to handle the DOM manipulation and AJAX request --}}
         <script src="./js/add_location.js"></script>
     </div> <!-- End of Add Location Column -->
+
 
 <div class = "column">
         <form id="update-location-form-ajax">
@@ -92,45 +90,45 @@
             <div class = "form-inputs">
                 <div>
                     <label for="input-update-location">Store Address: </label>
-                    <select name="input-update-location" id="update-location">
-                      <option value="input-update-location">Select a store location</option>
+                    <select name="input-update-location" id="update-location" onchange="autoFill()" required="required">
+                      <option value="">Select a store location</option>
                         {{#each data}}
-                        <option value="{{this.location_id}}">{{this.location_street}} {{this.location_city}} {{this.location_state}}</option>
+                        <option value="{{this.[ID]}}">#{{this.[ID]}}: {{this.[Street]}}, 
+                        {{this.[City]}}, {{this.[State]}}</option>
                         {{/each}}
                     </select>
                 </div>
 
                 <div>
                     <label for="input-update-street">Street: </label>
-                    <input type="text" name="input-update-street" id="input-update-street">                    
+                    <input type="text" name="input-update-street" id="input-update-street" placeholder="Required" required="required">                    
                 </div>
                 <div>
                     <label for="input-update-city">City: </label>
-                    <input type="text" name="input-update-city" id="input-update-city">                    
+                    <input type="text" name="input-update-city" id="input-update-city" placeholder="Required" required="required">                    
                 </div>
                 <div>
                     <label for="input-update-state">State: </label>
-                    <input type="text" name="input-update-state" id="input-update-state">
+                    <input type="text" name="input-update-state" id="input-update-state" placeholder="Required" required="required">
                 </div>
 
                 <div>
                     <label for="input-update-zip">Zip: </label>
-                    <input type="number" name="input-update-zip" id="input-update-zip">
+                    <input type="number" name="input-update-zip" id="input-update-zip" placeholder="Required" required="required">
                 </div>
 
                 <div>
                     <label for="input-update-phone">Phone Number: </label>
-                    <input type="number" name="input-update-phone" id="input-update-phone">
+                    <input type="tel" name="input-update-phone" id="input-update-phone" placeholder="###-###-####" maxlength='10' required="required">
                 </div>
-
                 
                 <input type="submit" value= "Update Store Location">
             </div>
         </form>
     <script src="./js/update_location.js"></script>
 </div> <!-- End of update location Column -->
-
 </div> <!-- End of Row -->
+
 
 <div class = "row">
     <div class = "column">
@@ -139,10 +137,12 @@
         <div class = "form-inputs">
             <div>
                 <label for="input-state">State: </label>
-                <input type="text" name="location_state" id="input-lname-html-search" maxlength="2">
+                <input type="text" name="location_state" id="input-lname-html-search" maxlength="2" placeholder="Required">
             </div>
             <input type="submit" value= "Search location">
             <a href='/locations'><button>Reset Results</button></a>
         </div>
     </form>
 </div> <!-- End of Search column -->
+</div><!-- End of Row -->
+</main>
