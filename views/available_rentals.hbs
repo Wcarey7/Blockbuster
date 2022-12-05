@@ -93,7 +93,7 @@
         <div class = "form-inputs">
             <div>
                 <label for="update-avail-rental">ID: </label>
-                <select name="update-avail-rental" id="update-avail-rental" required="required" onchange="autoFill()">
+                <select name="update-avail-rental" id="update-avail-rental" required="required">
                     <option value="">Select an Available Rental</option>
                     {{#each data}}
                     <option value="{{this.[ID]}}">{{this.[ID]}}</option>
