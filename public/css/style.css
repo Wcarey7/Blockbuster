@@ -1,22 +1,28 @@
 /* CSS Document */
 /* Group 77, Wade Carey, Andrew Sabin */
 
+/*Imports*/
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Mukta:wght@600&family=Passion+One&family=Teko:wght@700&display=swap');
+
+
+
 
 :root {
     --primary-color: #e0e1e2;
     --blockbuster-orange-color: #ffa903;
     --blockbuster-blue-color: #0e3fa9;
+    --blockbuster-lighter-blue: rgba(117, 130, 211, 0.742);
 }
 
 header {
     color: var(--blockbuster-orange-color);
-
+    font-family: 'Teko', sans-serif;
 }
 
 
 header > h1 {
     padding-left: 1vw;
-    font-size: 3em;
+    font-size: 3.5em;
     font-weight: bold;
     border: solid var(--blockbuster-orange-color) 1px;
 }
@@ -39,7 +45,8 @@ main {
 
 
 main > h2 {
-    font-size: 2em;
+    font-family: 'Teko', sans-serif;
+    font-size: 2.75em;
     font-weight: bold;
     text-align: center;
     border: solid black 1px;
@@ -51,6 +58,8 @@ main > h2 {
 
 nav {
     background-color: var(--primary-color);
+    font-family: 'Passion One', cursive;
+    font-size: large;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -70,6 +79,10 @@ nav > a {
 nav > a:hover {
     color: var( --blockbuster-orange-color);
     background-color: var( --blockbuster-blue-color);
+}
+
+nav > a:active {
+    color: var( --blockbuster-orange-color)
 }
 
 
@@ -93,6 +106,10 @@ form {
 
 form > h3 {
     border-bottom: solid black 1px;
+    font-family: 'Mukta', sans-serif;
+    background-color: hsla(210, 100%, 21%, 1);
+    color:rgb(255, 255, 255);
+    padding: 2px;
 }
   
 .form-inputs > div {
@@ -117,17 +134,58 @@ table {
 
 th, td {
   border: 1px solid black;
-  padding-left: 1vw;
-  padding-right: 1vw;
+  padding-left: 1.5vw;
+  padding-right: 1.5vw;
   text-align: center;
+}
+
+th{
+    background-color: hsla(210, 100%, 21%, 1);
+    color:rgb(255, 255, 255);
+    font-family: 'Mukta', sans-serif;
+    font-size: 18px;
+    font-weight: 100;
 }
 
 tbody > tr:nth-child(odd) {
     background-color: rgb(255, 255, 255);
 }
-
-button {
+tbody > tr:hover{
+    background-color:var(--blockbuster-lighter-blue);
+    color:rgb(255, 255, 255);
+    }
+/* tbody > tr.selected{
+    background-color: var(--blockbuster-orange-color);
+    color:rgb(255, 255, 255)
+} */
+/* button {
     max-width: 100px;
+} */
+button {
+    padding:5px;
+    background-color: var(--primary-color);
+    /* color: rgb(234, 234, 234); */
+    border:1px solid rgb(88, 93, 98);
+    border-radius:2px;
+    max-width: 100px;
+}
+button:hover{
+    background-color: hsla(210, 100%, 21%, 1);
+    color: var(--primary-color);
+  }
+
+input[type=submit]{
+    padding:5px;
+    background-color: var(--primary-color);
+    /* color: rgb(234, 234, 234); */
+    border:1px solid rgb(88, 93, 98);
+    border-radius: 2px;
+    max-width: 200px;
+}
+
+input[type=submit]:hover{
+    background-color: hsla(210, 100%, 21%, 1);
+    color: var(--primary-color);
 }
   
 label {
