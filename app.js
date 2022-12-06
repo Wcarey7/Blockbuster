@@ -81,13 +81,6 @@ app.post('/add-customer-ajax', function(req, res)
     {
         zip = 'NULL'
     }
-
-    let phone = parseInt(data.phone);
-    if (isNaN(phone))
-    {
-        phone = 'NULL'
-    }
-
     let activeRentals = parseInt(data.activeRentals);
     if (isNaN(activeRentals))
     {
@@ -99,11 +92,10 @@ app.post('/add-customer-ajax', function(req, res)
     {
         totalRentals = 'NULL'
     }   
-
     query1 = `INSERT INTO Customers (first_name, last_name, customer_street, customer_city, customer_state, customer_zip, customer_phone_number, 
     customer_active_rentals, customer_total_rentals) 
     VALUES ('${data.fname}', '${data.lname}', '${data.street}', '${data.city}', '${data.state}', 
-    ${zip}, ${phone}, ${activeRentals}, ${totalRentals})`;
+    ${zip}, '${data.phone}', ${activeRentals}, ${totalRentals})`;
 
     db.pool.query(query1, function(error, rows, fields){
 
@@ -866,16 +858,10 @@ app.post('/add-location-ajax', function(req, res)
     {
         zip = 'NULL'
     }
-
-    let phone = parseInt(data.phone);
-    if (isNaN(phone))
-    {
-        phone = 'NULL'
-    }
   
-
     query1 = `INSERT INTO Locations (location_street, location_city, location_state, location_zip, location_phone_number) 
-    VALUES ('${data.street}', '${data.city}', '${data.state}', ${zip}, ${phone})`;
+    VALUES ('${data.street}', '${data.city}', '${data.state}', ${zip}, '${data.phone}')`;
+    
     db.pool.query(query1, function(error, rows, fields){
 
         if (error) {
