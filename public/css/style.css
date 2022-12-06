@@ -81,6 +81,10 @@ nav > a:hover {
     background-color: var( --blockbuster-blue-color);
 }
 
+nav > a:active {
+    color: var( --blockbuster-orange-color)
+}
+
 
 form {
     display: flex;
@@ -154,8 +158,34 @@ tbody > tr:hover{
     background-color: var(--blockbuster-orange-color);
     color:rgb(255, 255, 255)
 } */
-button {
+/* button {
     max-width: 100px;
+} */
+button {
+    padding:5px;
+    background-color: var(--primary-color);
+    /* color: rgb(234, 234, 234); */
+    border:1px solid rgb(88, 93, 98);
+    border-radius:2px;
+    max-width: 100px;
+}
+button:hover{
+    background-color: hsla(210, 100%, 21%, 1);
+    color: var(--primary-color);
+  }
+
+input[type=submit]{
+    padding:5px;
+    background-color: var(--primary-color);
+    /* color: rgb(234, 234, 234); */
+    border:1px solid rgb(88, 93, 98);
+    border-radius: 2px;
+    max-width: 200px;
+}
+
+input[type=submit]:hover{
+    background-color: hsla(210, 100%, 21%, 1);
+    color: var(--primary-color);
 }
   
 label {
