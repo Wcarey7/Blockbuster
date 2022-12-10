@@ -16,7 +16,8 @@ var app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(__dirname + '/public'));
-PORT = 7791;
+const PORT = process.env.PORT || 8080
+const HOST = process.env.HOST
 
 // Database
 var db = require('./database/db-connector');
@@ -948,6 +949,6 @@ app.delete('/delete-location-ajax/', function(req,res,next)
 /*
     LISTENER
 */
-app.listen(PORT, function(){
-    console.log('Express started on flip#.engr.oregonstate.edu:' + PORT + '; press Ctrl-C to terminate.')
-});
+app.listen(PORT, HOST); 
+console.log(`Running on http://${HOST}:${PORT}`);
+
