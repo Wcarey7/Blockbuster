@@ -10,17 +10,22 @@
     SETUP
 */
 
+require('dotenv').config();
+const PORT = process.env.PORT || 8080
+const HOST = process.env.HOST
+
+
+
 // Express
 var express = require('express');
 var app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(__dirname + '/public'));
-const PORT = process.env.PORT || 8080
-const HOST = process.env.HOST
+
 
 // Database
-//var db = require('./database/db-connector');
+var db = require('./database/db-connector');
 
 // Handlebars
 const { engine } = require('express-handlebars');
