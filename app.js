@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 8080
 const HOST = process.env.HOST
 
 // Database
-var db = require('./database/db-connector');
+//var db = require('./database/db-connector');
 
 // Handlebars
 const { engine } = require('express-handlebars');
