@@ -15,5 +15,8 @@
     "forever": "^4.0.3",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
+    "mysql-import": "^5.0.26"
   }
 }

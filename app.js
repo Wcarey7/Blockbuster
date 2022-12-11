@@ -11,9 +11,21 @@
 */
 
 require('dotenv').config();
+
+// Hosting
 const PORT = process.env.PORT || 8080
 const HOST = process.env.HOST
 
+// Database
+var db = require('./database/db-connector');
+
+
+// Database Credentials
+var creds = require('./database/db-connector'); 
+const host = creds.credentials.host;
+const user = creds.credentials.user;
+const password = creds.credentials.password;
+const database = creds.credentials.database;
 
 
 // Express
@@ -24,9 +36,6 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static(__dirname + '/public'));
 
 
-// Database
-var db = require('./database/db-connector');
-
 // Handlebars
 const { engine } = require('express-handlebars');
 var exphbs = require('express-handlebars');
@@ -34,9 +43,39 @@ app.engine('.hbs', engine({extname: ".hbs"}));
 app.set('view engine', '.hbs');
 
 
+// mysql-import for reloading database
+const Importer = require('mysql-import');
+const importer = new Importer({host, user, password, database});
+
+importer.onProgress(progress=>{
+  var percent = Math.floor(progress.bytes_processed / progress.total_bytes * 10000) / 100;
+  console.log(`${percent}% Completed`);
+});
+
+
+
 /*
     ROUTES
 */
+
+
+/*////////////////////////////////////////////////////////////////////////////////////////
+                RELOAD DATABASE
+                MYSQL IMPORT
+*/
+app.get('/reload_database', function(req, res)
+{
+    importer.import('./database/DDL.sql').then(()=>{
+        var files_imported = importer.getImported();
+        console.log(`${files_imported.length} SQL file(s) imported.`);
+      }).catch(err=>{
+        console.error(err);
+      });
+
+      res.render('reload_database'); 
+});
+
+
 
 /*////////////////////////////////////////////////////////////////////////////////////////
                 INDEX
@@ -569,8 +608,6 @@ app.post('/add-movie-ajax', function(req, res)
 
         // Check to see if there was an error
         if (error) {
-
-            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
             console.log(error)
             res.sendStatus(400);
         }
@@ -593,39 +630,33 @@ app.post('/add-movie-ajax', function(req, res)
     })
 });
 
+
 // DELETE
 app.delete('/delete-movie-ajax/', function(req,res,next){
     let data = req.body;
     let movieID = parseInt(data.id);
     let deleteMovies = `DELETE FROM Movies WHERE movie_id = ?`;
   
-  
           // Run the 1st query
           db.pool.query(deleteMovies, [movieID], function(error, rows, fields){
               if (error) {
-  
-              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-              console.log(error);
-              res.sendStatus(400);
+                console.log(error);
+                res.sendStatus(400);
               }
   
               else
               {
                 res.sendStatus(204);
               }
-  })});
+  })
+});
 
 
 
 // UPDATE
   app.put('/put-movie-ajax', function(req,res,next){
     let data = req.body;
-
     let movieID = parseInt(data.movieId);
-
-    let title = parseInt(data.movie_title);
-    let releaseDate = parseInt(data.release_date);
-    let genre = parseInt(data.genre);
   
     let queryUpdateMovie = `UPDATE Movies SET movie_title = ?, release_date = ?, genre= ? WHERE movie_id = ?`;
     let selectMovie = `SELECT * FROM Movies;`;
@@ -633,13 +664,10 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
           // Run the 1st query
           db.pool.query(queryUpdateMovie, [data['movie_title'], data['release_date'],data['genre'], movieID], function(error, rows, fields){
               if (error) {
-  
-              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-              console.log(error);
-              res.sendStatus(400);
+                console.log(error);
+                res.sendStatus(400);
               }
   
-              // If there was no error, we run our second query and return that data so we can use it to update the people's
               // table on the front-end
               else
               {
@@ -654,7 +682,8 @@ app.delete('/delete-movie-ajax/', function(req,res,next){
                       }
                   })
               }
-  })});
+  })
+});
 
 
 
@@ -821,7 +850,6 @@ app.delete('/delete-available-rentals-ajax/', function(req,res,next)
 
 
 
-
 /*////////////////////////////////////////////////////////////////////////////////////////
                     LOCATIONS
 */
@@ -852,6 +880,7 @@ app.get('/locations', function(req, res)
         res.render('locations', {data: rows});                  
     })                                                      
 });
+
 
 //ADD
 app.post('/add-location-ajax', function(req, res)
@@ -893,6 +922,7 @@ app.post('/add-location-ajax', function(req, res)
     })
 });
 
+
 //UPDATE
 app.put('/put-location-ajax', function(req,res,next)
 {
@@ -929,6 +959,7 @@ app.put('/put-location-ajax', function(req,res,next)
   })
 });
 
+
 //DELETE
 app.delete('/delete-location-ajax/', function(req,res,next)
 {
@@ -956,4 +987,3 @@ app.delete('/delete-location-ajax/', function(req,res,next)
 */
 app.listen(PORT, HOST); 
 console.log(`Running on http://${HOST}:${PORT}`);
-
